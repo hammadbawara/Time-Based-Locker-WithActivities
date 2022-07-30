@@ -36,6 +36,10 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         Glide.with(context).load(imagesFilesList.get(position)).into(holder.imageView);
+        holder.imageView.setOnClickListener(view -> {
+            if (holder.checkBox.isChecked()) holder.checkBox.setChecked(false);
+            else holder.checkBox.setChecked(true);
+        });
     }
 
     @Override
