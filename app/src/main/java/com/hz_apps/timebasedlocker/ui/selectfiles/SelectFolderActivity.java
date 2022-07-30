@@ -9,17 +9,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.FolderListAdapter;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFolderBinding;
 
-import java.util.ArrayList;
-
 public class SelectFolderActivity extends AppCompatActivity {
 
     ActivitySelectFolderBinding binding;
-    private ArrayList<Folder> foldersList;
+    private SelectFolderViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,30 +26,37 @@ public class SelectFolderActivity extends AppCompatActivity {
         binding = ActivitySelectFolderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (requestPermission()){
+        mViewModel = new ViewModelProvider(this).get(SelectFolderViewModel.class);
 
+        if (requestPermission()){
+            showItemsInRecyclerView();
         }else{
-            Toast.makeText(this, "No permission", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
         }
-        showItemsInRecyclerView();
+
+
 
 
 
     }
 
     private void showItemsInRecyclerView(){
-        String path = "/storage/emulated/0/";
 
-        // extension tells which types of files we are looking
-        String[] extensions = new String[] {".jpg", ".png", ".gif"};
+        if (mViewModel.getFoldersList().size() == 0){
+            String path = "/storage/emulated/0/";
 
-        // Getting folders list containing images
-        FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions);
-        findSpecificFilesFolders.setIgnoreFoldersList(new String[] {"Android"});
-        foldersList = findSpecificFilesFolders.getFoldersList();
+            // extension tells which types of files we are looking
+            String[] extensions = new String[] {".jpg", ".png", ".gif"};
+
+            // Getting folders list containing images
+            FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions);
+            findSpecificFilesFolders.setIgnoreFoldersList(new String[] {"Android"});
+            mViewModel.setFoldersList(findSpecificFilesFolders.getFoldersList());
+
+        }
 
         // Setting items in recyclerView
-        FolderListAdapter adapter = new FolderListAdapter(this, foldersList);
+        FolderListAdapter adapter = new FolderListAdapter(this, mViewModel.getFoldersList());
         binding.selectFolderRecyclerView.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
