@@ -1,4 +1,4 @@
-package com.hz_apps.timebasedlocker.ui.selectfiles;
+package com.hz_apps.timebasedlocker.ui.selectfolder;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -46,7 +46,7 @@ public class SelectFolderActivity extends AppCompatActivity {
             String path = "/storage/emulated/0/";
 
             // extension tells which types of files we are looking
-            String[] extensions = new String[] {".jpg", ".png", ".gif"};
+            String[] extensions = FilesExtensions.imagesExtensions;
 
             // Getting folders list containing images
             FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions);

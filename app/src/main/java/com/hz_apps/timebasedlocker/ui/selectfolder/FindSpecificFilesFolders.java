@@ -1,4 +1,4 @@
-package com.hz_apps.timebasedlocker.ui.selectfiles;
+package com.hz_apps.timebasedlocker.ui.selectfolder;
 
 import java.io.File;
 import java.util.ArrayList;

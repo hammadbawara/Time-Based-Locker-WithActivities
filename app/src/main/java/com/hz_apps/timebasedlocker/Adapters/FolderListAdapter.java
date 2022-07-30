@@ -1,6 +1,7 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.hz_apps.timebasedlocker.R;
-import com.hz_apps.timebasedlocker.ui.selectfiles.Folder;
+import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
+import com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles.SelectFilesActivity;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,12 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
         Folder folder = foldersList.get(position);
         Glide.with(context).load(foldersList.get(position).getFirstImage()).into(holder.imageView);
         holder.folder_name.setText(folder.getName());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, SelectFilesActivity.class);
+            intent.putExtra("folder", folder);
+            context.startActivity(intent);
+        });
     }
 
     @Override

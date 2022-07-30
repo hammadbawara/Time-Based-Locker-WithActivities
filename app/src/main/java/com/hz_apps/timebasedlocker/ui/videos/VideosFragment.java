@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
-import com.hz_apps.timebasedlocker.ui.selectfiles.SelectFolderActivity;
+import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
 public class VideosFragment extends Fragment {
 
