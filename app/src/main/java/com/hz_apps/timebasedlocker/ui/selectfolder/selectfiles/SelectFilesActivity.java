@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +23,7 @@ public class SelectFilesActivity extends AppCompatActivity {
     private ActivitySelectFilesBinding binding;
     private SelectFilesViewModel mViewModel;
     private RecyclerView recyclerView;
+    FilesListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class SelectFilesActivity extends AppCompatActivity {
         if (mViewModel.getFilesList().size() == 0) getFiles();
 
         recyclerView = binding.selectFilesRecyclerView;
-        FilesListAdapter adapter = new FilesListAdapter(this, mViewModel.getFilesList());
+        adapter = new FilesListAdapter(this, mViewModel.getFilesList());
         recyclerView.setAdapter(adapter);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/100;
@@ -55,9 +55,11 @@ public class SelectFilesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getTitle() == "Select All"){
-            Toast.makeText(this, "Select All", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "Unselect All", Toast.LENGTH_SHORT).show();
+            System.out.println("Selected");
+            adapter.setAllItemsSelected(true);
+            adapter.notifyDataSetChanged();
+        }else if (item.getTitle() == "Unselect All"){
+            System.out.println("Unselected");
         }
         return super.onOptionsItemSelected(item);
     }

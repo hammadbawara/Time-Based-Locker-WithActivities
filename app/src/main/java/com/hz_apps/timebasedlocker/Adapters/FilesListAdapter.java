@@ -20,6 +20,8 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     private final Context context;
     private final ArrayList<File> imagesFilesList;
+    private boolean isAllItemsSelected = false;
+    private boolean isAllItemsUnSelected = false;
 
     public FilesListAdapter(Context context, ArrayList<File> imagesFilesList) {
         this.context = context;
@@ -36,10 +38,13 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         Glide.with(context).load(imagesFilesList.get(position)).into(holder.imageView);
+
         holder.imageView.setOnClickListener(view -> {
             if (holder.checkBox.isChecked()) holder.checkBox.setChecked(false);
             else holder.checkBox.setChecked(true);
         });
+
+        setAllItemsSelected(holder.checkBox);
     }
 
     @Override
@@ -56,5 +61,21 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
             imageView = itemView.findViewById(R.id.imageView_images_list);
             checkBox = itemView.findViewById(R.id.checkbox_images_list);
         }
+    }
+
+    private void setAllItemsSelected(CheckBox checkBox){
+        if (isAllItemsSelected){
+            checkBox.setChecked(true);
+            isAllItemsUnSelected = false;
+        }
+    }
+
+
+    public void setAllItemsSelected(boolean b){
+        isAllItemsSelected  = b;
+    }
+
+    public void setAllItemsUnSelected(boolean allItemsUnSelected) {
+        isAllItemsUnSelected = allItemsUnSelected;
     }
 }

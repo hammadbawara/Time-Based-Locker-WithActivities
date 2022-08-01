@@ -22,4 +22,14 @@
         android:name="com.hz_apps.timebasedlocker.ui.others.OthersFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_others" />
+    <activity
+        android:id="@+id/selectFilesActivity"
+        android:name="com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles.SelectFilesActivity"
+        android:label="activity_select_files"
+        tools:layout="@layout/activity_select_files" />
+    <activity
+        android:id="@+id/selectFolderActivity"
+        android:name="com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity"
+        android:label="activity_select_folder"
+        tools:layout="@layout/activity_select_folder" />
 </navigation>
