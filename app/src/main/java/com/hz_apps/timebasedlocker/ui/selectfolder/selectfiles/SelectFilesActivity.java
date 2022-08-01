@@ -36,12 +36,11 @@ public class SelectFilesActivity extends AppCompatActivity {
         if (mViewModel.getFilesList().size() == 0) getFiles();
 
         recyclerView = binding.selectFilesRecyclerView;
-        adapter = new FilesListAdapter(this, mViewModel.getFilesList());
+        adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtn);
         recyclerView.setAdapter(adapter);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/100;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
-
 
     }
 

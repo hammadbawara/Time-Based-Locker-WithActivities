@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -22,10 +24,14 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
     private final ArrayList<File> imagesFilesList;
     private boolean isAllItemsSelected = false;
     private boolean isAllItemsUnSelected = false;
+    private ArrayList<File> selectedFiles;
+    private final ImageButton nextBtn;
 
-    public FilesListAdapter(Context context, ArrayList<File> imagesFilesList) {
+    public FilesListAdapter(Context context, ArrayList<File> imagesFilesList, ImageButton nextBtn) {
         this.context = context;
         this.imagesFilesList = imagesFilesList;
+        this.selectedFiles = new ArrayList<>();
+        this.nextBtn = nextBtn;
     }
 
     @NonNull
@@ -37,14 +43,34 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        Glide.with(context).load(imagesFilesList.get(position)).into(holder.imageView);
+
+        File file = imagesFilesList.get(position);
+
+        Glide.with(context).load(file).into(holder.imageView);
 
         holder.imageView.setOnClickListener(view -> {
-            if (holder.checkBox.isChecked()) holder.checkBox.setChecked(false);
-            else holder.checkBox.setChecked(true);
+            holder.checkBox.setChecked(!holder.checkBox.isChecked());
+        });
+
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                selectedFiles.add(file);
+            }else{
+                selectedFiles.remove(file);
+            }
+
+            System.out.println("selected files size: " + selectedFiles.size());
+            if (selectedFiles.size() > 0){
+                nextBtn.setBackgroundResource(R.drawable.round_button_enabled);
+            }
+            else{
+                nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
+            }
         });
 
         setAllItemsSelected(holder.checkBox);
+
+
     }
 
     @Override
