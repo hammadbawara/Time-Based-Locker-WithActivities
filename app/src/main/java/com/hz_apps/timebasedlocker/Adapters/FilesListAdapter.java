@@ -1,6 +1,7 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hz_apps.timebasedlocker.R;
+import com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myViewHolder>{
@@ -48,23 +51,35 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
         Glide.with(context).load(file).into(holder.imageView);
 
-        holder.imageView.setOnClickListener(view -> {
-            holder.checkBox.setChecked(!holder.checkBox.isChecked());
-        });
+        holder.imageView.setOnClickListener(view -> holder.checkBox.setChecked(!holder.checkBox.isChecked()));
 
+        // handling click listener on checkbox
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // add file into list if checkbox is checked
             if (isChecked){
                 selectedFiles.add(file);
             }else{
                 selectedFiles.remove(file);
             }
 
+            // if more than one file is selected then make nextBtn available
             System.out.println("selected files size: " + selectedFiles.size());
-            if (selectedFiles.size() > 0){
-                nextBtn.setBackgroundResource(R.drawable.round_button_enabled);
+            if (selectedFiles.size() == 0){
+                nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
             }
             else{
-                nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
+                nextBtn.setBackgroundResource(R.drawable.round_button_enabled);
+            }
+        });
+
+        // setting click listener on next button
+        nextBtn.setOnClickListener(v -> {
+            if (selectedFiles.size() == 0 ){
+
+            }else{
+                Intent intent = new Intent(context, LockFilesActivity.class);
+                intent.putExtra("selected_files", selectedFiles);
+                context.startActivity(intent);
             }
         });
 

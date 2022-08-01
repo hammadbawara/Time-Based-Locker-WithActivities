@@ -7,10 +7,23 @@
     tools:context=".ui.LockFiles.LockFilesActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lock_items_recyclerview"
         android:layout_width="359dp"
         android:layout_height="559dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:listitem="@layout/file_for_lock_view" />
+
+
+    <ImageButton
+        android:id="@+id/nextBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_tick"
+        android:background="@drawable/round_button_enabled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
