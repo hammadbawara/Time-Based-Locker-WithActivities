@@ -51,7 +51,7 @@ public class SelectFilesActivity extends AppCompatActivity {
 
     private void setRecyclerView(){
         RecyclerView recyclerView = binding.selectFilesRecyclerView;
-        adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtn);
+        adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtnActivitySelectFiles);
         recyclerView.setAdapter(adapter);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/100;

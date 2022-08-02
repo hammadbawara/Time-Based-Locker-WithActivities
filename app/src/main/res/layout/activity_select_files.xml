@@ -22,7 +22,7 @@
         tools:listitem="@layout/image_list_view" />
 
     <ImageButton
-        android:id="@+id/nextBtn"
+        android:id="@+id/nextBtn_activity_select_files"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"

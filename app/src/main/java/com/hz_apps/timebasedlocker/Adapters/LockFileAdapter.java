@@ -11,10 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -23,20 +22,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.hz_apps.timebasedlocker.R;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myViewHolder>{
 
     private final Context context;
     private final ArrayList<File> imagesList;
     private final ArrayAdapter spinnerAdapter;
+    DatePickerDialog datePickerDialog;
+    private final int YEAR, MONTH, DAY_OF_MONTH;
+    private String DateAllItems;
+    private LocalDateTime[] unlockDates;
 
 
     public LockFileAdapter(Context context, ArrayList<File> imagesList) {
         this.context = context;
         this.imagesList = imagesList;
         spinnerAdapter = new ArrayAdapter(context, R.layout.drop_down_item, new String[] {"By Day", "By Date"});
+        Calendar calendar = Calendar.getInstance();
+        YEAR = calendar.get(Calendar.YEAR);
+        MONTH = calendar.get(Calendar.MONTH);
+        DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
+        unlockDates = new LocalDateTime[imagesList.size()];
     }
 
     @NonNull
@@ -53,7 +65,9 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         Glide.with(context).load(image).into(holder.imageView);
         holder.spinner.setAdapter(spinnerAdapter);
 
-        setSpinnerClickListener(holder.spinner, holder.days, holder.date, position);
+        setSpinnerClickListener(holder.spinner, position);
+
+        showCalendarDialog(holder);
 
     }
 
@@ -65,30 +79,20 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     public static class myViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
         private final Spinner spinner;
-        private final EditText days;
-        private final EditText date;
+        private final TextView set_date;
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.lock_file_imageview);
             spinner = itemView.findViewById(R.id.spinner);
-            days = itemView.findViewById(R.id.days_editText);
-            date = itemView.findViewById(R.id.date_editText);
+            set_date = itemView.findViewById(R.id.set_date_textView);
         }
     }
 
-    private void setSpinnerClickListener(Spinner spinner, EditText days, EditText date, int adapterPosition){
+    private void setSpinnerClickListener(Spinner spinner, int adapterPosition){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch(position){
-                    case 0:
-                        date.setVisibility(View.GONE);
-                        days.setVisibility(View.VISIBLE);
-                        break;
-                    case 1:
-                        days.setVisibility(View.GONE);
-                        date.setVisibility(View.VISIBLE);
-                }
+
             }
 
             @Override
@@ -98,9 +102,21 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void launchDatePickerDialog(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, com.google.android.material.R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Calendar);
-        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    private void showCalendarDialog(myViewHolder holder){
+
+        if (DateAllItems != null){
+            holder.set_date.setText(DateAllItems);
+        }
+
+        holder.set_date.setOnClickListener(v ->{
+            datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
+                String date = year + " " + (month+1) + " " + dayOfMonth;
+            }, YEAR, MONTH, DAY_OF_MONTH);
+            datePickerDialog.show();
+        });
+    }
+
+    public void setDateAllItems(String text){
+        DateAllItems = text;
     }
 }

@@ -8,22 +8,38 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lock_items_recyclerview"
-        android:layout_width="359dp"
-        android:layout_height="559dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/blue_stroke"
+        android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/set_date_all_lock_files"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/set_date_all_lock_files"
         tools:listitem="@layout/file_for_lock_view" />
 
 
     <ImageButton
-        android:id="@+id/nextBtn"
+        android:id="@+id/nextBtn_activity_lock_files"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_tick"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
         android:background="@drawable/round_button_enabled"
+        android:src="@drawable/ic_tick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/set_date_all_lock_files"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Set Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
