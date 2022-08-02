@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +18,13 @@ import com.hz_apps.timebasedlocker.ui.selectfolder.FilesExtensions;
 import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SelectFilesActivity extends AppCompatActivity {
 
     private ActivitySelectFilesBinding binding;
     private SelectFilesViewModel mViewModel;
-    private RecyclerView recyclerView;
     FilesListAdapter adapter;
 
     @Override
@@ -32,16 +34,31 @@ public class SelectFilesActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mViewModel = new ViewModelProvider(this).get(SelectFilesViewModel.class);
+        runBackground();
 
-        if (mViewModel.getFilesList().size() == 0) getFiles();
+    }
 
-        recyclerView = binding.selectFilesRecyclerView;
+    private void runBackground(){
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            // only fetch files when filesList size is zero. This make sure the activity won't fetch
+            // files when files already been fetched.
+            if (mViewModel.getFilesList().size() == 0) getFiles();
+            // setting recyclerview in background thread
+            this.runOnUiThread(this::setRecyclerView);
+        });
+    }
+
+    private void setRecyclerView(){
+        RecyclerView recyclerView = binding.selectFilesRecyclerView;
         adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtn);
         recyclerView.setAdapter(adapter);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/100;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
 
+        // hiding progressbar after doing all tasks
+        binding.progressBarSelectFiles.setVisibility(View.GONE);
     }
 
     @Override

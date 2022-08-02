@@ -14,21 +14,39 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="197dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lock_file_imageview"
+        app:layout_constraintStart_toEndOf="@+id/lock_file_imageview"
+        app:layout_constraintTop_toTopOf="@+id/lock_file_imageview"
+        app:layout_constraintVertical_bias="0.49" />
+
+    <EditText
+        android:id="@+id/days_editText"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="number"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintTop_toTopOf="@+id/lock_file_imageview"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/date_editText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:inputType="date"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/lock_file_imageview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lock_file_imageview"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dropdown_menu"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintTop_toTopOf="@+id/lock_file_imageview" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

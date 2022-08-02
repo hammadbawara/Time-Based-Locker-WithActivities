@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.FolderListAdapter;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFolderBinding;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SelectFolderActivity extends AppCompatActivity {
 
@@ -29,19 +33,23 @@ public class SelectFolderActivity extends AppCompatActivity {
         mViewModel = new ViewModelProvider(this).get(SelectFolderViewModel.class);
 
         if (requestPermission()){
-            showItemsInRecyclerView();
+            // showing progressbar until task completes
+            binding.progressBarSelectFolder.setVisibility(View.VISIBLE);
+            // Using executor for running this function in background thread so Ui respond
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(()->{
+                getFoldersFromStorage();
+                this.runOnUiThread(this::showItemsInRecyclerView);
+            });
+
+
         }else{
             Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
         }
 
 
-
-
-
     }
-
-    private void showItemsInRecyclerView(){
-
+    private void getFoldersFromStorage(){
         if (mViewModel.getFoldersList().size() == 0){
             String path = "/storage/emulated/0/";
 
@@ -52,9 +60,10 @@ public class SelectFolderActivity extends AppCompatActivity {
             FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions);
             findSpecificFilesFolders.setIgnoreFoldersList(new String[] {"Android"});
             mViewModel.setFoldersList(findSpecificFilesFolders.getFoldersList());
-
         }
+    }
 
+    private void showItemsInRecyclerView(){
         // Setting items in recyclerView
         FolderListAdapter adapter = new FolderListAdapter(this, mViewModel.getFoldersList());
         binding.selectFolderRecyclerView.setAdapter(adapter);
@@ -62,6 +71,9 @@ public class SelectFolderActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/155;
         binding.selectFolderRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
+
+        // hiding progressbar when all tasks completes
+        binding.progressBarSelectFolder.setVisibility(View.GONE);
     }
 
     private boolean requestPermission(){
