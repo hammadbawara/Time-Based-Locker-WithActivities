@@ -57,8 +57,8 @@ public class SelectFolderActivity extends AppCompatActivity {
             String[] extensions = FilesExtensions.imagesExtensions;
 
             // Getting folders list containing images
-            FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions);
-            findSpecificFilesFolders.setIgnoreFoldersList(new String[] {"Android"});
+            FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions,
+                    new String[] {"Android"});
             mViewModel.setFoldersList(findSpecificFilesFolders.getFoldersList());
         }
     }

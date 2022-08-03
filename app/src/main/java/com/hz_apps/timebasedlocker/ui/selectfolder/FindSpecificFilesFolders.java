@@ -2,8 +2,6 @@ package com.hz_apps.timebasedlocker.ui.selectfolder;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class FindSpecificFilesFolders {
 
@@ -13,57 +11,68 @@ public class FindSpecificFilesFolders {
     private String[] ignoreFoldersList;
     private ArrayList<Folder> foldersList = new ArrayList<>();
 
-
-    // constructor
     public FindSpecificFilesFolders(String path, String[] extensions) {
         this.path = path;
         this.extensionsList = extensions;
         this.findFolders();
     }
-
-    /*
-     * set folders that will be ignored.
-     */
-    public void setIgnoreFoldersList(String[] ignoreFolders) {
-        this.ignoreFoldersList = ignoreFolders;
+    // constructor
+    public FindSpecificFilesFolders(String path, String[] extensions, String[] ignoreFoldersList) {
+        this.path = path;
+        this.extensionsList = extensions;
+        this.ignoreFoldersList = ignoreFoldersList;
+        // calling findFolders fucntion
+        this.findFolders();
     }
 
     private void findFolders(){
 
-        File pathFile = new File(path);
+        File homeDirectoryPath = new File(path);
 
         // checking if pathFile is a folder if it is a path then okay.
-        if (!pathFile.isDirectory()){
-            System.out.println("Error");
-            return;
+        if (!homeDirectoryPath.isDirectory()){
+            throw new Error("The path you provided is not a valid directory.");
         }
-        
+
         // ignoring folders
-        List<File> filesList;
+        File[] filesList;
         if (ignoreFoldersList != null){
-            filesList = ignoreFolders(pathFile);
+            filesList = ignoreFolders(homeDirectoryPath);
 
             for (File path : filesList){
+                if (path == null) continue;
                 this.createFoldersList(path);
             }
 
         }else{
-            this.createFoldersList(pathFile);
+            this.createFoldersList(homeDirectoryPath);
         }
-        
+
     }
 
-    private List<File> ignoreFolders(File pathFile){
-        List<File> filesList = new ArrayList<>(Arrays.asList(pathFile.listFiles()));
+    // ignore folders
+    private File[] ignoreFolders(File homeDirectoryPath){
+        // Getting home directory
+        File[] filesList = homeDirectoryPath.listFiles();
 
-        for (int i=0; i<filesList.size(); i++){
+        int numberOfIgnoreFolders = ignoreFoldersList.length;
+        int numberOfFolderIgnored = 0;
+
+        // ignoring folders : simple technique comparing all all folders with ignoreFolders
+        // if they match then set that folder to "null".
+        for (int i=0; i<filesList.length; i++){
             for (String ignoreFolder : ignoreFoldersList){
-                if (filesList.get(i).getAbsolutePath().equals(ignoreFolder)){
-                    filesList.remove(i);
+                if (filesList[i].getName().equals(ignoreFolder)){
+                    filesList[i] = null;
+                    numberOfFolderIgnored += 1;
+                    break;
                 }
             }
+            // When all folders ignored then no need to further check
+            if (numberOfFolderIgnored == numberOfIgnoreFolders){
+                break;
+            }
         }
-
         return filesList;
     }
 
@@ -73,6 +82,8 @@ public class FindSpecificFilesFolders {
         if (path.getName().startsWith(".")) return;
 
         File[] filesList = path.listFiles();
+
+        if (filesList == null) return;
 
         /*
          * - checking if path is dir or file
@@ -98,24 +109,10 @@ public class FindSpecificFilesFolders {
 
     }
 
-    
+
 
     public ArrayList<Folder> getFoldersList(){
         return foldersList;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

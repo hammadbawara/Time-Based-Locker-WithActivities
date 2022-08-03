@@ -37,7 +37,6 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     DatePickerDialog datePickerDialog;
     private final int YEAR, MONTH, DAY_OF_MONTH;
     private String DateAllItems;
-    private LocalDateTime[] unlockDates;
 
 
     public LockFileAdapter(Context context, ArrayList<File> imagesList) {
@@ -48,7 +47,6 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         YEAR = calendar.get(Calendar.YEAR);
         MONTH = calendar.get(Calendar.MONTH);
         DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
-        unlockDates = new LocalDateTime[imagesList.size()];
     }
 
     @NonNull
