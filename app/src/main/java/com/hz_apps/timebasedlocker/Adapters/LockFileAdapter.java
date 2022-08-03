@@ -3,6 +3,7 @@ package com.hz_apps.timebasedlocker.Adapters;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +23,7 @@ import com.hz_apps.timebasedlocker.R;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,8 +35,9 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
     private final int YEAR, MONTH, DAY_OF_MONTH;
-    private String DateForAllItems;
-    private LocalDateTime[] localDateTimesList;
+    private LocalDateTime SetDateForAllItems;
+    public LocalDateTime[] localDateTimesList;
+    private boolean dateNotSetWarning = false;
 
 
     public LockFileAdapter(Context context, ArrayList<File> imagesList) {
@@ -58,11 +63,15 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
         File image = imagesList.get(position);
         Glide.with(context).load(image).into(holder.imageView);
-        holder.spinner.setAdapter(spinnerAdapter);
 
-        setSpinnerClickListener(holder.spinner);
+        showDateTimeDialog(holder);
 
-        showCalendarDialog(holder);
+        System.out.println("dateNotSetWarning state " + dateNotSetWarning);
+
+        if (dateNotSetWarning) {
+            System.out.println("Date not set warning");
+            holder.set_date.setTextColor(Color.RED);
+        }
 
     }
 
@@ -73,49 +82,56 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     public static class myViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
-        private final Spinner spinner;
         private final TextView set_date;
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.lock_file_imageview);
-            spinner = itemView.findViewById(R.id.spinner);
             set_date = itemView.findViewById(R.id.set_date_textView);
         }
     }
 
-    private void setSpinnerClickListener(Spinner spinner){
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    private void showDateTimeDialog(myViewHolder holder){
 
+        // check : if user selected to set date for all items then set date and also save in list
+        if (SetDateForAllItems != null){
+            holder.set_date.setText(SetDateForAllItems.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            for (int i=0; i<imagesList.size(); i++){
+                localDateTimesList[i] = SetDateForAllItems;
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void showCalendarDialog(myViewHolder holder){
-
-        if (DateForAllItems != null){
-            holder.set_date.setText(DateForAllItems);
         }
-
+        // show date picker dialog on click of set date text view
         holder.set_date.setOnClickListener(v ->{
-            datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> showDatePicker(holder, year, month, dayOfMonth), YEAR, MONTH, DAY_OF_MONTH);
+            datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> showTimePickerDialog(holder, year, month, dayOfMonth), YEAR, MONTH, DAY_OF_MONTH);
             datePickerDialog.show();
         });
     }
 
-    private void showDatePicker(myViewHolder holder, int YEAR, int MONTH, int DAY_OF_MONTH){
-        timePickerDialog = new TimePickerDialog(context, (view, hourOfDay, minute) ->
-                localDateTimesList[holder.getAdapterPosition()].of(YEAR, MONTH, DAY_OF_MONTH, hourOfDay, minute), 12, 60, false);
+    // Time picker dialog
+    private void showTimePickerDialog(myViewHolder holder, int YEAR, int MONTH, int DAY_OF_MONTH){
+        timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                LocalDateTime dateTime = LocalDateTime.of(YEAR, MONTH, DAY_OF_MONTH, hourOfDay, minute);
+                localDateTimesList[holder.getAdapterPosition()] = dateTime;
+                holder.set_date.setText(dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            }
+        },12, 0, false );
         timePickerDialog.show();
     }
 
-    public void setDateForAllItems(String text){
-        DateForAllItems = text;
+    public void setSetDateForAllItems(LocalDateTime localDateTime){
+        SetDateForAllItems = localDateTime;
+    }
+
+    public LocalDateTime[] getLocalDateTimesList(){
+        return localDateTimesList;
+    }
+
+    public void setDateNotSetWarning(boolean b){
+        this.dateNotSetWarning = b;
+    }
+
+    private void setDateToItem(TextView textView){
+
     }
 }

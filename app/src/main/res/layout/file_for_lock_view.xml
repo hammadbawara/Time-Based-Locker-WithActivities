@@ -2,47 +2,40 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_file_for_lock_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/lock_file_imageview"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="197dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/lock_file_imageview"
-        app:layout_constraintStart_toEndOf="@+id/lock_file_imageview"
-        app:layout_constraintTop_toTopOf="@+id/lock_file_imageview"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/set_date_textView"
         android:layout_width="0dp"
-        android:layout_height="24dp"
+        android:layout_height="0dp"
         android:gravity="center"
         android:text="Set Date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/lock_file_imageview"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/lock_file_imageview"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@drawable/blue_stroke"
         android:gravity="center"
         android:text="Time"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/set_date_textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner"
-        app:layout_constraintTop_toBottomOf="@+id/set_date_textView" />
+        app:layout_constraintStart_toEndOf="@+id/set_date_textView"
+        app:layout_constraintTop_toTopOf="@+id/set_date_textView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

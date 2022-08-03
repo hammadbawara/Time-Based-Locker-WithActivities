@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -18,7 +17,6 @@ import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myViewHolder>{
@@ -64,7 +62,6 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
             }
 
             // if more than one file is selected then make nextBtn available
-            System.out.println("selected files size: " + selectedFiles.size());
             if (selectedFiles.size() == 0){
                 nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
             }
