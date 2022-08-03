@@ -24,7 +24,6 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
 
     private final Context context;
     private final ArrayList<Folder> foldersList;
-    AlertDialog.Builder alertDialog;
 
     public FolderListAdapter(Context context, ArrayList<Folder> foldersList) {
         this.context = context;
@@ -42,28 +41,14 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         Folder folder = foldersList.get(position);
-        Glide.with(context).load(foldersList.get(position).getFirstImage()).into(holder.imageView);
+        Glide.with(context).load(folder.getFirstImage())
+                .into(holder.imageView);
         holder.folder_name.setText(folder.getName());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SelectFilesActivity.class);
             intent.putExtra("folder", folder);
             context.startActivity(intent);
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                alertDialog = new AlertDialog.Builder(context).setMessage(folder.getAbsolutePath())
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                alertDialog.create().show();
-                return false;
-            }
         });
     }
 

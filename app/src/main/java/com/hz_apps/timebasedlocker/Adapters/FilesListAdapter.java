@@ -49,7 +49,8 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
         File file = imagesFilesList.get(position);
 
-        Glide.with(context).load(file).into(holder.imageView);
+        Glide.with(context).load(file)
+                .into(holder.imageView);
 
         holder.imageView.setOnClickListener(view -> holder.checkBox.setChecked(!holder.checkBox.isChecked()));
 

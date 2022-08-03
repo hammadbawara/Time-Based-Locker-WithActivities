@@ -1,28 +1,22 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hz_apps.timebasedlocker.R;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -35,8 +29,10 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     private final ArrayList<File> imagesList;
     private final ArrayAdapter spinnerAdapter;
     DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
     private final int YEAR, MONTH, DAY_OF_MONTH;
-    private String DateAllItems;
+    private String DateForAllItems;
+    private LocalDateTime[] localDateTimesList;
 
 
     public LockFileAdapter(Context context, ArrayList<File> imagesList) {
@@ -47,6 +43,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         YEAR = calendar.get(Calendar.YEAR);
         MONTH = calendar.get(Calendar.MONTH);
         DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
+        this.localDateTimesList = new LocalDateTime[imagesList.size()];
     }
 
     @NonNull
@@ -63,7 +60,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         Glide.with(context).load(image).into(holder.imageView);
         holder.spinner.setAdapter(spinnerAdapter);
 
-        setSpinnerClickListener(holder.spinner, position);
+        setSpinnerClickListener(holder.spinner);
 
         showCalendarDialog(holder);
 
@@ -86,7 +83,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         }
     }
 
-    private void setSpinnerClickListener(Spinner spinner, int adapterPosition){
+    private void setSpinnerClickListener(Spinner spinner){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -102,19 +99,23 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     private void showCalendarDialog(myViewHolder holder){
 
-        if (DateAllItems != null){
-            holder.set_date.setText(DateAllItems);
+        if (DateForAllItems != null){
+            holder.set_date.setText(DateForAllItems);
         }
 
         holder.set_date.setOnClickListener(v ->{
-            datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
-                String date = year + " " + (month+1) + " " + dayOfMonth;
-            }, YEAR, MONTH, DAY_OF_MONTH);
+            datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> showDatePicker(holder, year, month, dayOfMonth), YEAR, MONTH, DAY_OF_MONTH);
             datePickerDialog.show();
         });
     }
 
-    public void setDateAllItems(String text){
-        DateAllItems = text;
+    private void showDatePicker(myViewHolder holder, int YEAR, int MONTH, int DAY_OF_MONTH){
+        timePickerDialog = new TimePickerDialog(context, (view, hourOfDay, minute) ->
+                localDateTimesList[holder.getAdapterPosition()].of(YEAR, MONTH, DAY_OF_MONTH, hourOfDay, minute), 12, 60, false);
+        timePickerDialog.show();
+    }
+
+    public void setDateForAllItems(String text){
+        DateForAllItems = text;
     }
 }

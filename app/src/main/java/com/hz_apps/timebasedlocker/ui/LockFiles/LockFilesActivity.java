@@ -40,7 +40,7 @@ public class LockFilesActivity extends AppCompatActivity {
 
         binding.setDateAllLockFiles.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
-                adapter.setDateAllItems(year + " " + (month+1) + " " + dayOfMonth);
+                adapter.setDateForAllItems(year + " " + (month+1) + " " + dayOfMonth);
                 binding.setDateAllLockFiles.setText(year + " " + (month+1) + " " + dayOfMonth);
                 adapter.notifyDataSetChanged();
             }, YEAR, MONTH, DAY_OF_MONTH);
