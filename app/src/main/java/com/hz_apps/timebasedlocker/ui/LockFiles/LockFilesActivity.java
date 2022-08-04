@@ -57,4 +57,7 @@ public class LockFilesActivity extends AppCompatActivity {
         });
 
     }
+
+    private void finishingAllPreviousActivities(){
+    }
 }

@@ -32,6 +32,7 @@ public class SelectFilesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySelectFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
 
         mViewModel = new ViewModelProvider(this).get(SelectFilesViewModel.class);
         runBackground();
@@ -71,11 +72,17 @@ public class SelectFilesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getTitle() == "Select All"){
-            System.out.println("Selected");
-            adapter.setAllItemsSelected(true);
-            adapter.notifyDataSetChanged();
-        }else if (item.getTitle() == "Unselect All"){
-            System.out.println("Unselected");
+            if (!adapter.isAllItemsSelected()){
+                adapter.setAllItemsUnSelectedFlag(false);
+                adapter.setAllItemsSelected(true);
+                adapter.notifyDataSetChanged();
+            }
+        }else{
+            if (!adapter.isAllItemsUnselected()){
+                adapter.setAllItemsSelected(false);
+                adapter.setAllItemsUnSelectedFlag(true);
+                adapter.notifyDataSetChanged();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -7,15 +7,13 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -82,7 +80,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     public static class myViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
-        private final TextView set_date;
+        private final Button set_date;
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.lock_file_imageview);

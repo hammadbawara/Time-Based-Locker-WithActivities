@@ -8,19 +8,19 @@
     <fragment
         android:id="@+id/navigation_videos"
         android:name="com.hz_apps.timebasedlocker.ui.videos.VideosFragment"
-        android:label="@string/title_home"
+        android:label="Videos"
         tools:layout="@layout/fragment_videos" />
 
     <fragment
         android:id="@+id/navigation_photos"
         android:name="com.hz_apps.timebasedlocker.ui.photos.PhotosFragment"
-        android:label="@string/title_dashboard"
+        android:label="Photos"
         tools:layout="@layout/fragment_photos" />
 
     <fragment
         android:id="@+id/navigation_others"
         android:name="com.hz_apps.timebasedlocker.ui.others.OthersFragment"
-        android:label="@string/title_notifications"
+        android:label="Others"
         tools:layout="@layout/fragment_others" />
     <activity
         android:id="@+id/selectFilesActivity"

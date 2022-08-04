@@ -6,10 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.selectfolder.SelectFolderActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/materialToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/select_folder_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/materialToolbar"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -20,7 +29,5 @@
         android:id="@+id/progressBar_select_folder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="visible" />
+        android:layout_centerInParent="true" />
 </RelativeLayout>
