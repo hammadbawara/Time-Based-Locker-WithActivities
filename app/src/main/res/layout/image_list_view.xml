@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="6dp">
 
     <ImageView
         android:id="@+id/imageView_images_list"
@@ -14,8 +15,9 @@
 
     <ImageView
         android:id="@+id/checkbox_images_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_circular_checkbox_checked" />
+        app:srcCompat="@drawable/ic_check" />
 </RelativeLayout>

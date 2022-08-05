@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -66,6 +65,8 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
         System.out.println("dateNotSetWarning state " + dateNotSetWarning);
 
+        holder.lock_file_title.setText(image.getName());
+
         if (dateNotSetWarning) {
             System.out.println("Date not set warning");
             holder.set_date.setTextColor(Color.RED);
@@ -80,11 +81,14 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     public static class myViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
-        private final Button set_date;
+        private final TextView set_date;
+        private final TextView lock_file_title;
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.lock_file_imageview);
             set_date = itemView.findViewById(R.id.set_date_textView);
+            lock_file_title = itemView.findViewById(R.id.lock_file_title);
+
         }
     }
 

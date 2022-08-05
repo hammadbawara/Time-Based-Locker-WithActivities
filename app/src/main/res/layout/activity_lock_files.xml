@@ -6,18 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".ui.LockFiles.LockFilesActivity">
 
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/custom_button_style"
+        android:text="SET TIME"
+        app:layout_constraintBottom_toBottomOf="@+id/set_date_lock_files"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/set_date_lock_files"
+        app:layout_constraintTop_toTopOf="@+id/set_date_lock_files" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lock_items_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/blue_stroke"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/set_date_all_lock_files"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/set_date_all_lock_files"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
         tools:listitem="@layout/file_for_lock_view" />
 
 
@@ -25,21 +40,49 @@
         android:id="@+id/nextBtn_activity_lock_files"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/round_button_enabled"
-        android:src="@drawable/ic_tick"
+        android:src="@drawable/ic_lock"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/set_date_all_lock_files"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+    <TextView
+        android:id="@+id/set_date_lock_files"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/custom_button_style"
         android:text="Set Date"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_button_style"
+        android:text="All"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

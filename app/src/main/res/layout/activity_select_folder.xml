@@ -23,6 +23,7 @@
         android:layout_marginEnd="5dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
+        android:layoutAnimation="@anim/layout_animation"
         tools:listitem="@layout/folder_view" />
 
     <ProgressBar

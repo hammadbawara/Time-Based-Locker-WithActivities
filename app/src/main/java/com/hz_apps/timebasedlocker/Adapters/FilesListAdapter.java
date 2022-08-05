@@ -142,7 +142,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
     // This function will select item and also set true in filesSelectedState array
     private void selectItem(myViewHolder holder){
         holder.checkBox.setVisibility(View.VISIBLE);
-        holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.blue_opacity_30),
+        holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.black_opacity_25),
                 PorterDuff.Mode.SRC_OVER
         );
         filesSelectedState[holder.getAdapterPosition()] = true;

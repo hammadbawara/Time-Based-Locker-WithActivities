@@ -1,12 +1,14 @@
 package com.hz_apps.timebasedlocker.ui.LockFiles;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
+import com.hz_apps.timebasedlocker.MainActivity;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 
 import java.io.File;
@@ -37,7 +39,7 @@ public class LockFilesActivity extends AppCompatActivity {
         int MONTH = calendar.get(Calendar.MONTH);
         int DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
 
-        binding.setDateAllLockFiles.setOnClickListener(v -> {
+        binding.setDateLockFiles.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
                 LocalDateTime localDateTime = LocalDateTime.of(year, month, dayOfMonth, 0, 0);
                 adapter.setSetDateForAllItems(localDateTime);
@@ -54,10 +56,14 @@ public class LockFilesActivity extends AppCompatActivity {
                     adapter.notifyItemChanged(i);
                 }
             }
+            Intent intent = new Intent(this, MainActivity.class);
+            // clearing all previous activities
+            intent.putExtra("DatesList", localDateTimes);
+            intent.putExtra("selected_files", selectedFiles);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            this.finish();
         });
 
-    }
-
-    private void finishingAllPreviousActivities(){
     }
 }

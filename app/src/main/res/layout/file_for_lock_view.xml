@@ -4,7 +4,8 @@
     android:id="@+id/main_file_for_lock_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:background="@drawable/dark_stroke"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/lock_file_imageview"
@@ -14,32 +15,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/set_date_textView"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/custom_button_style"
-        android:gravity="center"
         android:text="Set Date"
-        app:layout_constraintBottom_toBottomOf="@+id/lock_file_imageview"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintStart_toEndOf="@+id/lock_file_imageview"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="@drawable/custom_button_style"
+        android:text="Set Time"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/textView"
+    <TextView
+        android:id="@+id/lock_file_title"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/custom_button_style"
         android:gravity="center"
-        android:text="Time"
-        app:layout_constraintBottom_toBottomOf="@+id/set_date_textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/set_date_textView"
-        app:layout_constraintTop_toTopOf="@+id/set_date_textView" />
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:text="File Name"
+        app:layout_constraintBottom_toBottomOf="@+id/lock_file_imageview"
+        app:layout_constraintEnd_toStartOf="@+id/set_date_textView"
+        app:layout_constraintStart_toEndOf="@+id/lock_file_imageview"
+        app:layout_constraintTop_toTopOf="@+id/lock_file_imageview" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

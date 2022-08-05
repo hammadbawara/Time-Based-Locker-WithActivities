@@ -55,7 +55,7 @@ public class SelectFilesActivity extends AppCompatActivity {
         adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtnActivitySelectFiles);
         recyclerView.setAdapter(adapter);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/100;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/120;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
 
         // hiding progressbar after doing all tasks
