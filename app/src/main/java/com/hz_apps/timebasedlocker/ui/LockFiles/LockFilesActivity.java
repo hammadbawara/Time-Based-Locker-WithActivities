@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,22 +51,34 @@ public class LockFilesActivity extends AppCompatActivity {
 
 
         binding.nextBtnActivityLockFiles.setOnClickListener(v -> {
-            DateAndTime[] localDateTimes = adapter.getDateAndTimeList();
-            adapter.setDateNotSetWarning(true);
-            for (int i = 0; i < localDateTimes.length; i++) {
-                if (localDateTimes[i] == null) {
-                    adapter.notifyItemChanged(i);
-                }
+            DateAndTime[] dateAndTimeList = adapter.getDateAndTimeList();
+
+            boolean datesChecked = checkAllDatesAreSet(dateAndTimeList);
+            if (datesChecked) {
+                Intent intent = new Intent(this, MainActivity.class);
+                // clearing all previous activities
+                intent.putExtra("DateAndTimeList", dateAndTimeList);
+                intent.putExtra("selected_files", selectedFiles);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                this.finish();
+            } else{
+                Toast.makeText(this, "Please select unlock date for all files", Toast.LENGTH_SHORT).show();
             }
-            Intent intent = new Intent(this, MainActivity.class);
-            // clearing all previous activities
-            intent.putExtra("DatesList", localDateTimes);
-            intent.putExtra("selected_files", selectedFiles);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            this.finish();
         });
 
+    }
+
+    private boolean checkAllDatesAreSet(DateAndTime[] dateAndTimeList) {
+        adapter.setDateNotSetWarning(true);
+        boolean datesChecked = true;
+        for (int i=0; i<dateAndTimeList.length; i++){
+            if (dateAndTimeList[i].getDate() == null){
+                adapter.notifyItemChanged(i);
+                datesChecked = false;
+            }
+        }
+        return datesChecked;
     }
 
     private void SetDateAndTimeOnAllItems() {

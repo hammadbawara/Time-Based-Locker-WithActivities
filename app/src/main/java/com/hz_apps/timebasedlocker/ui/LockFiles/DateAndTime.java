@@ -1,9 +1,10 @@
 package com.hz_apps.timebasedlocker.ui.LockFiles;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class DateAndTime {
+public class DateAndTime implements Serializable {
 
     private LocalDate date;
     private LocalTime time = LocalTime.MIN;

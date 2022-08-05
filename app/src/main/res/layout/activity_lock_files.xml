@@ -13,11 +13,10 @@
         android:layout_height="43dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="13dp"
-        android:background="@drawable/custom_button_style"
+        android:background="@drawable/date_time_button_background"
         android:text="SET TIME"
         app:layout_constraintBottom_toBottomOf="@+id/set_date_lock_activity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/set_date_lock_activity"
         app:layout_constraintTop_toTopOf="@+id/set_date_lock_activity" />
 
@@ -54,7 +53,7 @@
         android:layout_height="43dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="4dp"
-        android:background="@drawable/custom_button_style"
+        android:background="@drawable/date_time_button_background"
         android:text="Set Date"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintEnd_toStartOf="@+id/set_time_lock_activity"
@@ -69,7 +68,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/custom_button_style"
+        android:background="@drawable/date_time_button_background"
         android:text="All"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2" />

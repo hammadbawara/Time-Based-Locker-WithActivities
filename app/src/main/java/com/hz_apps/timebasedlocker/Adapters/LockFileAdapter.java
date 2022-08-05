@@ -1,5 +1,6 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -35,6 +36,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     public DateAndTime[] dateAndTimeList;
     private boolean dateNotSetWarning = false;
     private LocalTime TimeForAllItems;
+    private final int defaultTextViewColor = -16524603;
 
 
     public LockFileAdapter(Context context, ArrayList<File> imagesList) {
@@ -59,22 +61,20 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        if (TimeForAllItems==null && DateForAllItems==null){
-            File image = imagesList.get(position);
-            Glide.with(context).load(image).into(holder.imageView);
-            holder.lock_file_title.setText(image.getName());
-        }
+        File image = imagesList.get(position);
+        Glide.with(context).load(image).into(holder.imageView);
+        holder.lock_file_title.setText(image.getName());
 
         showDatePickerDialog(holder);
 
         if (dateNotSetWarning) {
-            System.out.println("Date not set warning");
             holder.set_date.setTextColor(Color.RED);
         }
 
         // check : if user selected to set date for all items then set date and also save in list
         if (DateForAllItems != null){
             dateAndTimeList[position].setDate(DateForAllItems);
+            holder.set_date.setTextColor(defaultTextViewColor);
             holder.set_date.setText(DateForAllItems.getDayOfMonth() + "-" + getMonthInText(DateForAllItems.getMonthValue()) + "-" + DateForAllItems.getYear());
         }
 
@@ -114,6 +114,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
             datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
                 dateAndTimeList[holder.getAdapterPosition()].setDate(LocalDate.of(year, month, dayOfMonth));
                 holder.set_date.setText(dayOfMonth + "-" + getMonthInText(month) + "-" + year);
+                holder.set_date.setTextColor(defaultTextViewColor);
             }, YEAR, MONTH, DAY_OF_MONTH);
             datePickerDialog.show();
         });
@@ -133,6 +134,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     public void setDateForAllItems(LocalDate localDate){
         TimeForAllItems = null;
+        dateNotSetWarning = false;
         DateForAllItems = localDate;
     }
 
@@ -142,6 +144,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     public void setTimeForAllItems(LocalTime timeForAllItems) {
         this.DateForAllItems = null;
+        dateNotSetWarning = false;
         TimeForAllItems = timeForAllItems;
     }
 
