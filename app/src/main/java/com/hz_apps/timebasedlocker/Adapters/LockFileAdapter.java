@@ -1,6 +1,5 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -28,25 +27,31 @@ import java.util.Calendar;
 public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myViewHolder>{
 
     private final Context context;
+    // List of images that will shown to user
     private final ArrayList<File> imagesList;
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
     private final int YEAR, MONTH, DAY_OF_MONTH;
     private LocalDate DateForAllItems;
+    // This is the array in which all dates will store that user select
     public DateAndTime[] dateAndTimeList;
+    // If this true then it will set button red to show warning that date is not selelcted
     private boolean dateNotSetWarning = false;
     private LocalTime TimeForAllItems;
+    // This is the default colo of TextView of "Select Date".
     private final int defaultTextViewColor = -16524603;
+    Calendar calendar;
 
 
     public LockFileAdapter(Context context, ArrayList<File> imagesList) {
         this.context = context;
         this.imagesList = imagesList;
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         YEAR = calendar.get(Calendar.YEAR);
         MONTH = calendar.get(Calendar.MONTH);
         DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
         this.dateAndTimeList = new DateAndTime[imagesList.size()];
+        // Initializing all items in dateAndTimeList. So we do not get null Pointer exception.
         for (int i=0; i<imagesList.size(); i++){
             dateAndTimeList[i] = new DateAndTime();
         }
@@ -67,11 +72,12 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
         showDatePickerDialog(holder);
 
+        // If user not selected date for item then button get red to show warning
         if (dateNotSetWarning) {
             holder.set_date.setTextColor(Color.RED);
         }
 
-        // check : if user selected to set date for all items then set date and also save in list
+
         if (DateForAllItems != null){
             dateAndTimeList[position].setDate(DateForAllItems);
             holder.set_date.setTextColor(defaultTextViewColor);
@@ -112,10 +118,14 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         // show date picker dialog on click of set date text view
         holder.set_date.setOnClickListener(v ->{
             datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
+                // storing date in dateAndTimeList
                 dateAndTimeList[holder.getAdapterPosition()].setDate(LocalDate.of(year, month, dayOfMonth));
+                // setting date in textView
                 holder.set_date.setText(dayOfMonth + "-" + getMonthInText(month) + "-" + year);
+                // setting color of textView to default. Because color of textView can be red.
                 holder.set_date.setTextColor(defaultTextViewColor);
             }, YEAR, MONTH, DAY_OF_MONTH);
+            datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
             datePickerDialog.show();
         });
     }
@@ -125,7 +135,9 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // storing time in dateAndTimeList
                 dateAndTimeList[holder.getAdapterPosition()].setTime(LocalTime.of(hourOfDay, minute));
+                // setting time in textView
                 holder.set_time.setText(hourOfDay + " : " + minute);
             }
         },12, 0, true );

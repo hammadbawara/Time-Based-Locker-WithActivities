@@ -21,9 +21,9 @@
         android:layout_below="@id/materialToolbar"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
+        android:layoutAnimation="@anim/layout_animation"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        android:layoutAnimation="@anim/layout_animation"
         tools:listitem="@layout/folder_view" />
 
     <ProgressBar
@@ -31,4 +31,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/files_not_found_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="24dp"
+        android:text="You have not this types of files in your device"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:visibility="gone" />
 </RelativeLayout>

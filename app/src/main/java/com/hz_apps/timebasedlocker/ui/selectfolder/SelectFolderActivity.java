@@ -54,7 +54,18 @@ public class SelectFolderActivity extends AppCompatActivity {
             String path = "/storage/emulated/0/";
 
             // extension tells which types of files we are looking
-            String[] extensions = FilesExtensions.imagesExtensions;
+            String[] extensions;
+            int typesOfFiles = getIntent().getIntExtra("Type_Of_Files", -1);
+            switch (typesOfFiles){
+                case 0:
+                    extensions = FilesExtensions.videosExtensions;
+                    break;
+                case 1:
+                    extensions = FilesExtensions.imagesExtensions;
+                    break;
+                default:
+                    extensions = new String[]{""};
+            }
 
             // Getting folders list containing images
             FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions,
@@ -64,6 +75,13 @@ public class SelectFolderActivity extends AppCompatActivity {
     }
 
     private void showItemsInRecyclerView(){
+        // check if folderList is zero then set message
+        if (mViewModel.getFoldersList().size() == 0){
+            binding.filesNotFoundTextView.setVisibility(View.VISIBLE);
+            // hiding progressbar when all tasks completes
+            binding.progressBarSelectFolder.setVisibility(View.GONE);
+            return;
+        }
         // Setting items in recyclerView
         FolderListAdapter adapter = new FolderListAdapter(this, mViewModel.getFoldersList());
         binding.selectFolderRecyclerView.setAdapter(adapter);

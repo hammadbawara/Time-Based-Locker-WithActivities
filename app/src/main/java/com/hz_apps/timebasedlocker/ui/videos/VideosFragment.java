@@ -30,7 +30,9 @@ public class VideosFragment extends Fragment {
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         textView.setOnClickListener(view -> {
-            startActivity(new Intent(requireActivity(), SelectFolderActivity.class));
+            Intent intent = new Intent(requireActivity(), SelectFolderActivity.class);
+            intent.putExtra("Type_Of_Files", 0);
+            startActivity(intent);
         });
         return root;
     }
