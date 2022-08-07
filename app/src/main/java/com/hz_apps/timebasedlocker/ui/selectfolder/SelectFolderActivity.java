@@ -23,6 +23,7 @@ public class SelectFolderActivity extends AppCompatActivity {
 
     ActivitySelectFolderBinding binding;
     private SelectFolderViewModel mViewModel;
+    private int TypesOfFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,8 @@ public class SelectFolderActivity extends AppCompatActivity {
 
             // extension tells which types of files we are looking
             String[] extensions;
-            int typesOfFiles = getIntent().getIntExtra("Type_Of_Files", -1);
-            switch (typesOfFiles){
+            TypesOfFiles = getIntent().getIntExtra("Type_Of_Files", -1);
+            switch (TypesOfFiles){
                 case 0:
                     extensions = FilesExtensions.videosExtensions;
                     break;
@@ -83,7 +84,7 @@ public class SelectFolderActivity extends AppCompatActivity {
             return;
         }
         // Setting items in recyclerView
-        FolderListAdapter adapter = new FolderListAdapter(this, mViewModel.getFoldersList());
+        FolderListAdapter adapter = new FolderListAdapter(this, mViewModel.getFoldersList(), TypesOfFiles);
         binding.selectFolderRecyclerView.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

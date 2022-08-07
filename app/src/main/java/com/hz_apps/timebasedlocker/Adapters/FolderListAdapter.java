@@ -22,10 +22,12 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
 
     private final Context context;
     private final ArrayList<Folder> foldersList;
+    private final int TypesOfFiles;
 
-    public FolderListAdapter(Context context, ArrayList<Folder> foldersList) {
+    public FolderListAdapter(Context context, ArrayList<Folder> foldersList, int TypesOfFiles) {
         this.context = context;
         this.foldersList = foldersList;
+        this.TypesOfFiles = TypesOfFiles;
     }
 
 
@@ -45,6 +47,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SelectFilesActivity.class);
+            intent.putExtra("TypesOfFiles", TypesOfFiles);
             intent.putExtra("folder", folder);
             context.startActivity(intent);
         });

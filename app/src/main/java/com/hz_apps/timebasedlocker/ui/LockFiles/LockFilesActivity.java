@@ -28,6 +28,7 @@ public class LockFilesActivity extends AppCompatActivity {
     TimePickerDialog timePickerDialog;
     int YEAR, MONTH, DAY_OF_MONTH;
     Calendar calendar;
+    ArrayList<File> selectedFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class LockFilesActivity extends AppCompatActivity {
         binding = ActivityLockFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ArrayList<File> selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
+        selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
 
         adapter = new LockFileAdapter(this, selectedFiles);
 
@@ -55,7 +56,9 @@ public class LockFilesActivity extends AppCompatActivity {
             DateAndTime[] dateAndTimeList = adapter.getDateAndTimeList();
 
             boolean datesChecked = checkAllDatesAreSet(dateAndTimeList);
+
             if (datesChecked) {
+                moveFilesIntoSafe(dateAndTimeList);
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -65,6 +68,10 @@ public class LockFilesActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void moveFilesIntoSafe(DateAndTime[] dateAndTimeList) {
+        
     }
 
     private boolean checkAllDatesAreSet(DateAndTime[] dateAndTimeList) {

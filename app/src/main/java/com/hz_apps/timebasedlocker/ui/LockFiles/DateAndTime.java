@@ -15,7 +15,7 @@ public class DateAndTime implements Serializable {
 
     }
 
-    public DateAndTime(LocalDate date, LocalTime time){
+    public DateAndTime(@NonNull LocalDate date, @NonNull LocalTime time){
         this.date = date;
         this.time = time;
     }

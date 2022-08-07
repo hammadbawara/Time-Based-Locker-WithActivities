@@ -89,7 +89,17 @@ public class SelectFilesActivity extends AppCompatActivity {
 
     private void getFiles(){
         Folder folder = (Folder) getIntent().getSerializableExtra("folder");
-        String[] extensions = FilesExtensions.imagesExtensions;
+        String[] extensions = new String[] {""};
+        switch (getIntent().getIntExtra("TypesOfFiles", -1)){
+            case 0:
+                extensions = FilesExtensions.videosExtensions;
+                break;
+            case 1:
+                extensions = FilesExtensions.imagesExtensions;
+                break;
+
+        }
+
         File[] filesList = folder.listFiles();
         for (File file : filesList){
             for (String extension : extensions){
