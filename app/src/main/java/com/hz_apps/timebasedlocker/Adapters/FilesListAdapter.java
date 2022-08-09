@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity;
+import com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles.SelectFilesActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
            }else{
                Intent intent = new Intent(context, LockFilesActivity.class);
                intent.putExtra("selected_files", getAllSelectedFiles());
+               intent.putExtra("TYPES_OF_FILES", SelectFilesActivity.TYPES_OF_FILES);
                context.startActivity(intent);
             }
         });

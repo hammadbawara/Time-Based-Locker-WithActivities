@@ -26,6 +26,7 @@ public class SelectFilesActivity extends AppCompatActivity {
     private ActivitySelectFilesBinding binding;
     private SelectFilesViewModel mViewModel;
     FilesListAdapter adapter;
+    public static int TYPES_OF_FILES;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class SelectFilesActivity extends AppCompatActivity {
         binding = ActivitySelectFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+
+        TYPES_OF_FILES = getIntent().getIntExtra("TypesOfFiles", -1);
 
         mViewModel = new ViewModelProvider(this).get(SelectFilesViewModel.class);
         runBackground();
@@ -89,7 +92,17 @@ public class SelectFilesActivity extends AppCompatActivity {
 
     private void getFiles(){
         Folder folder = (Folder) getIntent().getSerializableExtra("folder");
-        String[] extensions = FilesExtensions.imagesExtensions;
+        String[] extensions = new String[] {""};
+        switch (TYPES_OF_FILES){
+            case 0:
+                extensions = FilesExtensions.videosExtensions;
+                break;
+            case 1:
+                extensions = FilesExtensions.imagesExtensions;
+                break;
+
+        }
+
         File[] filesList = folder.listFiles();
         for (File file : filesList){
             for (String extension : extensions){

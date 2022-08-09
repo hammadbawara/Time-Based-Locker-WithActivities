@@ -4,16 +4,21 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
+
 public class PhotosViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private LiveData<SavedPhoto> savedPhotosList;
 
     public PhotosViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        savedPhotosList = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<SavedPhoto> getSavedPhotosList() {
+        return savedPhotosList;
+    }
+
+    public void setSavedPhotosList(LiveData<SavedPhoto> savedPhotosList) {
+        this.savedPhotosList = savedPhotosList;
     }
 }

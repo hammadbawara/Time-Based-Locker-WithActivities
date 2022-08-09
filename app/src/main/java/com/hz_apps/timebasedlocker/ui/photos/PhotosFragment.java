@@ -26,14 +26,6 @@ public class PhotosFragment extends Fragment {
         binding = FragmentPhotosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.textDashboard.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), SelectFolderActivity.class);
-            intent.putExtra("Type_Of_Files", 1);
-            startActivity(intent);
-        });
-
-        final TextView textView = binding.textDashboard;
-        photosViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
+import com.hz_apps.timebasedlocker.Datebase.DBRecord;
+import com.hz_apps.timebasedlocker.Datebase.DBRepository;
+import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
+import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
 import com.hz_apps.timebasedlocker.MainActivity;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 
@@ -26,27 +30,26 @@ public class LockFilesActivity extends AppCompatActivity {
     LockFileAdapter adapter;
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
-    int YEAR, MONTH, DAY_OF_MONTH;
+    int YEAR, MONTH, DAY_OF_MONTH, HOUR, MINUTE;
     Calendar calendar;
+    ArrayList<File> selectedFiles;
+    int TYPES_OF_FILES;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLockFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        updateTime();
 
-        ArrayList<File> selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
+        selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
+        TYPES_OF_FILES = getIntent().getIntExtra("TYPES_OF_FILES", -1);
 
         adapter = new LockFileAdapter(this, selectedFiles);
 
 
         binding.lockItemsRecyclerview.setAdapter(adapter);
         binding.lockItemsRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-
-        calendar = Calendar.getInstance();
-        YEAR = calendar.get(Calendar.YEAR);
-        MONTH = calendar.get(Calendar.MONTH);
-        DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
 
         SetDateAndTimeOnAllItems();
 
@@ -55,7 +58,9 @@ public class LockFilesActivity extends AppCompatActivity {
             DateAndTime[] dateAndTimeList = adapter.getDateAndTimeList();
 
             boolean datesChecked = checkAllDatesAreSet(dateAndTimeList);
+
             if (datesChecked) {
+                moveFilesIntoSafe(dateAndTimeList);
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -65,6 +70,67 @@ public class LockFilesActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void moveFilesIntoSafe(DateAndTime[] dateAndTimeList) {
+        DBRepository db = new DBRepository(getApplication());
+        int last_video_key = 0;
+        try {
+            last_video_key = db.getDBRecord(DBRecord.LAST_VIDEO_ID).getValue();
+        }catch (Exception ignored){};
+
+        updateTime();
+        DateAndTime lockDateAndTime = new DateAndTime(LocalDate.of(YEAR, MONTH, DAY_OF_MONTH),
+                LocalTime.of(HOUR, MINUTE));
+
+        for (int i=0; i<selectedFiles.size(); i++){
+            File source = selectedFiles.get(i);
+            //moveFile(source, new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key) );
+            //moveFile(source, new File("/storage/emulated/0/" + last_video_key + ".jpg") );
+            boolean result = source.renameTo(new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key));
+            System.out.println(result);
+            last_video_key += 1;
+
+            switch (TYPES_OF_FILES){
+                case 0:
+                    SavedVideo video = new SavedVideo(source.getPath(),
+                            source.getName(), true,
+                            true, true,
+                            dateAndTimeList[i], lockDateAndTime, 0);
+                    new Thread(() -> db.insertVideo(video)).start();
+                    break;
+                case 1:
+                    SavedPhoto photo = new SavedPhoto(source.getPath(), source.getName(),
+                            true, true, true,
+                            dateAndTimeList[i], lockDateAndTime, 0);
+                    new Thread(() -> db.insertPhoto(photo)).start();
+                    break;
+            }
+        }
+    }
+
+    /*
+     * This function is used to move file from one directory to other.
+     * Technique for moving files is simple just rename files path to desired directory.
+     */
+    private boolean moveFile(File source, File destination) {
+        boolean isDirectoryMade = false;
+
+        if (!destination.getParentFile().isDirectory()){
+            File parent = destination.getParentFile();
+            System.out.println("Parent: " + parent.getAbsolutePath());
+            isDirectoryMade = parent.mkdirs();
+            System.out.println("isDirectoryMade: " + isDirectoryMade);
+        }
+
+        boolean isFileRenamed = source.renameTo(destination);
+
+
+        System.out.println("destination: " + destination.getAbsolutePath());
+
+        System.out.println("isFileRenamed: " + isFileRenamed);
+
+        return isDirectoryMade && isFileRenamed;
     }
 
     private boolean checkAllDatesAreSet(DateAndTime[] dateAndTimeList) {
@@ -104,5 +170,14 @@ public class LockFilesActivity extends AppCompatActivity {
             }, 0, 0, true);
             timePickerDialog.show();
         });
+    }
+
+    private void updateTime(){
+        calendar = Calendar.getInstance();
+        YEAR = calendar.get(Calendar.YEAR);
+        MONTH = calendar.get(Calendar.MONTH);
+        DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
+        HOUR = calendar.get(Calendar.HOUR);
+        MINUTE = calendar.get(Calendar.MINUTE);
     }
 }
