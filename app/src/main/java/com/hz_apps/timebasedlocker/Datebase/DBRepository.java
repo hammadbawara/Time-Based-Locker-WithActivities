@@ -28,6 +28,10 @@ public class DBRepository {
         dbDao.insertPhoto(photo);
     }
 
+    public void updateDBRecord(DBRecord record){
+        dbDao.updateDBRecord(record);
+    }
+
     public DBRecord getDBRecord(int key){
         return dbDao.getDBRecord(key);
     }

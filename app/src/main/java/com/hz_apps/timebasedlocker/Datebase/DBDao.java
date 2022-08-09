@@ -29,4 +29,7 @@ public interface DBDao {
 
     @Insert
     void insertPhoto(SavedPhoto photo);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateDBRecord(DBRecord record);
 }

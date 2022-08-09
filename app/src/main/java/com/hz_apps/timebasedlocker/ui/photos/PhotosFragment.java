@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,6 +24,14 @@ public class PhotosFragment extends Fragment {
 
         binding = FragmentPhotosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        binding.button.setOnClickListener((v) -> {
+            Intent intent = new Intent(requireActivity(), SelectFolderActivity.class);
+            intent.putExtra("Type_Of_Files", 1);
+            startActivity(intent);
+        });
+
+
 
         return root;
     }

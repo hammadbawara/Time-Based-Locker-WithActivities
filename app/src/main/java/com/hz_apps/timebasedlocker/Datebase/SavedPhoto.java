@@ -3,9 +3,10 @@ package com.hz_apps.timebasedlocker.Datebase;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
-
+@TypeConverters(Converters.class)
 @Entity(tableName = "saved_photos_list")
 public class SavedPhoto {
     @PrimaryKey(autoGenerate = true)
