@@ -6,12 +6,22 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "DBRecord")
 public class DBRecord {
 
-    public static final int LAST_VIDEO_ID = 1;
+    public static final int LAST_SAVED_VIDEO_KEY = 1;
+    public static final int LAST_SAVED_PHOTO_KEY = 2;
 
     @PrimaryKey
     int id;
 
     int value;
+
+    public DBRecord(int id, int value) {
+        this.id = id;
+        this.value = value;
+    }
+
+    public DBRecord(){
+
+    }
 
     public int getId() {
         return id;

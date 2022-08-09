@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {SavedVideo.class, DBRecord.class}, version = 1)
+@Database(entities = {SavedVideo.class, DBRecord.class, SavedPhoto.class}, version = 4)
 public abstract class RoomDB extends RoomDatabase {
 
     abstract DBDao dbDao();
@@ -27,6 +27,7 @@ public abstract class RoomDB extends RoomDatabase {
                                     RoomDB.class, "locked_files.db")
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallBack)
+                            .allowMainThreadQueries()
                             .build();
             }
         }

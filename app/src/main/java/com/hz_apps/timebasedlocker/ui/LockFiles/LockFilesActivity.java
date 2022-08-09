@@ -19,6 +19,9 @@ import com.hz_apps.timebasedlocker.MainActivity;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -34,6 +37,9 @@ public class LockFilesActivity extends AppCompatActivity {
     Calendar calendar;
     ArrayList<File> selectedFiles;
     int TYPES_OF_FILES;
+    private DBRepository db;
+    private String destinationFolder;
+    int last_id = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,23 +79,19 @@ public class LockFilesActivity extends AppCompatActivity {
     }
 
     private void moveFilesIntoSafe(DateAndTime[] dateAndTimeList) {
-        DBRepository db = new DBRepository(getApplication());
-        int last_video_key = 0;
-        try {
-            last_video_key = db.getDBRecord(DBRecord.LAST_VIDEO_ID).getValue();
-        }catch (Exception ignored){};
+        db = new DBRepository(getApplication());
 
         updateTime();
+        updateValuesAccordingToFile();
+
         DateAndTime lockDateAndTime = new DateAndTime(LocalDate.of(YEAR, MONTH, DAY_OF_MONTH),
                 LocalTime.of(HOUR, MINUTE));
 
         for (int i=0; i<selectedFiles.size(); i++){
+
             File source = selectedFiles.get(i);
-            //moveFile(source, new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key) );
-            //moveFile(source, new File("/storage/emulated/0/" + last_video_key + ".jpg") );
-            boolean result = source.renameTo(new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key));
-            System.out.println(result);
-            last_video_key += 1;
+            moveFile(source, new File(destinationFolder + last_id) );
+            last_id += 1;
 
             switch (TYPES_OF_FILES){
                 case 0:
@@ -106,31 +108,51 @@ public class LockFilesActivity extends AppCompatActivity {
                     new Thread(() -> db.insertPhoto(photo)).start();
                     break;
             }
+            updateLastIdInDatabase();
         }
     }
 
     /*
      * This function is used to move file from one directory to other.
-     * Technique for moving files is simple just rename files path to desired directory.
+     * I tried to use source.renameTo(dest) but android does not allow to move file from
+     * internal storage to app directory so I am copying files from internal storage and then delete that file
      */
-    private boolean moveFile(File source, File destination) {
-        boolean isDirectoryMade = false;
-
+    boolean moveFile(File source, File destination) {
         if (!destination.getParentFile().isDirectory()){
             File parent = destination.getParentFile();
-            System.out.println("Parent: " + parent.getAbsolutePath());
-            isDirectoryMade = parent.mkdirs();
-            System.out.println("isDirectoryMade: " + isDirectoryMade);
+            parent.mkdirs();
         }
 
-        boolean isFileRenamed = source.renameTo(destination);
+        // Copying file
+        boolean isFileCopied = false;
+        byte[] buffer = new byte[1024];
+        int length;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(source);
+            FileOutputStream fileOutputStream = new FileOutputStream(destination);
+            while ((length = fileInputStream.read(buffer)) > 0) {
+                fileOutputStream.write(buffer, 0, length);
+            }
+            fileInputStream.close();
+            fileOutputStream.close();
+            isFileCopied = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        System.out.println("Destination Path " + destination.getAbsolutePath());
 
-        System.out.println("destination: " + destination.getAbsolutePath());
+        System.out.println("File Copied Status: " + isFileCopied);
+        boolean isFileDeleted = false;
 
-        System.out.println("isFileRenamed: " + isFileRenamed);
+        // Deleting file
+        if (isFileCopied){
+            isFileDeleted = source.delete();
+        }
 
-        return isDirectoryMade && isFileRenamed;
+        System.out.println("File Deleted Status: " + isFileDeleted);
+
+        return isFileCopied && isFileDeleted;
     }
 
     private boolean checkAllDatesAreSet(DateAndTime[] dateAndTimeList) {
@@ -179,5 +201,32 @@ public class LockFilesActivity extends AppCompatActivity {
         DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
         HOUR = calendar.get(Calendar.HOUR);
         MINUTE = calendar.get(Calendar.MINUTE);
+    }
+
+    /*
+     * This function updates necessary values
+     */
+    private void updateValuesAccordingToFile(){
+        switch (TYPES_OF_FILES){
+            case 0:
+                try {last_id = db.getDBRecord(DBRecord.LAST_SAVED_VIDEO_KEY).getValue();}
+                catch (Exception ignored){};
+                destinationFolder = "/data/data/" + this.getPackageName() + "/videos/";
+            case 1:
+                try {last_id = db.getDBRecord(DBRecord.LAST_SAVED_PHOTO_KEY).getValue();}
+                catch (Exception ignored){};
+                destinationFolder = "/data/data/" + this.getPackageName() + "/photos/";
+        }
+    }
+
+    private void updateLastIdInDatabase(){
+        switch (TYPES_OF_FILES){
+            case 0:
+                db.updateDBRecord(new DBRecord(DBRecord.LAST_SAVED_VIDEO_KEY, last_id));
+                break;
+            case 1:
+                db.updateDBRecord(new DBRecord(DBRecord.LAST_SAVED_PHOTO_KEY, last_id));
+                break;
+        }
     }
 }
