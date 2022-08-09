@@ -81,7 +81,10 @@ public class LockFilesActivity extends AppCompatActivity {
 
         for (int i=0; i<selectedFiles.size(); i++){
             File source = selectedFiles.get(i);
-            moveFile(source, new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key) );
+            //moveFile(source, new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key) );
+            //moveFile(source, new File("/storage/emulated/0/" + last_video_key + ".jpg") );
+            boolean result = source.renameTo(new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key));
+            System.out.println(result);
             last_video_key += 1;
             SavedVideo video = new SavedVideo(source.getPath(),
                     source.getName(), true,
@@ -108,6 +111,7 @@ public class LockFilesActivity extends AppCompatActivity {
         }
 
         boolean isFileRenamed = source.renameTo(destination);
+
 
         System.out.println("destination: " + destination.getAbsolutePath());
 
