@@ -6,19 +6,21 @@ import androidx.lifecycle.ViewModel;
 
 import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 
+import java.util.List;
+
 public class PhotosViewModel extends ViewModel {
 
-    private LiveData<SavedPhoto> savedPhotosList;
+    private LiveData<List<SavedPhoto>> savedPhotosList;
 
     public PhotosViewModel() {
         savedPhotosList = new MutableLiveData<>();
     }
 
-    public LiveData<SavedPhoto> getSavedPhotosList() {
+    public LiveData<List<SavedPhoto>> getSavedPhotosList() {
         return savedPhotosList;
     }
 
-    public void setSavedPhotosList(LiveData<SavedPhoto> savedPhotosList) {
+    public void setSavedPhotosList(LiveData<List<SavedPhoto>> savedPhotosList) {
         this.savedPhotosList = savedPhotosList;
     }
 }

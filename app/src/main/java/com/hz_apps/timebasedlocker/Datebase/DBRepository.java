@@ -20,6 +20,10 @@ public class DBRepository {
         }
     }
 
+    public LiveData<List<SavedPhoto>> getAllSavedPhotos(int folder){
+        return dbDao.getAllSavedPhotos(folder);
+    }
+
     public void insertVideo(SavedVideo video){
         dbDao.insertVideo(video);
     }

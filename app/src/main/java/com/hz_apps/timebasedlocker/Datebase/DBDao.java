@@ -35,4 +35,7 @@ public interface DBDao {
 
     @Insert
     void insertDBRecord(DBRecord dbRecord);
+
+    @Query("SELECT * FROM saved_photos_list WHERE folder = :folder")
+    LiveData<List<SavedPhoto>> getAllSavedPhotos(int folder);
 }
