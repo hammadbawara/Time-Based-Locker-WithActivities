@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBRecord;
 import com.hz_apps.timebasedlocker.Datebase.DBRepository;
+import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
 import com.hz_apps.timebasedlocker.MainActivity;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
@@ -32,6 +33,7 @@ public class LockFilesActivity extends AppCompatActivity {
     int YEAR, MONTH, DAY_OF_MONTH, HOUR, MINUTE;
     Calendar calendar;
     ArrayList<File> selectedFiles;
+    int TYPES_OF_FILES;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,9 @@ public class LockFilesActivity extends AppCompatActivity {
         binding = ActivityLockFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         updateTime();
+
         selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
+        TYPES_OF_FILES = getIntent().getIntExtra("TYPES_OF_FILES", -1);
 
         adapter = new LockFileAdapter(this, selectedFiles);
 
@@ -86,13 +90,22 @@ public class LockFilesActivity extends AppCompatActivity {
             boolean result = source.renameTo(new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key));
             System.out.println(result);
             last_video_key += 1;
-            SavedVideo video = new SavedVideo(source.getPath(),
-                    source.getName(), true,
-                    true, true,
-                    dateAndTimeList[i], lockDateAndTime, 0);
-            new Thread(() ->{
-                db.insertVideo(video);
-            }).start();
+
+            switch (TYPES_OF_FILES){
+                case 0:
+                    SavedVideo video = new SavedVideo(source.getPath(),
+                            source.getName(), true,
+                            true, true,
+                            dateAndTimeList[i], lockDateAndTime, 0);
+                    new Thread(() -> db.insertVideo(video)).start();
+                    break;
+                case 1:
+                    SavedPhoto photo = new SavedPhoto(source.getPath(), source.getName(),
+                            true, true, true,
+                            dateAndTimeList[i], lockDateAndTime, 0);
+                    new Thread(() -> db.insertPhoto(photo)).start();
+                    break;
+            }
         }
     }
 

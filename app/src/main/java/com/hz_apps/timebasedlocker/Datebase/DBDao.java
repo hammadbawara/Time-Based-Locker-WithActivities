@@ -26,4 +26,7 @@ public interface DBDao {
 
     @Query("SELECT * FROM dbrecord WHERE `id` = :key")
     DBRecord getDBRecord(int key);
+
+    @Insert
+    void insertPhoto(SavedPhoto photo);
 }

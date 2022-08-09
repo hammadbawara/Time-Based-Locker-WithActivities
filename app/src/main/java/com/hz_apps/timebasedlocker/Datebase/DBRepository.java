@@ -24,6 +24,10 @@ public class DBRepository {
         dbDao.insertVideo(video);
     }
 
+    public void insertPhoto(SavedPhoto photo){
+        dbDao.insertPhoto(photo);
+    }
+
     public DBRecord getDBRecord(int key){
         return dbDao.getDBRecord(key);
     }

@@ -12,32 +12,37 @@ import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 public class SavedVideo {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull private int id;
-    @NonNull private String videoPath;
-    @NonNull private String videoName;
-    @NonNull private boolean isAllowedToEditDateAndTime;
-    @NonNull private boolean isAllowedToSeeMetaData;
-    @NonNull private boolean isAllowedToSeeVideoThumbnail;
+    private int id;
+    private String videoPath;
+    private String videoTitle;
+    private boolean isAllowedToEditDateAndTime;
+    private boolean isAllowedToSeeTitle;
+    private boolean isAllowedToSeeVideoThumbnail;
     @NonNull private DateAndTime unlockDateAndTime;
     @NonNull private DateAndTime lockDateAndTime;
-    @NonNull private int folder_address;
+    /*
+     * Folder is int because it store the position.
+     * If folder=1 mean files belong to folder that have id=1;
+     * folder=0 mean home directory
+     */
+    private int folder=0;
 
-    public SavedVideo(@NonNull String videoPath, @NonNull String videoName, boolean isAllowedToEditDateAndTime, boolean isAllowedToSeeMetaData, boolean isAllowedToSeeVideoThumbnail, @NonNull DateAndTime unlockDateAndTime, @NonNull DateAndTime lockDateAndTime, int folder_address) {
+    public SavedVideo(String videoPath, String videoTitle, boolean isAllowedToEditDateAndTime, boolean isAllowedToSeeTitle, boolean isAllowedToSeeVideoThumbnail, @NonNull DateAndTime unlockDateAndTime, @NonNull DateAndTime lockDateAndTime, int folder) {
         this.videoPath = videoPath;
-        this.videoName = videoName;
+        this.videoTitle = videoTitle;
         this.isAllowedToEditDateAndTime = isAllowedToEditDateAndTime;
-        this.isAllowedToSeeMetaData = isAllowedToSeeMetaData;
+        this.isAllowedToSeeTitle = isAllowedToSeeTitle;
         this.isAllowedToSeeVideoThumbnail = isAllowedToSeeVideoThumbnail;
         this.unlockDateAndTime = unlockDateAndTime;
         this.lockDateAndTime = lockDateAndTime;
-        this.folder_address = folder_address;
+        this.folder = folder;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -49,14 +54,13 @@ public class SavedVideo {
         this.videoPath = videoPath;
     }
 
-    public String getVideoName() {
-        return videoName;
+    public String getVideoTitle() {
+        return videoTitle;
     }
 
-    public void setVideoName(String videoName) {
-        this.videoName = videoName;
+    public void setVideoTitle(String videoTitle) {
+        this.videoTitle = videoTitle;
     }
-
 
     public boolean isAllowedToEditDateAndTime() {
         return isAllowedToEditDateAndTime;
@@ -66,12 +70,12 @@ public class SavedVideo {
         isAllowedToEditDateAndTime = allowedToEditDateAndTime;
     }
 
-    public boolean isAllowedToSeeMetaData() {
-        return isAllowedToSeeMetaData;
+    public boolean isAllowedToSeeTitle() {
+        return isAllowedToSeeTitle;
     }
 
-    public void setAllowedToSeeMetaData(boolean allowedToSeeMetaData) {
-        isAllowedToSeeMetaData = allowedToSeeMetaData;
+    public void setAllowedToSeeTitle(boolean allowedToSeeTitle) {
+        isAllowedToSeeTitle = allowedToSeeTitle;
     }
 
     public boolean isAllowedToSeeVideoThumbnail() {
@@ -82,27 +86,29 @@ public class SavedVideo {
         isAllowedToSeeVideoThumbnail = allowedToSeeVideoThumbnail;
     }
 
+    @NonNull
     public DateAndTime getUnlockDateAndTime() {
         return unlockDateAndTime;
     }
 
-    public void setUnlockDateAndTime(DateAndTime unlockDateAndTime) {
+    public void setUnlockDateAndTime(@NonNull DateAndTime unlockDateAndTime) {
         this.unlockDateAndTime = unlockDateAndTime;
     }
 
+    @NonNull
     public DateAndTime getLockDateAndTime() {
         return lockDateAndTime;
     }
 
-    public void setLockDateAndTime(DateAndTime lockDateAndTime) {
+    public void setLockDateAndTime(@NonNull DateAndTime lockDateAndTime) {
         this.lockDateAndTime = lockDateAndTime;
     }
 
-    public int getFolder_address() {
-        return folder_address;
+    public int getFolder() {
+        return folder;
     }
 
-    public void setFolder_address(int folder_address) {
-        this.folder_address = folder_address;
+    public void setFolder(int folder) {
+        this.folder = folder;
     }
 }
