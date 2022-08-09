@@ -32,4 +32,7 @@ public interface DBDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateDBRecord(DBRecord record);
+
+    @Insert
+    void insertDBRecord(DBRecord dbRecord);
 }
