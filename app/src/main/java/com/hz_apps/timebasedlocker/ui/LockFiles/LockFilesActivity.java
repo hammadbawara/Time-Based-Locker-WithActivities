@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
+import com.hz_apps.timebasedlocker.Datebase.DBRecord;
+import com.hz_apps.timebasedlocker.Datebase.DBRepository;
+import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
 import com.hz_apps.timebasedlocker.MainActivity;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 
@@ -26,7 +29,7 @@ public class LockFilesActivity extends AppCompatActivity {
     LockFileAdapter adapter;
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
-    int YEAR, MONTH, DAY_OF_MONTH;
+    int YEAR, MONTH, DAY_OF_MONTH, HOUR, MINUTE;
     Calendar calendar;
     ArrayList<File> selectedFiles;
 
@@ -35,7 +38,7 @@ public class LockFilesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLockFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        updateTime();
         selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
 
         adapter = new LockFileAdapter(this, selectedFiles);
@@ -43,11 +46,6 @@ public class LockFilesActivity extends AppCompatActivity {
 
         binding.lockItemsRecyclerview.setAdapter(adapter);
         binding.lockItemsRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-
-        calendar = Calendar.getInstance();
-        YEAR = calendar.get(Calendar.YEAR);
-        MONTH = calendar.get(Calendar.MONTH);
-        DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
 
         SetDateAndTimeOnAllItems();
 
@@ -71,7 +69,51 @@ public class LockFilesActivity extends AppCompatActivity {
     }
 
     private void moveFilesIntoSafe(DateAndTime[] dateAndTimeList) {
-        
+        DBRepository db = new DBRepository(getApplication());
+        int last_video_key = 0;
+        try {
+            last_video_key = db.getDBRecord(DBRecord.LAST_VIDEO_ID).getValue();
+        }catch (Exception ignored){};
+
+        updateTime();
+        DateAndTime lockDateAndTime = new DateAndTime(LocalDate.of(YEAR, MONTH, DAY_OF_MONTH),
+                LocalTime.of(HOUR, MINUTE));
+
+        for (int i=0; i<selectedFiles.size(); i++){
+            File source = selectedFiles.get(i);
+            moveFile(source, new File("data/data/" + this.getPackageName() + "/files/videos/" + last_video_key) );
+            last_video_key += 1;
+            SavedVideo video = new SavedVideo(source.getPath(),
+                    source.getName(), true,
+                    true, true,
+                    dateAndTimeList[i], lockDateAndTime, 0);
+            new Thread(() ->{
+                db.insertVideo(video);
+            }).start();
+        }
+    }
+
+    /*
+     * This function is used to move file from one directory to other.
+     * Technique for moving files is simple just rename files path to desired directory.
+     */
+    private boolean moveFile(File source, File destination) {
+        boolean isDirectoryMade = false;
+
+        if (!destination.getParentFile().isDirectory()){
+            File parent = destination.getParentFile();
+            System.out.println("Parent: " + parent.getAbsolutePath());
+            isDirectoryMade = parent.mkdirs();
+            System.out.println("isDirectoryMade: " + isDirectoryMade);
+        }
+
+        boolean isFileRenamed = source.renameTo(destination);
+
+        System.out.println("destination: " + destination.getAbsolutePath());
+
+        System.out.println("isFileRenamed: " + isFileRenamed);
+
+        return isDirectoryMade && isFileRenamed;
     }
 
     private boolean checkAllDatesAreSet(DateAndTime[] dateAndTimeList) {
@@ -111,5 +153,14 @@ public class LockFilesActivity extends AppCompatActivity {
             }, 0, 0, true);
             timePickerDialog.show();
         });
+    }
+
+    private void updateTime(){
+        calendar = Calendar.getInstance();
+        YEAR = calendar.get(Calendar.YEAR);
+        MONTH = calendar.get(Calendar.MONTH);
+        DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
+        HOUR = calendar.get(Calendar.HOUR);
+        MINUTE = calendar.get(Calendar.MINUTE);
     }
 }

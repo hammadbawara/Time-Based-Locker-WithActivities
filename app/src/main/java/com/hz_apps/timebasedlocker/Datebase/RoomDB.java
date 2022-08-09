@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {SavedVideo.class, }, version = 1)
+@Database(entities = {SavedVideo.class, DBRecord.class}, version = 1)
 public abstract class RoomDB extends RoomDatabase {
 
     abstract DBDao dbDao();

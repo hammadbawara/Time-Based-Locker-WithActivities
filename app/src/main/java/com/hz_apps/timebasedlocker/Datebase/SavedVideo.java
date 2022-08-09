@@ -1,5 +1,6 @@
 package com.hz_apps.timebasedlocker.Datebase;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -11,16 +12,26 @@ import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 public class SavedVideo {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String videoPath;
-    private String videoName;
-    private String videoSize;
-    private String videoDuration;
-    private boolean isAllowedToEditDateAndTime;
-    private boolean isAllowedToSeeMetaData;
-    private boolean isAllowedToSeeVideoThumbnail;
-    private DateAndTime unlockDateAndTime;
-    private DateAndTime lockDateAndTime;
+    @NonNull private int id;
+    @NonNull private String videoPath;
+    @NonNull private String videoName;
+    @NonNull private boolean isAllowedToEditDateAndTime;
+    @NonNull private boolean isAllowedToSeeMetaData;
+    @NonNull private boolean isAllowedToSeeVideoThumbnail;
+    @NonNull private DateAndTime unlockDateAndTime;
+    @NonNull private DateAndTime lockDateAndTime;
+    @NonNull private int folder_address;
+
+    public SavedVideo(@NonNull String videoPath, @NonNull String videoName, boolean isAllowedToEditDateAndTime, boolean isAllowedToSeeMetaData, boolean isAllowedToSeeVideoThumbnail, @NonNull DateAndTime unlockDateAndTime, @NonNull DateAndTime lockDateAndTime, int folder_address) {
+        this.videoPath = videoPath;
+        this.videoName = videoName;
+        this.isAllowedToEditDateAndTime = isAllowedToEditDateAndTime;
+        this.isAllowedToSeeMetaData = isAllowedToSeeMetaData;
+        this.isAllowedToSeeVideoThumbnail = isAllowedToSeeVideoThumbnail;
+        this.unlockDateAndTime = unlockDateAndTime;
+        this.lockDateAndTime = lockDateAndTime;
+        this.folder_address = folder_address;
+    }
 
     public int getId() {
         return id;
@@ -46,21 +57,6 @@ public class SavedVideo {
         this.videoName = videoName;
     }
 
-    public String getVideoSize() {
-        return videoSize;
-    }
-
-    public void setVideoSize(String videoSize) {
-        this.videoSize = videoSize;
-    }
-
-    public String getVideoDuration() {
-        return videoDuration;
-    }
-
-    public void setVideoDuration(String videoDuration) {
-        this.videoDuration = videoDuration;
-    }
 
     public boolean isAllowedToEditDateAndTime() {
         return isAllowedToEditDateAndTime;
@@ -100,5 +96,13 @@ public class SavedVideo {
 
     public void setLockDateAndTime(DateAndTime lockDateAndTime) {
         this.lockDateAndTime = lockDateAndTime;
+    }
+
+    public int getFolder_address() {
+        return folder_address;
+    }
+
+    public void setFolder_address(int folder_address) {
+        this.folder_address = folder_address;
     }
 }

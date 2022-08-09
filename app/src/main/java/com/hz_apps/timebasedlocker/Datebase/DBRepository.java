@@ -9,7 +9,7 @@ import java.util.List;
 public class DBRepository {
     private final DBDao dbDao;
 
-    private DBRepository(Application application){
+    public DBRepository(Application application){
         RoomDB database = RoomDB.getInstance(application);
         dbDao = database.dbDao();
     }
@@ -18,6 +18,14 @@ public class DBRepository {
         for (SavedVideo video : videosList){
             dbDao.insertVideo(video);
         }
+    }
+
+    public void insertVideo(SavedVideo video){
+        dbDao.insertVideo(video);
+    }
+
+    public DBRecord getDBRecord(int key){
+        return dbDao.getDBRecord(key);
     }
 
     public LiveData<List<SavedVideo>> getAllSavedVideos(){

@@ -23,4 +23,7 @@ public interface DBDao {
 
     @Query("DELETE FROM saved_videos_list WHERE id = :id")
     void deleteVideo(int id);
+
+    @Query("SELECT * FROM dbrecord WHERE `id` = :key")
+    DBRecord getDBRecord(int key);
 }
