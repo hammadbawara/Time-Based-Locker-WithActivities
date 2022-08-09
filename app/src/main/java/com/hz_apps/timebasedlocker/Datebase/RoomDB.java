@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {SavedVideo.class, DBRecord.class, SavedPhoto.class}, version = 4)
+@Database(entities = {SavedVideo.class, DBRecord.class, SavedPhoto.class}, version = 5)
 public abstract class RoomDB extends RoomDatabase {
 
     abstract DBDao dbDao();
@@ -41,7 +41,13 @@ public abstract class RoomDB extends RoomDatabase {
 
             executorService.execute(() ->{
                 DBDao dbDao = INSTANCE.dbDao();
+                // inserting DBRecord values when database created first time
+                // These are the values that tell what is the last id of saved item
+                // At creation id is set to 1 for not getting null pointer exception.
+                dbDao.insertDBRecord(new DBRecord(DBRecord.LAST_SAVED_VIDEO_KEY, 1));
+                dbDao.insertDBRecord(new DBRecord(DBRecord.LAST_SAVED_PHOTO_KEY, 1));
             });
+
         }
     };
 

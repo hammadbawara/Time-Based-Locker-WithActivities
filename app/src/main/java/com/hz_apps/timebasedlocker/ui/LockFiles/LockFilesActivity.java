@@ -155,6 +155,9 @@ public class LockFilesActivity extends AppCompatActivity {
         return isFileCopied && isFileDeleted;
     }
 
+    /*
+     *
+     */
     private boolean checkAllDatesAreSet(DateAndTime[] dateAndTimeList) {
         adapter.setDateNotSetWarning(true);
         boolean datesChecked = true;
@@ -211,11 +214,11 @@ public class LockFilesActivity extends AppCompatActivity {
             case 0:
                 try {last_id = db.getDBRecord(DBRecord.LAST_SAVED_VIDEO_KEY).getValue();}
                 catch (Exception ignored){};
-                destinationFolder = "/data/data/" + this.getPackageName() + "/videos/";
+                destinationFolder = "/data/data/" + this.getPackageName() + "/files/videos/";
             case 1:
                 try {last_id = db.getDBRecord(DBRecord.LAST_SAVED_PHOTO_KEY).getValue();}
                 catch (Exception ignored){};
-                destinationFolder = "/data/data/" + this.getPackageName() + "/photos/";
+                destinationFolder = "/data/data/" + this.getPackageName() + "/files/photos/";
         }
     }
 
