@@ -32,4 +32,9 @@
         android:name="com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity"
         android:label="activity_select_folder"
         tools:layout="@layout/activity_select_folder" />
+    <activity
+        android:id="@+id/lockFilesActivity"
+        android:name="com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity"
+        android:label="activity_lock_files"
+        tools:layout="@layout/activity_lock_files" />
 </navigation>
