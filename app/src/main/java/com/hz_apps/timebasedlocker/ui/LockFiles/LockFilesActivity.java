@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class LockFilesActivity extends AppCompatActivity {
 
@@ -46,6 +45,7 @@ public class LockFilesActivity extends AppCompatActivity {
     private String destinationFolder;
     int last_id = 1;
     ProgressDialog progress;
+    private ExecutorService executor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class LockFilesActivity extends AppCompatActivity {
 
     private void moveFilesIntoSafe(DateAndTime[] dateAndTimeList) {
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor = Executors.newSingleThreadExecutor();
 
         progress = new ProgressDialog(this);
         progress.setTitle("File(s) Saving in Lock");
@@ -111,10 +111,6 @@ public class LockFilesActivity extends AppCompatActivity {
             int total_files = selectedFiles.size();
             for (int i=0; i<total_files; i++){
 
-                if (executor.isShutdown()){
-                    break;
-                }
-
                 File source = selectedFiles.get(i);
 
                 progress.setProgressNumberFormat((i+1) + "/" + total_files);
@@ -126,6 +122,11 @@ public class LockFilesActivity extends AppCompatActivity {
 
                 // moving file into app directory
                 moveFile(source, new File(destinationFolder + last_id) );
+
+                if (executor.isShutdown()){
+                    break;
+                }
+
                 last_id += 1;
 
                 switch (TYPES_OF_FILES){
@@ -170,12 +171,15 @@ public class LockFilesActivity extends AppCompatActivity {
         long file_copied = 0;
         // Copying file
         boolean isFileCopied = false;
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[1024000];
         int length;
         try {
             FileInputStream fileInputStream = new FileInputStream(source);
             FileOutputStream fileOutputStream = new FileOutputStream(destination);
             while ((length = fileInputStream.read(buffer)) > 0) {
+                if (executor.isShutdown()){
+                    return true;
+                }
                 fileOutputStream.write(buffer, 0, length);
                 file_copied += length;
                 progress.setProgress((int) ((file_copied*100L)/total_size_of_file));
@@ -191,7 +195,7 @@ public class LockFilesActivity extends AppCompatActivity {
 
         // Deleting file
         if (isFileCopied){
-            isFileDeleted = source.delete();
+            //isFileDeleted = source.delete();
         }
 
         return isFileCopied && isFileDeleted;
