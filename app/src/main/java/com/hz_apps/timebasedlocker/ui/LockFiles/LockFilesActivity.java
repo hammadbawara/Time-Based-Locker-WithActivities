@@ -3,10 +3,10 @@ package com.hz_apps.timebasedlocker.ui.LockFiles;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,15 +81,22 @@ public class LockFilesActivity extends AppCompatActivity {
     }
 
     private void moveFilesIntoSafe(DateAndTime[] dateAndTimeList) {
-        progress = new ProgressDialog(this);    //ProgressDialog
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        progress = new ProgressDialog(this);
         progress.setTitle("File(s) Saving in Lock");
 
         progress.setIndeterminate(false);
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setCancelable(false);
-        progress.show();
-
-        Executors.newSingleThreadExecutor().execute(() ->{
+        progress.setButton(DialogInterface.BUTTON_NEUTRAL, "Cancel", (dialog, which) -> {
+            if (!executor.isShutdown()){
+                executor.shutdownNow();
+                dialog.dismiss();
+            }
+        });
+        executor.execute(() ->{
             // Initializing Database
             db = new DBRepository(getApplication());
 
@@ -103,9 +110,20 @@ public class LockFilesActivity extends AppCompatActivity {
 
             int total_files = selectedFiles.size();
             for (int i=0; i<total_files; i++){
-                progress.setProgressNumberFormat((i+1) + "/" + total_files);
+
+                if (executor.isShutdown()){
+                    break;
+                }
+
                 File source = selectedFiles.get(i);
+
+                progress.setProgressNumberFormat((i+1) + "/" + total_files);
                 progress.setProgress(0);
+                runOnUiThread(() -> {
+                    progress.setMessage(source.getName());
+                    progress.show();
+                });
+
                 // moving file into app directory
                 moveFile(source, new File(destinationFolder + last_id) );
                 last_id += 1;
@@ -133,6 +151,8 @@ public class LockFilesActivity extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         });
+
+
     }
 
     /*
@@ -156,7 +176,6 @@ public class LockFilesActivity extends AppCompatActivity {
             FileInputStream fileInputStream = new FileInputStream(source);
             FileOutputStream fileOutputStream = new FileOutputStream(destination);
             while ((length = fileInputStream.read(buffer)) > 0) {
-                TimeUnit.MILLISECONDS.sleep(10);
                 fileOutputStream.write(buffer, 0, length);
                 file_copied += length;
                 progress.setProgress((int) ((file_copied*100L)/total_size_of_file));
@@ -164,21 +183,16 @@ public class LockFilesActivity extends AppCompatActivity {
             fileInputStream.close();
             fileOutputStream.close();
             isFileCopied = true;
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Destination Path " + destination.getAbsolutePath());
-
-        System.out.println("File Copied Status: " + isFileCopied);
         boolean isFileDeleted = false;
 
         // Deleting file
         if (isFileCopied){
-            //isFileDeleted = source.delete();
+            isFileDeleted = source.delete();
         }
-
-        System.out.println("File Deleted Status: " + isFileDeleted);
 
         return isFileCopied && isFileDeleted;
     }
