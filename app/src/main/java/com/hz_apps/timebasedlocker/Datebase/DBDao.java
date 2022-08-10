@@ -18,8 +18,8 @@ public interface DBDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateVideo(SavedVideo video);
 
-    @Query("SELECT * FROM saved_videos_list")
-    LiveData<List<SavedVideo>> getAllVideos();
+    @Query("SELECT * FROM saved_videos_list WHERE folder = :folder")
+    LiveData<List<SavedVideo>> getAllVideos(int folder);
 
     @Query("DELETE FROM saved_videos_list WHERE id = :id")
     void deleteVideo(int id);

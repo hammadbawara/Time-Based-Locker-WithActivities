@@ -4,16 +4,23 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
+
+import java.util.List;
+
 public class VideosViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
+    private LiveData<List<SavedVideo>> savedVideoList;
 
-    public VideosViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+    public VideosViewModel(){
+        savedVideoList = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<SavedVideo>> getSavedVideoList() {
+        return savedVideoList;
+    }
+
+    public void setSavedVideoList(LiveData<List<SavedVideo>> savedVideoList) {
+        this.savedVideoList = savedVideoList;
     }
 }

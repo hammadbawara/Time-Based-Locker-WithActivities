@@ -40,7 +40,8 @@ public class DBRepository {
         return dbDao.getDBRecord(key);
     }
 
-    public LiveData<List<SavedVideo>> getAllSavedVideos(){
-        return getAllSavedVideos();
+    public LiveData<List<SavedVideo>> getAllSavedVideos(int folder){
+
+        return dbDao.getAllVideos(folder);
     }
 }
