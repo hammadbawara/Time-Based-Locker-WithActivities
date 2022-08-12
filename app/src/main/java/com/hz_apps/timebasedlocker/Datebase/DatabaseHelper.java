@@ -70,8 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + SAVED_VIDEO_TABLE + CREATE_TABLE_QUERY);
         db.execSQL("CREATE TABLE " + SAVED_PHOTO_TABLE + CREATE_TABLE_QUERY);
         db.execSQL("CREATE TABLE " + DB_RECORD_TABLE + "(_key INTEGER PRIMARY KEY, value INTEGER)");
-        db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(1, 0)");
-        db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(2, 0)");
+        db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(1, 1)");
+        db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(2, 1)");
     }
 
     @Override
@@ -129,7 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM DBRecord WHERE _key=" + key, null);
         cursor.moveToNext();
-        int record = cursor.getInt(0);
+        int record = cursor.getInt(1);
         cursor.close();
         return record;
     }

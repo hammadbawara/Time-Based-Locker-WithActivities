@@ -94,6 +94,7 @@ public class LockFilesActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
         executor.execute(() ->{
             // Initializing Database
             db = DatabaseHelper.getINSTANCE(getApplication());
