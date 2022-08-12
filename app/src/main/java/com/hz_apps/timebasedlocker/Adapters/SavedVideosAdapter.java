@@ -38,6 +38,7 @@ public class SavedVideosAdapter extends RecyclerView.Adapter<SavedVideosAdapter.
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         SavedVideo savedVideo = savedVideoList.get(position);
         Glide.with(context).load("/data/data/" + context.getPackageName() + "/files/videos/" + savedVideo.getId())
+                .centerCrop()
                 .into(holder.imageView);
     }
 
