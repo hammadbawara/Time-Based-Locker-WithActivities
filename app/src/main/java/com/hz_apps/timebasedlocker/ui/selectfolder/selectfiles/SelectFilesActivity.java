@@ -78,13 +78,21 @@ public class SelectFilesActivity extends AppCompatActivity {
             if (!adapter.isAllItemsSelected()){
                 adapter.setAllItemsUnSelectedFlag(false);
                 adapter.setAllItemsSelected(true);
-                adapter.notifyDataSetChanged();
+                for (int i=0; i<adapter.getFilesSelectedState().length; i++){
+                    if (!adapter.getFilesSelectedState()[i]){
+                        adapter.notifyItemChanged(i);
+                    }
+                }
             }
         }else{
             if (!adapter.isAllItemsUnselected()){
                 adapter.setAllItemsSelected(false);
                 adapter.setAllItemsUnSelectedFlag(true);
-                adapter.notifyDataSetChanged();
+                for (int i=0; i<adapter.getFilesSelectedState().length; i++){
+                    if (adapter.getFilesSelectedState()[i]){
+                        adapter.notifyItemChanged(i);
+                    }
+                }
             }
         }
         return super.onOptionsItemSelected(item);
