@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.hz_apps.timebasedlocker.Adapters.SavedPhotosAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DatabaseHelper;
+import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.FragmentPhotosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 public class PhotosFragment extends Fragment {
 
     private FragmentPhotosBinding binding;
-    DatabaseHelper db;
+    DBHelper db;
     PhotosViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -32,7 +32,11 @@ public class PhotosFragment extends Fragment {
         binding = FragmentPhotosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        fetchDataFromDB();
+        if (viewModel.getSavedFileList().size() == 0){
+            fetchDataFromDB();
+        }else{
+            setDataInRV();
+        }
 
 
         binding.floatingActionButton.setOnClickListener((v) -> {
@@ -51,27 +55,30 @@ public class PhotosFragment extends Fragment {
         // Showing progressBar before fetching data from Database and setting into recycler view
         binding.progressBarPhotosFragment.setVisibility(View.VISIBLE);
 
+        System.out.println("Fetched");
+
         Executors.newSingleThreadExecutor().execute(() -> {
 
-            db = DatabaseHelper.getINSTANCE(requireActivity().getApplication());
-            viewModel.setSavedFileList(db.getSavedFiles(DatabaseHelper.SAVED_PHOTO_TABLE));
+            db = DBHelper.getINSTANCE(requireActivity().getApplication());
+            viewModel.setSavedFileList(db.getSavedFiles(DBHelper.SAVED_PHOTO_TABLE));
 
-            requireActivity().runOnUiThread(this::setDataInRecyclerView);
+            requireActivity().runOnUiThread(this::setDataInRV);
         });
     }
-
-    private void setDataInRecyclerView(){
-        SavedPhotosAdapter adapter = new SavedPhotosAdapter(getContext());
+    // This function set data in Recycler View
+    private void setDataInRV(){
+        SavedFilesAdapter adapter = new SavedFilesAdapter(requireContext(), viewModel.getSavedFileList());
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/130;
         binding.recyclerviewPhotoFragment.setLayoutManager(new GridLayoutManager(getContext(), numberOfImagesInOneRow));
-        adapter.setSavedPhotoList(viewModel.getSavedFileList());
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
 
         // Hiding Progress Bar after showing data in recycler view
         binding.progressBarPhotosFragment.setVisibility(View.GONE);
+
+        if (binding.swipeRefreshPhotosFragment.isRefreshing()) binding.swipeRefreshPhotosFragment.setRefreshing(false);
     }
 
     @Override
@@ -82,7 +89,10 @@ public class PhotosFragment extends Fragment {
 
     @Override
     public void onResume() {
-        fetchDataFromDB();
+        if (DBHelper.isAnyFileInserted){
+            fetchDataFromDB();
+            DBHelper.isAnyFileInserted = false;
+        }
         super.onResume();
     }
 }

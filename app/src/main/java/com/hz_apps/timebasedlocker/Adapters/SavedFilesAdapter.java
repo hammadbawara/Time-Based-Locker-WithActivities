@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
@@ -20,13 +21,26 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SavedPhotosAdapter extends RecyclerView.Adapter<SavedPhotosAdapter.myViewHolder> {
+public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
     private final Context context;
     private List<SavedFile> savedPhotoList;
+    String path;
 
-    public SavedPhotosAdapter(Context context) {
+    public SavedFilesAdapter(Context context, List<SavedFile> savedFileList) {
         this.context = context;
         this.savedPhotoList = new ArrayList<>();
+        this.savedPhotoList = savedFileList;
+        if (savedFileList.size() != 0){
+            int type = savedFileList.get(0).getFileType();
+            switch (type){
+                case DBHelper.TYPE_PHOTO:
+                    this.path = context.getString(R.string.saved_photos_path);
+                    break;
+                case DBHelper.TYPE_VIDEO:
+                    this.path = context.getString(R.string.saved_videos_path);
+                    break;
+            }
+        }
     }
 
     @NonNull
@@ -39,7 +53,8 @@ public class SavedPhotosAdapter extends RecyclerView.Adapter<SavedPhotosAdapter.
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         SavedFile file  = savedPhotoList.get(position);
-        Glide.with(context).load("/data/data/" + context.getPackageName() + "/files/photos/" + file.getId())
+
+        Glide.with(context).load(path + file.getId())
                 .centerCrop()
                 .placeholder(R.drawable.ic_image)
                 .into(holder.imageView);
@@ -63,10 +78,6 @@ public class SavedPhotosAdapter extends RecyclerView.Adapter<SavedPhotosAdapter.
             imageView = itemView.findViewById(R.id.saved_photo_image_view);
             time_remaining = itemView.findViewById(R.id.time_remaing_textView);
         }
-    }
-
-    public void setSavedPhotoList(List<SavedFile> savedPhotoList) {
-        this.savedPhotoList = savedPhotoList;
     }
 
     private String getRemainingTime(DateAndTime lockDT, DateAndTime unlockDT){

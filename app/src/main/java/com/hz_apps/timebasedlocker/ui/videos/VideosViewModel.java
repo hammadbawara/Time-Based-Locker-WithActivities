@@ -1,26 +1,25 @@
 package com.hz_apps.timebasedlocker.ui.videos;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
+import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideosViewModel extends ViewModel {
 
-    private LiveData<List<SavedVideo>> savedVideoList;
+    private List<SavedFile> savedVideosList;
 
     public VideosViewModel(){
-        savedVideoList = new MutableLiveData<>();
+        savedVideosList = new ArrayList<>();
     }
 
-    public LiveData<List<SavedVideo>> getSavedVideoList() {
-        return savedVideoList;
+    public List<SavedFile> getSavedVideosList() {
+        return savedVideosList;
     }
 
-    public void setSavedVideoList(LiveData<List<SavedVideo>> savedVideoList) {
-        this.savedVideoList = savedVideoList;
+    public void setSavedVideosList(List<SavedFile> savedVideosList) {
+        this.savedVideosList = savedVideosList;
     }
 }

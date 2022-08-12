@@ -14,7 +14,7 @@ import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
 
     // Table values
     private final String PATH = "path";
@@ -37,31 +37,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_RECORD_TABLE = "DBRecord";
 
     // Tracking database
-    public boolean isAnyFileInserted = true;
+    public static boolean isAnyFileInserted = false;
 
-    private static DatabaseHelper dbHelper;
+    private static DBHelper dbHelper;
 
-    public static DatabaseHelper getINSTANCE(Application application){
+    public static DBHelper getINSTANCE(Application application){
         if (dbHelper != null){
             return dbHelper;
         }
-        return new DatabaseHelper(application.getApplicationContext(), "filesDB.db");
+        return new DBHelper(application.getApplicationContext(), "filesDB.db");
     }
 
     private final String CREATE_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            PATH + " TEXT, " +
-            TITLE + " TEXT, " +
-            UNLOCK_DATE_TIME+" TEXT, " +
-            LOCK_DATE_TIME + " TEXT, " +
-            IS_FILE + " INTEGER, " +
-            FILE_TYPE + "INTEGER, " +
-            IS_ALLOWED_TO_EXTEND_TIME +" INTEGER, " +
-            IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " +
-            IS_ALLOWED_TO_SEE_TITLE + " INTEGER)";
+            PATH + " TEXT, " + // 1
+            TITLE + " TEXT, " + // 2
+            UNLOCK_DATE_TIME+" TEXT, " + // 3
+            LOCK_DATE_TIME + " TEXT, " + // 4
+            IS_FILE + " INTEGER, " + // 5
+            FILE_TYPE + " INTEGER, " + //6
+            IS_ALLOWED_TO_EXTEND_TIME +" INTEGER, " + // 7
+            IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 8
+            IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 9
 
     private SQLiteDatabase db;
 
-    public DatabaseHelper(@Nullable Context context, @Nullable String name) {
+    public DBHelper(@Nullable Context context, @Nullable String name) {
         super(context, name, null, 1);
     }
 
@@ -87,6 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(UNLOCK_DATE_TIME, file.getUnlockDateTime().toString());
         values.put(LOCK_DATE_TIME, file.getLockDateTime().toString());
         values.put(IS_FILE, file.isFile());
+        values.put(FILE_TYPE, file.getFileType());
         values.put(IS_ALLOWED_TO_EXTEND_TIME, file.isAllowedToExtendDateTime());
         values.put(IS_ALLOWED_TO_SEE_TITLE, file.isAllowedToSeeTitle());
         values.put(IS_ALLOWED_TO_SEE_PHOTO, file.isAllowedToSeePhoto());
@@ -111,9 +112,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             savedFile.setUnlockDateTime(DateAndTime.parse(cursor.getString(3)));
             savedFile.setLockDateTime(DateAndTime.parse(cursor.getString(4)));
             savedFile.setFile(IntToBoolean(cursor.getInt(5)));
-            savedFile.setAllowedToExtendDateTime(IntToBoolean(cursor.getInt(6)));
-            savedFile.setAllowedToSeePhoto(IntToBoolean(cursor.getInt(7)));
-            savedFile.setAllowedToSeeTitle(IntToBoolean(cursor.getInt(8)));
+            savedFile.setFileType(cursor.getInt(6));
+            savedFile.setAllowedToExtendDateTime(IntToBoolean(cursor.getInt(7)));
+            savedFile.setAllowedToSeePhoto(IntToBoolean(cursor.getInt(8)));
+            savedFile.setAllowedToSeeTitle(IntToBoolean(cursor.getInt(9)));
             savedFilesList.add(savedFile);
         }
         cursor.close();

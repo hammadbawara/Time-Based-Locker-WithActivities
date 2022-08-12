@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="saved_videos_path">/data/data/com.hz_apps.timebasedlocker/files/videos/</string>
+    <string name="saved_photos_path">/data/data/com.hz_apps.timebasedlocker/files/photos/</string>
 </resources>

@@ -13,9 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DatabaseHelper;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.MainActivity;
+import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 
 import java.io.File;
@@ -39,7 +40,7 @@ public class LockFilesActivity extends AppCompatActivity {
     Calendar calendar;
     ArrayList<File> selectedFiles;
     int TYPES_OF_FILES;
-    private DatabaseHelper db;
+    private DBHelper db;
     private String destinationFolder;
     int last_id = 1;
     ProgressDialog progress;
@@ -97,7 +98,7 @@ public class LockFilesActivity extends AppCompatActivity {
 
         executor.execute(() ->{
             // Initializing Database
-            db = DatabaseHelper.getINSTANCE(getApplication());
+            db = DBHelper.getINSTANCE(getApplication());
 
             // updating time for time when file is locked
             updateTime();
@@ -139,13 +140,13 @@ public class LockFilesActivity extends AppCompatActivity {
                 file.setAllowedToSeeTitle(true);
 
                 switch (TYPES_OF_FILES){
-                    case DatabaseHelper.TYPE_VIDEO:
-                        file.setFileType(DatabaseHelper.TYPE_VIDEO);
-                        db.insert_file(file, DatabaseHelper.SAVED_VIDEO_TABLE);
+                    case DBHelper.TYPE_VIDEO:
+                        file.setFileType(DBHelper.TYPE_VIDEO);
+                        db.insert_file(file, DBHelper.SAVED_VIDEO_TABLE);
                         break;
-                    case DatabaseHelper.TYPE_PHOTO:
-                        file.setFileType(DatabaseHelper.TYPE_PHOTO);
-                        db.insert_file(file, DatabaseHelper.SAVED_PHOTO_TABLE);
+                    case DBHelper.TYPE_PHOTO:
+                        file.setFileType(DBHelper.TYPE_PHOTO);
+                        db.insert_file(file, DBHelper.SAVED_PHOTO_TABLE);
                         break;
                 }
                 updateLastIdInDatabase();
@@ -261,13 +262,13 @@ public class LockFilesActivity extends AppCompatActivity {
      */
     private void updateValuesAccordingToFile(){
         switch (TYPES_OF_FILES){
-            case 0:
-                last_id = db.getDBRecord(DatabaseHelper.LAST_SAVED_VIDEO_KEY);
-                destinationFolder = "/data/data/" + this.getPackageName() + "/files/videos/";
+            case DBHelper.TYPE_VIDEO:
+                last_id = db.getDBRecord(DBHelper.LAST_SAVED_VIDEO_KEY);
+                destinationFolder = getString(R.string.saved_videos_path);
                 break;
-            case 1:
-                last_id = db.getDBRecord(DatabaseHelper.LAST_SAVED_PHOTO_KEY);
-                destinationFolder = "/data/data/" + this.getPackageName() + "/files/photos/";
+            case DBHelper.TYPE_PHOTO:
+                last_id = db.getDBRecord(DBHelper.LAST_SAVED_PHOTO_KEY);
+                destinationFolder = getString(R.string.saved_photos_path);
                 break;
         }
     }
@@ -275,10 +276,10 @@ public class LockFilesActivity extends AppCompatActivity {
     private void updateLastIdInDatabase(){
         switch (TYPES_OF_FILES){
             case 0:
-                db.updateDBRecord(DatabaseHelper.LAST_SAVED_VIDEO_KEY, last_id);
+                db.updateDBRecord(DBHelper.LAST_SAVED_VIDEO_KEY, last_id);
                 break;
             case 1:
-                db.updateDBRecord(DatabaseHelper.LAST_SAVED_PHOTO_KEY, last_id);
+                db.updateDBRecord(DBHelper.LAST_SAVED_PHOTO_KEY, last_id);
                 break;
         }
     }

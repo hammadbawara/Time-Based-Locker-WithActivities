@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.FolderListAdapter;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFolderBinding;
 
 import java.util.concurrent.ExecutorService;
@@ -58,10 +59,10 @@ public class SelectFolderActivity extends AppCompatActivity {
             String[] extensions;
             TypesOfFiles = getIntent().getIntExtra("Type_Of_Files", -1);
             switch (TypesOfFiles){
-                case 0:
+                case DBHelper.TYPE_VIDEO:
                     extensions = FilesExtensions.videosExtensions;
                     break;
-                case 1:
+                case DBHelper.TYPE_PHOTO:
                     extensions = FilesExtensions.imagesExtensions;
                     break;
                 default:
