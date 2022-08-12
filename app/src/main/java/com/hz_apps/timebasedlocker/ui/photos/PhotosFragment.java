@@ -12,41 +12,32 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hz_apps.timebasedlocker.Adapters.SavedPhotosAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBRepository;
+import com.hz_apps.timebasedlocker.Datebase.DatabaseHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 import com.hz_apps.timebasedlocker.databinding.FragmentPhotosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class PhotosFragment extends Fragment {
 
     private FragmentPhotosBinding binding;
-    DBRepository db;
+    DatabaseHelper db;
+    PhotosViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        PhotosViewModel viewModel =
-                new ViewModelProvider(this).get(PhotosViewModel.class);
+        viewModel = new ViewModelProvider(this).get(PhotosViewModel.class);
 
         binding = FragmentPhotosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        db = new DBRepository(requireActivity().getApplication());
-
-        viewModel.setSavedPhotosList(db.getAllSavedPhotos(0));
-
-
-
-        SavedPhotosAdapter adapter = new SavedPhotosAdapter(getContext());
-        binding.recyclerviewPhotoFragment.setAdapter(adapter);
-        // Items show in one row
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/130;
-        binding.recyclerviewPhotoFragment.setLayoutManager(new GridLayoutManager(getContext(), numberOfImagesInOneRow));
-
+        fetchDataFromDB();
 
 
         binding.floatingActionButton.setOnClickListener((v) -> {
@@ -55,21 +46,48 @@ public class PhotosFragment extends Fragment {
             startActivity(intent);
         });
 
-        viewModel.getSavedPhotosList().observe(getViewLifecycleOwner(), new Observer<List<SavedPhoto>>() {
-            @Override
-            public void onChanged(List<SavedPhoto> savedPhotosList) {
-                System.out.println("Set Saved Photos in RecyclerView " + savedPhotosList.size() );
-                adapter.setSavedPhotoList(savedPhotosList);
-                binding.recyclerviewPhotoFragment.setAdapter(adapter);
-            }
-        });
+        binding.swipeRefreshPhotosFragment.setOnRefreshListener(this::fetchDataFromDB);
 
         return root;
+    }
+
+    // This method fetch data from database and also set that data in recycler view
+    private void fetchDataFromDB(){
+        // Showing progressBar before fetching data from Database and setting into recycler view
+        binding.progressBarPhotosFragment.setVisibility(View.VISIBLE);
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+
+            db = DatabaseHelper.getINSTANCE(requireActivity().getApplication());
+            viewModel.setSavedFileList(db.getSavedFiles(DatabaseHelper.SAVED_PHOTO_TABLE));
+
+            requireActivity().runOnUiThread(this::setDataInRecyclerView);
+        });
+    }
+
+    private void setDataInRecyclerView(){
+        SavedPhotosAdapter adapter = new SavedPhotosAdapter(getContext());
+        binding.recyclerviewPhotoFragment.setAdapter(adapter);
+        // Items show in one row
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/130;
+        binding.recyclerviewPhotoFragment.setLayoutManager(new GridLayoutManager(getContext(), numberOfImagesInOneRow));
+        adapter.setSavedPhotoList(viewModel.getSavedFileList());
+        binding.recyclerviewPhotoFragment.setAdapter(adapter);
+
+        // Hiding Progress Bar after showing data in recycler view
+        binding.progressBarPhotosFragment.setVisibility(View.GONE);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onResume() {
+        fetchDataFromDB();
+        super.onResume();
     }
 }

@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBRecord;
 import com.hz_apps.timebasedlocker.Datebase.DBRepository;
+import com.hz_apps.timebasedlocker.Datebase.DatabaseHelper;
+import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
 import com.hz_apps.timebasedlocker.MainActivity;
@@ -41,7 +43,7 @@ public class LockFilesActivity extends AppCompatActivity {
     Calendar calendar;
     ArrayList<File> selectedFiles;
     int TYPES_OF_FILES;
-    private DBRepository db;
+    private DatabaseHelper db;
     private String destinationFolder;
     int last_id = 1;
     ProgressDialog progress;
@@ -98,7 +100,7 @@ public class LockFilesActivity extends AppCompatActivity {
         });
         executor.execute(() ->{
             // Initializing Database
-            db = new DBRepository(getApplication());
+            db = DatabaseHelper.getINSTANCE(getApplication());
 
             // updating time for time when file is locked
             updateTime();
@@ -129,19 +131,24 @@ public class LockFilesActivity extends AppCompatActivity {
 
                 last_id += 1;
 
+                SavedFile file = new SavedFile();
+                file.setPath(source.getPath());
+                file.setTitle(source.getName());
+                file.setUnlockDateTime(dateAndTimeList[i]);
+                file.setLockDateTime(lockDateAndTime);
+                file.setFile(true);
+                file.setAllowedToExtendDateTime(true);
+                file.setAllowedToSeePhoto(true);
+                file.setAllowedToSeeTitle(true);
+
                 switch (TYPES_OF_FILES){
-                    case 0:
-                        SavedVideo video = new SavedVideo(source.getPath(),
-                                source.getName(), true,
-                                true, true,
-                                dateAndTimeList[i], lockDateAndTime, 0);
-                        db.insertVideo(video);
+                    case DatabaseHelper.TYPE_VIDEO:
+                        file.setFileType(DatabaseHelper.TYPE_VIDEO);
+                        db.insert_file(file, DatabaseHelper.SAVED_VIDEO_TABLE);
                         break;
-                    case 1:
-                        SavedPhoto photo = new SavedPhoto(source.getPath(), source.getName(),
-                                true, true, true,
-                                dateAndTimeList[i], lockDateAndTime, 0);
-                        db.insertPhoto(photo);
+                    case DatabaseHelper.TYPE_PHOTO:
+                        file.setFileType(DatabaseHelper.TYPE_PHOTO);
+                        db.insert_file(file, DatabaseHelper.SAVED_PHOTO_TABLE);
                         break;
                 }
                 updateLastIdInDatabase();
@@ -258,12 +265,11 @@ public class LockFilesActivity extends AppCompatActivity {
     private void updateValuesAccordingToFile(){
         switch (TYPES_OF_FILES){
             case 0:
-                last_id = db.getDBRecord(DBRecord.LAST_SAVED_VIDEO_KEY).getValue();
+                last_id = db.getDBRecord(DatabaseHelper.LAST_SAVED_VIDEO_KEY);
                 destinationFolder = "/data/data/" + this.getPackageName() + "/files/videos/";
                 break;
             case 1:
-                try {last_id = db.getDBRecord(DBRecord.LAST_SAVED_PHOTO_KEY).getValue();}
-                catch (Exception ignored){};
+                last_id = db.getDBRecord(DatabaseHelper.LAST_SAVED_PHOTO_KEY);
                 destinationFolder = "/data/data/" + this.getPackageName() + "/files/photos/";
                 break;
         }
@@ -272,10 +278,10 @@ public class LockFilesActivity extends AppCompatActivity {
     private void updateLastIdInDatabase(){
         switch (TYPES_OF_FILES){
             case 0:
-                db.updateDBRecord(new DBRecord(DBRecord.LAST_SAVED_VIDEO_KEY, last_id));
+                db.updateDBRecord(DatabaseHelper.LAST_SAVED_VIDEO_KEY, last_id);
                 break;
             case 1:
-                db.updateDBRecord(new DBRecord(DBRecord.LAST_SAVED_PHOTO_KEY, last_id));
+                db.updateDBRecord(DatabaseHelper.LAST_SAVED_PHOTO_KEY, last_id);
                 break;
         }
     }

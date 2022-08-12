@@ -4,23 +4,25 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhotosViewModel extends ViewModel {
 
-    private LiveData<List<SavedPhoto>> savedPhotosList;
+    private List<SavedFile> savedFileList;
 
-    public PhotosViewModel() {
-        savedPhotosList = new MutableLiveData<>();
+    public PhotosViewModel(){
+        savedFileList = new ArrayList<>();
     }
 
-    public LiveData<List<SavedPhoto>> getSavedPhotosList() {
-        return savedPhotosList;
+    public List<SavedFile> getSavedFileList() {
+        return savedFileList;
     }
 
-    public void setSavedPhotosList(LiveData<List<SavedPhoto>> savedPhotosList) {
-        this.savedPhotosList = savedPhotosList;
+    public void setSavedFileList(List<SavedFile> savedFileList) {
+        this.savedFileList = savedFileList;
     }
 }

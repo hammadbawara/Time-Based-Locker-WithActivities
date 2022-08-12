@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class SavedPhotosAdapter extends RecyclerView.Adapter<SavedPhotosAdapter.myViewHolder> {
     private final Context context;
-    private List<SavedPhoto> savedPhotoList;
+    private List<SavedFile> savedPhotoList;
 
     public SavedPhotosAdapter(Context context) {
         this.context = context;
@@ -38,13 +39,13 @@ public class SavedPhotosAdapter extends RecyclerView.Adapter<SavedPhotosAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        SavedPhoto savedPhoto = savedPhotoList.get(position);
-        Glide.with(context).load("/data/data/" + context.getPackageName() + "/files/photos/" + savedPhoto.getId())
+        SavedFile file  = savedPhotoList.get(position);
+        Glide.with(context).load("/data/data/" + context.getPackageName() + "/files/photos/" + file.getId())
                 .centerCrop()
                 .placeholder(R.drawable.ic_image)
                 .into(holder.imageView);
 
-        holder.time_remaining.setText(getRemainingTime(savedPhoto.getLockDateAndTime(), savedPhoto.getUnlockDateAndTime()));
+        holder.time_remaining.setText(getRemainingTime(file.getLockDateTime(), file.getUnlockDateTime()));
 
 
 
@@ -64,7 +65,8 @@ public class SavedPhotosAdapter extends RecyclerView.Adapter<SavedPhotosAdapter.
             time_remaining = itemView.findViewById(R.id.time_remaing_textView);
         }
     }
-    public void setSavedPhotoList(List<SavedPhoto> savedPhotoList) {
+
+    public void setSavedPhotoList(List<SavedFile> savedPhotoList) {
         this.savedPhotoList = savedPhotoList;
     }
 

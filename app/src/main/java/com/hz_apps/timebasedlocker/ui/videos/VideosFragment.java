@@ -6,7 +6,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,10 +13,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.hz_apps.timebasedlocker.Adapters.SavedPhotosAdapter;
 import com.hz_apps.timebasedlocker.Adapters.SavedVideosAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBRepository;
-import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
