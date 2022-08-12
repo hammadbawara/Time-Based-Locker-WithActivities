@@ -9,19 +9,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hz_apps.timebasedlocker.Adapters.SavedPhotosAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBRepository;
 import com.hz_apps.timebasedlocker.Datebase.DatabaseHelper;
-import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 import com.hz_apps.timebasedlocker.databinding.FragmentPhotosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 
 public class PhotosFragment extends Fragment {

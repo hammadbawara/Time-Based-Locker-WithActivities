@@ -13,12 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBRecord;
-import com.hz_apps.timebasedlocker.Datebase.DBRepository;
 import com.hz_apps.timebasedlocker.Datebase.DatabaseHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
-import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
-import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
 import com.hz_apps.timebasedlocker.MainActivity;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 

@@ -1,11 +1,8 @@
 package com.hz_apps.timebasedlocker.ui.photos;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
-import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
 
 import java.util.ArrayList;
 import java.util.List;
