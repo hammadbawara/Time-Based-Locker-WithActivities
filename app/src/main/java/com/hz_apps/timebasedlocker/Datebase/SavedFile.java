@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 
-public class SavedFile {
+import java.io.Serializable;
+
+public class SavedFile implements Serializable {
     private int id;
     private String path;
     private String title;

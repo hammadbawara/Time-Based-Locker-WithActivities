@@ -1,6 +1,7 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -46,7 +48,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.saved_photo_view, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.saved_file_view, parent, false);
         return new myViewHolder(view);
     }
 
@@ -60,6 +62,13 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                 .into(holder.imageView);
 
         holder.time_remaining.setText(getRemainingTime(file.getLockDateTime(), file.getUnlockDateTime()));
+
+        // Setting click listener on saved file
+        holder.itemView.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("file", file);
+            Navigation.findNavController(v).navigate(R.id.BSDialog, bundle);
+        });
 
 
 

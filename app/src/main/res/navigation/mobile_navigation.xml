@@ -37,4 +37,10 @@
         android:name="com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity"
         android:label="activity_lock_files"
         tools:layout="@layout/activity_lock_files" />
+    <dialog
+        android:id="@+id/BSDialog"
+        android:name="com.hz_apps.timebasedlocker.Dialogs.BSDialogFragment"
+        android:label="fragment_b_s_dialog"
+        tools:layout="@layout/fragment_b_s_dialog" >
+    </dialog>
 </navigation>

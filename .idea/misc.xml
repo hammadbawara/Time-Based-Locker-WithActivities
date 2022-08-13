@@ -19,8 +19,12 @@
         <entry key="app/src/main/res/drawable/ic_circular_checkbox_checked.xml" value="0.323" />
         <entry key="app/src/main/res/drawable/ic_circular_checkbox_unchecked.xml" value="0.306" />
         <entry key="app/src/main/res/drawable/ic_lock.xml" value="0.3225" />
+        <entry key="app/src/main/res/drawable/ic_more.xml" value="0.306" />
+        <entry key="app/src/main/res/drawable/ic_pencil.xml" value="0.306" />
         <entry key="app/src/main/res/drawable/ic_right_arrow.xml" value="0.323" />
         <entry key="app/src/main/res/drawable/ic_right_arrow_black.xml" value="0.323" />
+        <entry key="app/src/main/res/drawable/ic_share.xml" value="0.306" />
+        <entry key="app/src/main/res/drawable/ic_simple_share.xml" value="0.306" />
         <entry key="app/src/main/res/drawable/ic_tick.xml" value="0.323" />
         <entry key="app/src/main/res/drawable/ic_update_time.xml" value="0.306" />
         <entry key="app/src/main/res/drawable/no_drawable.xml" value="0.306" />
@@ -30,11 +34,15 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3088768115942029" />
         <entry key="app/src/main/res/layout/activity_select_files.xml" value="0.3088768115942029" />
         <entry key="app/src/main/res/layout/activity_select_folder.xml" value="0.3088768115942029" />
+        <entry key="app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.3203125" />
         <entry key="app/src/main/res/layout/custom_progress_dialog.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/layout/drop_down_item.xml" value="0.3088768115942029" />
         <entry key="app/src/main/res/layout/file_for_lock_view.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/layout/folder_view.xml" value="0.3088768115942029" />
+        <entry key="app/src/main/res/layout/fragment_b_s_dialog.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3088768115942029" />
+        <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog.xml" value="0.32135416666666666" />
+        <entry key="app/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.32135416666666666" />
         <entry key="app/src/main/res/layout/fragment_photos.xml" value="0.3088768115942029" />
         <entry key="app/src/main/res/layout/fragment_videos.xml" value="0.3088768115942029" />
         <entry key="app/src/main/res/layout/image_list_view.xml" value="0.3088768115942029" />
