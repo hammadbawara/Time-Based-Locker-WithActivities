@@ -1,20 +1,23 @@
 package com.hz_apps.timebasedlocker.ui.selectfolder;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.FolderListAdapter;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFolderBinding;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,25 +33,18 @@ public class SelectFolderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySelectFolderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         mViewModel = new ViewModelProvider(this).get(SelectFolderViewModel.class);
 
-        if (requestPermission()){
-            // showing progressbar until task completes
-            binding.progressBarSelectFolder.setVisibility(View.VISIBLE);
-            // Using executor for running this function in background thread so Ui respond
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(()->{
-                getFoldersFromStorage();
-                this.runOnUiThread(this::showItemsInRecyclerView);
-            });
+        requestPermission();
 
+    }
 
-        }else{
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-        }
-
-
+    private void main(){
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(()->{
+            getFoldersFromStorage();
+            this.runOnUiThread(this::showItemsInRecyclerView);
+        });
     }
     private void getFoldersFromStorage(){
         if (mViewModel.getFoldersList().size() == 0){
@@ -95,16 +91,36 @@ public class SelectFolderActivity extends AppCompatActivity {
         binding.progressBarSelectFolder.setVisibility(View.GONE);
     }
 
-    private boolean requestPermission(){
-        boolean isStoragePermissionGranted = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        if (!isStoragePermissionGranted) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    1);
-        }
-        isStoragePermissionGranted = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        return isStoragePermissionGranted;
+    private void showDetailOfPermission(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage("Storage Permission is necessary for getting files.");
+        dialog.setPositiveButton("Allow", (dialog1, which) -> {
+            requestPermission();
+        });
+        dialog.setNegativeButton("Go Back", (dialog1, which) ->{
+          SelectFolderActivity.this.finish();
+        });
+        dialog.create().show();
+    }
+
+    private void requestPermission(){
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        main();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                        showDetailOfPermission();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
     }
 }
