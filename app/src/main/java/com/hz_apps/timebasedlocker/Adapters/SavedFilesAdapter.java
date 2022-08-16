@@ -20,7 +20,6 @@ import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
@@ -30,7 +29,6 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
     public SavedFilesAdapter(Context context, List<SavedFile> savedFileList) {
         this.context = context;
-        this.savedPhotoList = new ArrayList<>();
         this.savedPhotoList = savedFileList;
         if (savedFileList.size() != 0){
             int type = savedFileList.get(0).getFileType();
@@ -64,10 +62,11 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         holder.time_remaining.setText(getRemainingTime(file.getLockDateTime(), file.getUnlockDateTime()));
 
         // Setting click listener on saved file
-        holder.itemView.setOnClickListener(v -> {
+        holder.itemView.setOnLongClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putSerializable("file", file);
             Navigation.findNavController(v).navigate(R.id.BSDialog, bundle);
+            return false;
         });
 
 

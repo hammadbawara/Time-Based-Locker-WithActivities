@@ -53,7 +53,7 @@ public class SelectFolderActivity extends AppCompatActivity {
     }
     private void getFoldersFromStorage(){
         if (mViewModel.getFoldersList().size() == 0){
-            String path = "/storage/emulated/0/";
+            String path = System.getenv("EXTERNAL_STORAGE");
 
             // extension tells which types of files we are looking
             String[] extensions;
