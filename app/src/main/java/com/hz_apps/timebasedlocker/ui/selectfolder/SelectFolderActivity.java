@@ -95,12 +95,8 @@ public class SelectFolderActivity extends AppCompatActivity {
     private void showDetailOfPermission(){
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setMessage("Storage Permission is necessary for getting files.");
-        dialog.setPositiveButton("Allow", (dialog1, which) -> {
-            requestPermission();
-        });
-        dialog.setNegativeButton("Go Back", (dialog1, which) ->{
-          SelectFolderActivity.this.finish();
-        });
+        dialog.setPositiveButton("Allow", (dialog1, which) -> requestPermission());
+        dialog.setNegativeButton("Go Back", (dialog1, which) -> SelectFolderActivity.this.finish());
         dialog.create().show();
     }
 
