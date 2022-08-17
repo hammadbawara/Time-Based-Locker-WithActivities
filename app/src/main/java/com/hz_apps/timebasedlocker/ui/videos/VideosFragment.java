@@ -12,9 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.hz_apps.timebasedlocker.Adapters.SavedVideosAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBRepository;
-import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
 import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
