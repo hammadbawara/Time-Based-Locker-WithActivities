@@ -48,15 +48,15 @@ public class BSDialogFragment extends BottomSheetDialogFragment {
         binding.extendDateBtnSavedFile.setOnClickListener(v -> {
 
             DateAndTime dateTime = savedFile.getUnlockDateTime();
-            Calendar calendar = Calendar.getInstance();
 
             LocalDate date = dateTime.getDate();
 
             datePickerDialog = new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
 
-            },date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+            },date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
             datePickerDialog.getDatePicker().setMinDate(TimeUnit.DAYS.toMillis(date.toEpochDay()));
             datePickerDialog.show();
+            dismiss();
         });
 
         return binding.getRoot();

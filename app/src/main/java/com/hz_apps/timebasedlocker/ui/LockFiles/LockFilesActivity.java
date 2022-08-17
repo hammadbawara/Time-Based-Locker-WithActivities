@@ -103,7 +103,9 @@ public class LockFilesActivity extends AppCompatActivity {
             // updating time for time when file is locked
             updateTime();
             // date when files lock
-            DateAndTime lockDateAndTime = new DateAndTime(LocalDate.of(YEAR, MONTH, DAY_OF_MONTH),
+            // In local datetime Month 1 = January
+            // but in DatePickerDialog Month 0 = January
+            DateAndTime lockDateAndTime = new DateAndTime(LocalDate.of(YEAR, MONTH+1, DAY_OF_MONTH),
                     LocalTime.of(HOUR, MINUTE));
             // update path where files store and also last id
             updateValuesAccordingToFile();
@@ -126,6 +128,8 @@ public class LockFilesActivity extends AppCompatActivity {
                 if (executor.isShutdown()){
                     break;
                 }
+
+                // saving file information in database
 
                 SavedFile file = new SavedFile();
                 file.setId(last_id);
