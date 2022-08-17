@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class SavedFile implements Serializable {
     private int id;
     private String path;
+    private String originalPath;
     private String title;
     private DateAndTime unlockDateTime;
     private DateAndTime lockDateTime;
@@ -18,8 +19,8 @@ public class SavedFile implements Serializable {
     private boolean isAllowedToSeePhoto;
     private boolean isAllowedToSeeTitle;
 
-    public SavedFile(String path, String title, DateAndTime unlockDateTime, DateAndTime lockDateTime, int fileType, boolean isFile, boolean isAllowedToExtendDateTime, boolean isAllowedToSeePhoto, boolean isAllowedToSeeTitle) {
-        this.path = path;
+    public SavedFile(String originalPath, String title, DateAndTime unlockDateTime, DateAndTime lockDateTime, int fileType, boolean isFile, boolean isAllowedToExtendDateTime, boolean isAllowedToSeePhoto, boolean isAllowedToSeeTitle) {
+        this.originalPath = originalPath;
         this.title = title;
         this.unlockDateTime = unlockDateTime;
         this.lockDateTime = lockDateTime;
@@ -43,12 +44,12 @@ public class SavedFile implements Serializable {
     }
 
     @NonNull
-    public String getPath() {
-        return path;
+    public String getOriginalPath() {
+        return originalPath;
     }
 
-    public void setPath(@NonNull String path) {
-        this.path = path;
+    public void setOriginalPath(@NonNull String originalPath) {
+        this.originalPath = originalPath;
     }
 
     @NonNull
@@ -116,5 +117,13 @@ public class SavedFile implements Serializable {
 
     public void setFileType(int fileType) {
         this.fileType = fileType;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

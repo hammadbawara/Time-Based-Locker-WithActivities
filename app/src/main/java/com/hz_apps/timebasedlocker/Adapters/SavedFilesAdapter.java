@@ -25,22 +25,10 @@ import java.util.List;
 public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
     private final Context context;
     private List<SavedFile> savedPhotoList;
-    String path;
 
     public SavedFilesAdapter(Context context, List<SavedFile> savedFileList) {
         this.context = context;
         this.savedPhotoList = savedFileList;
-        if (savedFileList.size() != 0){
-            int type = savedFileList.get(0).getFileType();
-            switch (type){
-                case DBHelper.TYPE_PHOTO:
-                    this.path = context.getString(R.string.saved_photos_path);
-                    break;
-                case DBHelper.TYPE_VIDEO:
-                    this.path = context.getString(R.string.saved_videos_path);
-                    break;
-            }
-        }
     }
 
     @NonNull
@@ -54,7 +42,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         SavedFile file  = savedPhotoList.get(position);
 
-        Glide.with(context).load(path + file.getId())
+        Glide.with(context).load(file.getPath())
                 .centerCrop()
                 .placeholder(R.drawable.ic_image)
                 .into(holder.imageView);

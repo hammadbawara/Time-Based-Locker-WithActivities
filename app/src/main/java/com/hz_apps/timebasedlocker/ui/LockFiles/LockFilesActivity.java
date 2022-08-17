@@ -127,10 +127,9 @@ public class LockFilesActivity extends AppCompatActivity {
                     break;
                 }
 
-                last_id += 1;
-
                 SavedFile file = new SavedFile();
-                file.setPath(source.getPath());
+                file.setId(last_id);
+                file.setOriginalPath(source.getPath());
                 file.setTitle(source.getName());
                 file.setUnlockDateTime(dateAndTimeList[i]);
                 file.setLockDateTime(lockDateAndTime);
@@ -138,6 +137,7 @@ public class LockFilesActivity extends AppCompatActivity {
                 file.setAllowedToExtendDateTime(true);
                 file.setAllowedToSeePhoto(true);
                 file.setAllowedToSeeTitle(true);
+                file.setPath(destinationFolder + last_id);
 
                 switch (TYPES_OF_FILES){
                     case DBHelper.TYPE_VIDEO:
@@ -149,6 +149,7 @@ public class LockFilesActivity extends AppCompatActivity {
                         db.insert_file(file, DBHelper.SAVED_PHOTO_TABLE);
                         break;
                 }
+                last_id += 1;
                 updateLastIdInDatabase();
             }
             progress.dismiss();

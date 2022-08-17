@@ -33,14 +33,4 @@
         android:text="12 hours"
         android:textColor="#FFFFFF" />
 
-    <ImageView
-        android:id="@+id/more_option_lock_file_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/saved_photo_image_view"
-        android:layout_alignBottom="@+id/saved_photo_image_view"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="3dp"
-        app:srcCompat="@drawable/ic_more" />
-
 </RelativeLayout>

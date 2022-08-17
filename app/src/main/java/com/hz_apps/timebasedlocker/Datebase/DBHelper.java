@@ -17,6 +17,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
     // Table values
+    private final String ORIGINAL_PATH = "orignal_path";
     private final String PATH = "path";
     private final String TITLE = "title";
     private final String UNLOCK_DATE_TIME = "unlock_date_time";
@@ -49,15 +50,16 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private final String CREATE_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            PATH + " TEXT, " + // 1
-            TITLE + " TEXT, " + // 2
-            UNLOCK_DATE_TIME+" TEXT, " + // 3
-            LOCK_DATE_TIME + " TEXT, " + // 4
-            IS_FILE + " INTEGER, " + // 5
-            FILE_TYPE + " INTEGER, " + //6
-            IS_ALLOWED_TO_EXTEND_TIME +" INTEGER, " + // 7
-            IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 8
-            IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 9
+            ORIGINAL_PATH + " TEXT, " + // 1
+            PATH + " TEXT," + // 2
+            TITLE + " TEXT, " + // 3
+            UNLOCK_DATE_TIME+" TEXT, " + // 4
+            LOCK_DATE_TIME + " TEXT, " + // 5
+            IS_FILE + " INTEGER, " + // 6
+            FILE_TYPE + " INTEGER, " + //7
+            IS_ALLOWED_TO_EXTEND_TIME +" INTEGER, " + // 8
+            IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 9
+            IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 10
 
     private SQLiteDatabase db;
 
@@ -79,23 +81,38 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean insert_file(SavedFile file, String table){
+    /**
+     * This method insert savedFile into database
+     * @param savedFile : savedFile that would be saved into database
+     * @param nameOfTable : table name where files would store
+     * @return: it returns List<SavedFiles>
+     */
+    public boolean insert_file(SavedFile savedFile, String nameOfTable){
+
         db = getWritableDatabase();
+
         ContentValues values = new ContentValues();
-        values.put(PATH, file.getPath());
-        values.put(TITLE, file.getTitle());
-        values.put(UNLOCK_DATE_TIME, file.getUnlockDateTime().toString());
-        values.put(LOCK_DATE_TIME, file.getLockDateTime().toString());
-        values.put(IS_FILE, file.isFile());
-        values.put(FILE_TYPE, file.getFileType());
-        values.put(IS_ALLOWED_TO_EXTEND_TIME, file.isAllowedToExtendDateTime());
-        values.put(IS_ALLOWED_TO_SEE_TITLE, file.isAllowedToSeeTitle());
-        values.put(IS_ALLOWED_TO_SEE_PHOTO, file.isAllowedToSeePhoto());
-        long result = db.insert(table, null, values);
+        values.put(ORIGINAL_PATH, savedFile.getOriginalPath());
+        values.put(PATH, savedFile.getPath());
+        values.put(TITLE, savedFile.getTitle());
+        values.put(UNLOCK_DATE_TIME, savedFile.getUnlockDateTime().toString());
+        values.put(LOCK_DATE_TIME, savedFile.getLockDateTime().toString());
+        values.put(IS_FILE, savedFile.isFile());
+        values.put(FILE_TYPE, savedFile.getFileType());
+        values.put(IS_ALLOWED_TO_EXTEND_TIME, savedFile.isAllowedToExtendDateTime());
+        values.put(IS_ALLOWED_TO_SEE_TITLE, savedFile.isAllowedToSeeTitle());
+        values.put(IS_ALLOWED_TO_SEE_PHOTO, savedFile.isAllowedToSeePhoto());
+
+        long result = db.insert(nameOfTable, null, values);
         isAnyFileInserted = true;
         return result != -1;
     }
 
+    /**
+     * This method get saved files from database
+     * @param table : tables names from where database needs to get
+     * @return it return List<SavedFiles>.
+     */
     public List<SavedFile> getSavedFiles(String table){
         db = getReadableDatabase();
         Cursor cursor;
@@ -107,15 +124,16 @@ public class DBHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()){
             SavedFile savedFile = new SavedFile();
             savedFile.setId(cursor.getInt(0));
-            savedFile.setPath(cursor.getString(1));
-            savedFile.setTitle(cursor.getString(2));
-            savedFile.setUnlockDateTime(DateAndTime.parse(cursor.getString(3)));
-            savedFile.setLockDateTime(DateAndTime.parse(cursor.getString(4)));
-            savedFile.setFile(IntToBoolean(cursor.getInt(5)));
-            savedFile.setFileType(cursor.getInt(6));
-            savedFile.setAllowedToExtendDateTime(IntToBoolean(cursor.getInt(7)));
-            savedFile.setAllowedToSeePhoto(IntToBoolean(cursor.getInt(8)));
-            savedFile.setAllowedToSeeTitle(IntToBoolean(cursor.getInt(9)));
+            savedFile.setOriginalPath(cursor.getString(1));
+            savedFile.setPath(cursor.getString(2));
+            savedFile.setTitle(cursor.getString(3));
+            savedFile.setUnlockDateTime(DateAndTime.parse(cursor.getString(4)));
+            savedFile.setLockDateTime(DateAndTime.parse(cursor.getString(5)));
+            savedFile.setFile(IntToBoolean(cursor.getInt(6)));
+            savedFile.setFileType(cursor.getInt(7));
+            savedFile.setAllowedToExtendDateTime(IntToBoolean(cursor.getInt(8)));
+            savedFile.setAllowedToSeePhoto(IntToBoolean(cursor.getInt(9)));
+            savedFile.setAllowedToSeeTitle(IntToBoolean(cursor.getInt(10)));
             savedFilesList.add(savedFile);
         }
         cursor.close();
