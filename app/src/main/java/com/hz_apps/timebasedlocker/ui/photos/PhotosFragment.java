@@ -59,7 +59,7 @@ public class PhotosFragment extends Fragment {
 
         Executors.newSingleThreadExecutor().execute(() -> {
 
-            db = DBHelper.getINSTANCE(requireActivity().getApplication());
+            db = DBHelper.getINSTANCE();
             viewModel.setSavedFileList(db.getSavedFiles(DBHelper.SAVED_PHOTO_TABLE));
 
             requireActivity().runOnUiThread(this::setDataInRV);

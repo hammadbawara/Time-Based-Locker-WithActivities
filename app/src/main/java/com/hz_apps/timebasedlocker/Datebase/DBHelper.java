@@ -42,11 +42,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper dbHelper;
 
-    public static DBHelper getINSTANCE(Application application){
-        if (dbHelper != null){
-            return dbHelper;
+    public static void createInstanceForOverApplication(Application application){
+        if (dbHelper == null){
+            dbHelper = new DBHelper(application.getApplicationContext(), "filesDB.db");
         }
-        return new DBHelper(application.getApplicationContext(), "filesDB.db");
+    }
+
+    public static DBHelper getINSTANCE(){
+        return dbHelper;
     }
 
     private final String CREATE_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -155,8 +158,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void updateDBRecord(int key, int value){
-        ContentValues contentValues = new ContentValues(1);
-        contentValues.put(String.valueOf(key), value);
         db = getWritableDatabase();
         db.execSQL("UPDATE " + DB_RECORD_TABLE + " SET value=" + value + " WHERE _key=" +key );
     }
@@ -166,4 +167,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public void updateFileDateAndTime(String newDateAndTime, int id, String table) {
+        db = getWritableDatabase();
+        db.execSQL("UPDATE " + table + " SET " + UNLOCK_DATE_TIME + " = `" + newDateAndTime + "` WHERE id=" +id);
+    }
+
+    public boolean deleteFileFromDB(String table, int id) {
+        db = getWritableDatabase();
+        db.delete(table, "id=" + id, null);
+        return true;
+    }
 }

@@ -14,9 +14,8 @@
         android:background="?attr/selectableItemBackground"
         android:drawableStart="@drawable/ic_simple_share"
         android:drawablePadding="12dp"
-        android:fontFamily="@font/roboto"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:fontFamily="@font/roboto_condensed_regular"
+        android:padding="9dp"
         android:text="Share"
         android:textSize="24sp" />
 
@@ -27,9 +26,8 @@
         android:background="?attr/selectableItemBackground"
         android:drawableStart="@drawable/ic_extend_date"
         android:drawablePadding="12dp"
-        android:fontFamily="@font/roboto"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:fontFamily="@font/roboto_condensed_regular"
+        android:padding="9dp"
         android:text="Extend Date"
         android:textSize="24sp" />
 
@@ -40,9 +38,8 @@
         android:background="?attr/selectableItemBackground"
         android:drawableStart="@drawable/ic_info"
         android:drawablePadding="12dp"
-        android:fontFamily="@font/roboto"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:fontFamily="@font/roboto_condensed_regular"
+        android:padding="9dp"
         android:text="Info"
         android:textSize="24sp" />
 
@@ -53,9 +50,8 @@
         android:background="?attr/selectableItemBackground"
         android:drawableStart="@drawable/ic_delete"
         android:drawablePadding="12dp"
-        android:fontFamily="@font/roboto"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:fontFamily="@font/roboto_condensed_regular"
+        android:padding="9dp"
         android:text="Delete"
         android:textSize="24sp" />
 </LinearLayout>

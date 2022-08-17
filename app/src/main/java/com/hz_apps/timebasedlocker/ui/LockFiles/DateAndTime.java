@@ -56,4 +56,10 @@ public class DateAndTime implements Serializable {
         LocalTime time = LocalTime.parse(dateAndTimeArray[1]);
         return new DateAndTime(date, time);
     }
+
+    public static DateAndTime of(int YEAR, int MONTH, int DayOfMonth, int Hour, int Minute){
+        LocalDate localDate = LocalDate.of(YEAR, MONTH, DayOfMonth);
+        LocalTime localTime = LocalTime.of(Hour, Minute);
+        return new DateAndTime(localDate, localTime);
+    }
 }

@@ -98,7 +98,7 @@ public class LockFilesActivity extends AppCompatActivity {
 
         executor.execute(() ->{
             // Initializing Database
-            db = DBHelper.getINSTANCE(getApplication());
+            db = DBHelper.getINSTANCE();
 
             // updating time for time when file is locked
             updateTime();

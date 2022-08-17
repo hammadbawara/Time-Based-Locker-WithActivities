@@ -8,4 +8,7 @@
     <string name="saved_photos_path">/data/data/com.hz_apps.timebasedlocker/files/photos/</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="file_delete_alert_message">This file will be deleted permanently. You cannot recover this later.</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -33,6 +33,9 @@ public class VideosFragment extends Fragment {
         binding = FragmentVideosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // creating database instance for all over application
+        DBHelper.createInstanceForOverApplication(requireActivity().getApplication());
+
         if (viewModel.getSavedVideosList().size() == 0){
             fetchDataFromDB();
         }else{
@@ -56,7 +59,7 @@ public class VideosFragment extends Fragment {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             System.out.println("Fetched");
-            db = DBHelper.getINSTANCE(requireActivity().getApplication());
+            db = DBHelper.getINSTANCE();
             viewModel.setSavedVideosList(db.getSavedFiles(DBHelper.SAVED_VIDEO_TABLE));
 
             requireActivity().runOnUiThread(this::setDataInRV);
