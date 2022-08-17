@@ -13,11 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBRecord;
-import com.hz_apps.timebasedlocker.Datebase.DBRepository;
-import com.hz_apps.timebasedlocker.Datebase.SavedPhoto;
-import com.hz_apps.timebasedlocker.Datebase.SavedVideo;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.MainActivity;
+import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 
 import java.io.File;
@@ -41,7 +40,7 @@ public class LockFilesActivity extends AppCompatActivity {
     Calendar calendar;
     ArrayList<File> selectedFiles;
     int TYPES_OF_FILES;
-    private DBRepository db;
+    private DBHelper db;
     private String destinationFolder;
     int last_id = 1;
     ProgressDialog progress;
@@ -96,14 +95,17 @@ public class LockFilesActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
         executor.execute(() ->{
             // Initializing Database
-            db = new DBRepository(getApplication());
+            db = DBHelper.getINSTANCE();
 
             // updating time for time when file is locked
             updateTime();
             // date when files lock
-            DateAndTime lockDateAndTime = new DateAndTime(LocalDate.of(YEAR, MONTH, DAY_OF_MONTH),
+            // In local datetime Month 1 = January
+            // but in DatePickerDialog Month 0 = January
+            DateAndTime lockDateAndTime = new DateAndTime(LocalDate.of(YEAR, MONTH+1, DAY_OF_MONTH),
                     LocalTime.of(HOUR, MINUTE));
             // update path where files store and also last id
             updateValuesAccordingToFile();
@@ -127,23 +129,31 @@ public class LockFilesActivity extends AppCompatActivity {
                     break;
                 }
 
-                last_id += 1;
+                // saving file information in database
+
+                SavedFile file = new SavedFile();
+                file.setId(last_id);
+                file.setOriginalPath(source.getPath());
+                file.setTitle(source.getName());
+                file.setUnlockDateTime(dateAndTimeList[i]);
+                file.setLockDateTime(lockDateAndTime);
+                file.setFile(true);
+                file.setAllowedToExtendDateTime(true);
+                file.setAllowedToSeePhoto(true);
+                file.setAllowedToSeeTitle(true);
+                file.setPath(destinationFolder + last_id);
 
                 switch (TYPES_OF_FILES){
-                    case 0:
-                        SavedVideo video = new SavedVideo(source.getPath(),
-                                source.getName(), true,
-                                true, true,
-                                dateAndTimeList[i], lockDateAndTime, 0);
-                        db.insertVideo(video);
+                    case DBHelper.TYPE_VIDEO:
+                        file.setFileType(DBHelper.TYPE_VIDEO);
+                        db.insert_file(file, DBHelper.SAVED_VIDEO_TABLE);
                         break;
-                    case 1:
-                        SavedPhoto photo = new SavedPhoto(source.getPath(), source.getName(),
-                                true, true, true,
-                                dateAndTimeList[i], lockDateAndTime, 0);
-                        db.insertPhoto(photo);
+                    case DBHelper.TYPE_PHOTO:
+                        file.setFileType(DBHelper.TYPE_PHOTO);
+                        db.insert_file(file, DBHelper.SAVED_PHOTO_TABLE);
                         break;
                 }
+                last_id += 1;
                 updateLastIdInDatabase();
             }
             progress.dismiss();
@@ -257,14 +267,13 @@ public class LockFilesActivity extends AppCompatActivity {
      */
     private void updateValuesAccordingToFile(){
         switch (TYPES_OF_FILES){
-            case 0:
-                last_id = db.getDBRecord(DBRecord.LAST_SAVED_VIDEO_KEY).getValue();
-                destinationFolder = "/data/data/" + this.getPackageName() + "/files/videos/";
+            case DBHelper.TYPE_VIDEO:
+                last_id = db.getDBRecord(DBHelper.LAST_SAVED_VIDEO_KEY);
+                destinationFolder = getString(R.string.saved_videos_path);
                 break;
-            case 1:
-                try {last_id = db.getDBRecord(DBRecord.LAST_SAVED_PHOTO_KEY).getValue();}
-                catch (Exception ignored){};
-                destinationFolder = "/data/data/" + this.getPackageName() + "/files/photos/";
+            case DBHelper.TYPE_PHOTO:
+                last_id = db.getDBRecord(DBHelper.LAST_SAVED_PHOTO_KEY);
+                destinationFolder = getString(R.string.saved_photos_path);
                 break;
         }
     }
@@ -272,10 +281,10 @@ public class LockFilesActivity extends AppCompatActivity {
     private void updateLastIdInDatabase(){
         switch (TYPES_OF_FILES){
             case 0:
-                db.updateDBRecord(new DBRecord(DBRecord.LAST_SAVED_VIDEO_KEY, last_id));
+                db.updateDBRecord(DBHelper.LAST_SAVED_VIDEO_KEY, last_id);
                 break;
             case 1:
-                db.updateDBRecord(new DBRecord(DBRecord.LAST_SAVED_PHOTO_KEY, last_id));
+                db.updateDBRecord(DBHelper.LAST_SAVED_PHOTO_KEY, last_id);
                 break;
         }
     }

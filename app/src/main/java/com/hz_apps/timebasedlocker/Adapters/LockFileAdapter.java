@@ -119,7 +119,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         holder.set_date.setOnClickListener(v ->{
             datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
                 // storing date in dateAndTimeList
-                dateAndTimeList[holder.getAdapterPosition()].setDate(LocalDate.of(year, month, dayOfMonth));
+                dateAndTimeList[holder.getAdapterPosition()].setDate(LocalDate.of(year, month+1, dayOfMonth));
                 // setting date in textView
                 holder.set_date.setText(dayOfMonth + "-" + getMonthInText(month) + "-" + year);
                 // setting color of textView to default. Because color of textView can be red.

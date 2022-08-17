@@ -77,7 +77,6 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
             }
             if (!isChecked) unselectItem(holder);
 
-            System.out.println("State of button " + position + " " + isChecked);
             /**
              * if selected files are equal to 0 then disable nextBtn
              * if it is not 0 then enable nextBtn
