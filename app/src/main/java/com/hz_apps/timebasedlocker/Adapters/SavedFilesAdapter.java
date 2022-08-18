@@ -1,6 +1,7 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
+import com.hz_apps.timebasedlocker.ui.videos.VideoPlayerActivity;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -55,6 +57,12 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             bundle.putSerializable("file", file);
             Navigation.findNavController(v).navigate(R.id.BSDialog, bundle);
             return false;
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, VideoPlayerActivity.class);
+            intent.putExtra("video_path", file.getPath());
+            context.startActivity(intent);
         });
 
 

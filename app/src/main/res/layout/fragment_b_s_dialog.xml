@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,46 +13,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:drawableStart="@drawable/ic_simple_share"
         android:drawablePadding="12dp"
         android:fontFamily="@font/roboto_condensed_regular"
         android:padding="9dp"
         android:text="Share"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:drawableTint="?attr/colorOnSecondary"
+        app:drawableStartCompat="@drawable/ic_simple_share" />
 
     <TextView
         android:id="@+id/extend_date_btn_saved_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:drawableStart="@drawable/ic_extend_date"
         android:drawablePadding="12dp"
         android:fontFamily="@font/roboto_condensed_regular"
         android:padding="9dp"
         android:text="Extend Date"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:drawableTint="?attr/colorOnSecondary"
+        app:drawableStartCompat="@drawable/ic_extend_date" />
 
     <TextView
         android:id="@+id/info_btn_saved_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:drawableStart="@drawable/ic_info"
         android:drawablePadding="12dp"
         android:fontFamily="@font/roboto_condensed_regular"
         android:padding="9dp"
         android:text="Info"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:drawableTint="?attr/colorOnSecondary"
+        app:drawableStartCompat="@drawable/ic_info" />
 
     <TextView
         android:id="@+id/delete_btn_saved_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:drawableStart="@drawable/ic_delete"
         android:drawablePadding="12dp"
         android:fontFamily="@font/roboto_condensed_regular"
         android:padding="9dp"
         android:text="Delete"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:drawableTint="?attr/colorOnSecondary"
+        app:drawableStartCompat="@drawable/ic_delete" />
 </LinearLayout>
