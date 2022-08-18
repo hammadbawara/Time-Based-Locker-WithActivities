@@ -2,7 +2,6 @@ package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
@@ -53,9 +50,6 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
         // Setting click listener on saved file
         holder.itemView.setOnLongClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("file", file);
-            Navigation.findNavController(v).navigate(R.id.BSDialog, bundle);
             return false;
         });
 
@@ -110,6 +104,10 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         }
 
         return "unlocked";
+
+    }
+
+    private void savedFilesContextMenu(){
 
     }
 }

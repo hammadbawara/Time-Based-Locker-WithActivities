@@ -39,7 +39,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     private boolean dateNotSetWarning = false;
     private LocalTime TimeForAllItems;
     // This is the default colo of TextView of "Select Date".
-    private final int defaultTextViewColor = -16524603;
+    private final int defaultTextViewColor;
     Calendar calendar;
 
 
@@ -55,6 +55,8 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         for (int i=0; i<imagesList.size(); i++){
             dateAndTimeList[i] = new DateAndTime();
         }
+        // TODO: This color does not change with theme
+        defaultTextViewColor = context.getResources().getColor(com.google.android.material.R.color.design_default_color_primary);
     }
 
     @NonNull
@@ -119,7 +121,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         holder.set_date.setOnClickListener(v ->{
             datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
                 // storing date in dateAndTimeList
-                dateAndTimeList[holder.getAdapterPosition()].setDate(LocalDate.of(year, month+1, dayOfMonth));
+                dateAndTimeList[holder.getBindingAdapterPosition()].setDate(LocalDate.of(year, month+1, dayOfMonth));
                 // setting date in textView
                 holder.set_date.setText(dayOfMonth + "-" + getMonthInText(month) + "-" + year);
                 // setting color of textView to default. Because color of textView can be red.
@@ -136,7 +138,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 // storing time in dateAndTimeList
-                dateAndTimeList[holder.getAdapterPosition()].setTime(LocalTime.of(hourOfDay, minute));
+                dateAndTimeList[holder.getBindingAdapterPosition()].setTime(LocalTime.of(hourOfDay, minute));
                 // setting time in textView
                 holder.set_time.setText(hourOfDay + " : " + minute);
             }

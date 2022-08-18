@@ -8,17 +8,17 @@
 
     <TextView
         android:id="@+id/set_time_lock_activity"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/custom_text_view_button"
         android:layout_width="0dp"
         android:layout_height="43dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="13dp"
-        android:background="@drawable/date_time_button_background"
-        android:text="SET TIME"
-        app:layout_constraintBottom_toBottomOf="@+id/set_date_lock_activity"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/set_date_lock_activity"
-        app:layout_constraintTop_toTopOf="@+id/set_date_lock_activity" />
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="4dp"
+        android:text="Set Time"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toStartOf="@+id/set_date_lock_activity"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lock_items_recyclerview"
@@ -48,22 +48,22 @@
 
     <TextView
         android:id="@+id/set_date_lock_activity"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/custom_text_view_button"
         android:layout_width="0dp"
         android:layout_height="43dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/date_time_button_background"
         android:text="Set Date"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintEnd_toStartOf="@+id/set_time_lock_activity"
+        app:layout_constraintBottom_toBottomOf="@+id/set_time_lock_activity"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
+        app:layout_constraintStart_toEndOf="@+id/set_time_lock_activity"
+        app:layout_constraintTop_toTopOf="@+id/set_time_lock_activity" />
 
     <TextView
         android:id="@+id/textView5"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        style="@style/custom_text_view_button"
         android:layout_width="70dp"
         android:layout_height="40dp"
         android:layout_marginStart="13dp"

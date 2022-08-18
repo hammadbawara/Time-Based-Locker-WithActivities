@@ -1,15 +1,12 @@
 package com.hz_apps.timebasedlocker.ui.videos;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import com.hz_apps.timebasedlocker.R;
-import com.hz_apps.timebasedlocker.databinding.ActivityVideoPlayerBinding;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
+import com.hz_apps.timebasedlocker.databinding.ActivityVideoPlayerBinding;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 

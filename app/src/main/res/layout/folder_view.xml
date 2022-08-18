@@ -28,7 +28,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:text="Camera"
-        android:textColor="@android:color/primary_text_light"
+        android:textColor="?attr/colorTertiary"
         android:textSize="16sp" />
 
 </LinearLayout>

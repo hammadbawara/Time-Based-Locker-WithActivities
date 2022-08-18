@@ -1,7 +1,6 @@
 package com.hz_apps.timebasedlocker.Dialogs;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,9 +21,7 @@ import com.hz_apps.timebasedlocker.databinding.FragmentBSDialogBinding;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 
 import java.io.File;
-import java.net.URLConnection;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class BSDialogFragment extends BottomSheetDialogFragment {
