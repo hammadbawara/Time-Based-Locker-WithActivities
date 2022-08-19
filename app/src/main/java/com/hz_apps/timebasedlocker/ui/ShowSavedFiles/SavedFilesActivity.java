@@ -39,23 +39,29 @@ public class SavedFilesActivity extends AppCompatActivity {
         FILES_TYPE = getIntent().getIntExtra("FILES_TYPE", -1);
         FILES_TABLE_NAME = savedFolder.getFilesTable();
 
+        main();
 
-        Executors.newSingleThreadExecutor().execute(() -> {
-            fetchDataFromDB();
-            runOnUiThread(this::setFilesInRecyclerView);
-        });
 
         binding.addFilesSavedFiles.setOnClickListener(v -> {
             Intent intent = new Intent(this, SelectFolderActivity.class);
             startActivity(intent);
         });
 
+        binding.swipeRefreshSavedFiles.setOnRefreshListener(this::main);
+
 
 
     }
 
-    private void fetchDataFromDB(){
+    private void main(){
         binding.progressBarSavedFiles.setVisibility(View.VISIBLE);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            fetchDataFromDB();
+            runOnUiThread(this::setFilesInRecyclerView);
+        });
+    }
+
+    private void fetchDataFromDB(){
         DBHelper db = DBHelper.getINSTANCE();
         List<SavedFile> savedFileList = db.getSavedFiles(savedFolder.getFilesTable());
         viewModel.setSavedFilesList(savedFileList);
@@ -65,9 +71,11 @@ public class SavedFilesActivity extends AppCompatActivity {
     private void setFilesInRecyclerView(){
         RecyclerView recyclerView = binding.recyclerviewSavedFiles;
         recyclerView.setAdapter(adapter);
+        // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/120;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
         binding.progressBarSavedFiles.setVisibility(View.GONE);
+        binding.swipeRefreshSavedFiles.setRefreshing(false);
     }
 }

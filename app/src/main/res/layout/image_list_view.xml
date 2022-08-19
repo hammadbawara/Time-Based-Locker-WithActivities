@@ -22,6 +22,5 @@
         android:layout_alignBottom="@id/imageView_images_list"
         android:layout_alignParentEnd="false"
         android:layout_centerVertical="true"
-        android:button="@drawable/custom_check_box"
-        android:visibility="visible" />
+        android:button="@drawable/custom_check_box" />
 </RelativeLayout>
