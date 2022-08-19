@@ -59,7 +59,8 @@ public class DBHelper extends SQLiteOpenHelper {
             IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 10
 
     // Tracking database
-    public static boolean isAnyFileInserted = false;
+    public static boolean isAnyChangeInFiles = false;
+    public static boolean isAnyChangeInFolders = false;
 
     private static DBHelper dbHelper;
 
@@ -126,7 +127,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(IS_ALLOWED_TO_SEE_PHOTO, savedFile.isAllowedToSeePhoto());
 
         long result = db.insert(nameOfTable, null, values);
-        isAnyFileInserted = true;
+        isAnyChangeInFiles = true;
         return result != -1;
     }
     /**
@@ -148,6 +149,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // creating folder for saving folder files
         db.execSQL("CREATE TABLE " + folderFilesTableName + CREATE_TABLE_QUERY);
+
+        isAnyChangeInFolders = true;
         return false;
     }
 

@@ -3,23 +3,24 @@ package com.hz_apps.timebasedlocker.ui.videos;
 import androidx.lifecycle.ViewModel;
 
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
+import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VideosViewModel extends ViewModel {
 
-    private List<SavedFile> savedVideosList;
+    private List<SavedFolder> savedFolderList;
 
     public VideosViewModel(){
-        savedVideosList = new ArrayList<>();
+        savedFolderList = new ArrayList<>();
     }
 
-    public List<SavedFile> getSavedVideosList() {
-        return savedVideosList;
+    public List<SavedFolder> getSavedFolderList() {
+        return savedFolderList;
     }
 
-    public void setSavedVideosList(List<SavedFile> savedVideosList) {
-        this.savedVideosList = savedVideosList;
+    public void setSavedFolderList(List<SavedFolder> savedFolderList) {
+        this.savedFolderList = savedFolderList;
     }
 }

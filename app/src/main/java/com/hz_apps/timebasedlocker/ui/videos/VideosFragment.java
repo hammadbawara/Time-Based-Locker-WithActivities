@@ -8,17 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.google.android.material.appbar.MaterialToolbar;
-import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
+import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
-import com.hz_apps.timebasedlocker.MainActivity;
-import com.hz_apps.timebasedlocker.R;
-import com.hz_apps.timebasedlocker.databinding.ActivityMainBinding;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
@@ -29,7 +24,7 @@ public class VideosFragment extends Fragment {
     private FragmentVideosBinding binding;
     DBHelper db;
     VideosViewModel viewModel;
-    SavedFilesAdapter adapter;
+    SavedFoldersAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +36,7 @@ public class VideosFragment extends Fragment {
         // creating database instance for all over application
         DBHelper.createInstanceForOverApplication(requireActivity().getApplication());
 
-        if (viewModel.getSavedVideosList().size() == 0){
+        if (viewModel.getSavedFolderList().size() == 0){
             fetchDataFromDB();
         }else{
             setDataInRV();
@@ -63,9 +58,8 @@ public class VideosFragment extends Fragment {
         binding.progressBarVideosFragment.setVisibility(View.VISIBLE);
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            System.out.println("Fetched");
             db = DBHelper.getINSTANCE();
-            viewModel.setSavedVideosList(db.getSavedFiles(DBHelper.SAVED_VIDEO_TABLE));
+            viewModel.setSavedFolderList(db.getSavedFolders(DBHelper.TYPE_VIDEO));
 
             requireActivity().runOnUiThread(this::setDataInRV);
         });
@@ -73,7 +67,7 @@ public class VideosFragment extends Fragment {
     }
     // This function set data in Recycler View
     private void setDataInRV(){
-        adapter = new SavedFilesAdapter(requireContext(), viewModel.getSavedVideosList(), binding.toolbarVideosFragment);
+        adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList());
         binding.recyclerviewSavedVideos.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -88,9 +82,9 @@ public class VideosFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if (DBHelper.isAnyFileInserted){
+        if (DBHelper.isAnyChangeInFolders){
             fetchDataFromDB();
-            DBHelper.isAnyFileInserted = false;
+            DBHelper.isAnyChangeInFolders = false;
         }
         super.onResume();
     }
