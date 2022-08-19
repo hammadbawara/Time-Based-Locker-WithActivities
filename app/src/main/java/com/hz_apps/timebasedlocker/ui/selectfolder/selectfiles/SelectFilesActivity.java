@@ -43,7 +43,7 @@ public class SelectFilesActivity extends AppCompatActivity {
 
     }
 
-    private void runBackground(){
+    private void runBackground() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             // only fetch files when filesList size is zero. This make sure the activity won't fetch
@@ -54,12 +54,12 @@ public class SelectFilesActivity extends AppCompatActivity {
         });
     }
 
-    private void setRecyclerView(){
+    private void setRecyclerView() {
         RecyclerView recyclerView = binding.selectFilesRecyclerView;
         adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtnActivitySelectFiles);
         recyclerView.setAdapter(adapter);
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/120;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels / displayMetrics.density) / 120;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
 
         // hiding progressbar after doing all tasks
@@ -75,22 +75,22 @@ public class SelectFilesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getTitle() == "Select All"){
-            if (!adapter.isAllItemsSelected()){
+        if (item.getTitle() == "Select All") {
+            if (!adapter.isAllItemsSelected()) {
                 adapter.setAllItemsUnSelectedFlag(false);
                 adapter.setAllItemsSelected(true);
-                for (int i=0; i<adapter.getFilesSelectedState().length; i++){
-                    if (!adapter.getFilesSelectedState()[i]){
+                for (int i = 0; i < adapter.getFilesSelectedState().length; i++) {
+                    if (!adapter.getFilesSelectedState()[i]) {
                         adapter.notifyItemChanged(i);
                     }
                 }
             }
-        }else{
-            if (!adapter.isAllItemsUnselected()){
+        } else {
+            if (!adapter.isAllItemsUnselected()) {
                 adapter.setAllItemsSelected(false);
                 adapter.setAllItemsUnSelectedFlag(true);
-                for (int i=0; i<adapter.getFilesSelectedState().length; i++){
-                    if (adapter.getFilesSelectedState()[i]){
+                for (int i = 0; i < adapter.getFilesSelectedState().length; i++) {
+                    if (adapter.getFilesSelectedState()[i]) {
                         adapter.notifyItemChanged(i);
                     }
                 }
@@ -99,10 +99,10 @@ public class SelectFilesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void getFiles(){
+    private void getFiles() {
         Folder folder = (Folder) getIntent().getSerializableExtra("folder");
-        String[] extensions = new String[] {""};
-        switch (FILES_TYPE){
+        String[] extensions = new String[]{""};
+        switch (FILES_TYPE) {
             case 0:
                 extensions = FilesExtensions.videosExtensions;
                 break;
@@ -113,9 +113,9 @@ public class SelectFilesActivity extends AppCompatActivity {
         }
 
         File[] filesList = folder.listFiles();
-        for (File file : filesList){
-            for (String extension : extensions){
-                if (file.getName().endsWith(extension)){
+        for (File file : filesList) {
+            for (String extension : extensions) {
+                if (file.getName().endsWith(extension)) {
                     mViewModel.addFileInFilesList(file);
                 }
             }

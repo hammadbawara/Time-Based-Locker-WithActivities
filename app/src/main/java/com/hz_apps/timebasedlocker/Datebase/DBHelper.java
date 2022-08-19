@@ -42,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String PHOTO_FOLDERS_TABLE = "photo_folders_list";
     private static final String OTHER_FOLDERS_TABLE = "others_files_folders_list";
 
-    public static DBHelper getINSTANCE(){
+    public static DBHelper getINSTANCE() {
         return dbHelper;
     }
 
@@ -50,11 +50,11 @@ public class DBHelper extends SQLiteOpenHelper {
             ORIGINAL_PATH + " TEXT, " + // 1
             PATH + " TEXT," + // 2
             NAME + " TEXT, " + // 3
-            UNLOCK_DATE_TIME+" TEXT, " + // 4
+            UNLOCK_DATE_TIME + " TEXT, " + // 4
             LOCK_DATE_TIME + " TEXT, " + // 5
             IS_FILE + " INTEGER, " + // 6
             FILE_TYPE + " INTEGER, " + //7
-            IS_ALLOWED_TO_EXTEND_TIME +" INTEGER, " + // 8
+            IS_ALLOWED_TO_EXTEND_TIME + " INTEGER, " + // 8
             IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 9
             IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 10
 
@@ -64,8 +64,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper dbHelper;
 
-    public static void createInstanceForOverApplication(Application application){
-        if (dbHelper == null){
+    public static void createInstanceForOverApplication(Application application) {
+        if (dbHelper == null) {
             dbHelper = new DBHelper(application.getApplicationContext(), "filesDB.db");
         }
     }
@@ -92,8 +92,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + VIDEO_FOLDERS_TABLE + CREATE_FOLDERS_TABLE_QUERY);
         db.execSQL("CREATE TABLE " + OTHER_FOLDERS_TABLE + CREATE_FOLDERS_TABLE_QUERY);
 
-        db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(1, 1)");
-        db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(2, 1)");
+        db.execSQL("INSERT INTO " + DB_RECORD_TABLE + "(_key, value) VALUES(1, 1)");
+        db.execSQL("INSERT INTO " + DB_RECORD_TABLE + "(_key, value) VALUES(2, 1)");
         createFolderFirstTime(db, VIDEO_TYPE, "Videos");
         createFolderFirstTime(db, OTHER_TYPE, "Other Files");
         createFolderFirstTime(db, PHOTO_TYPE, "Photos");
@@ -106,11 +106,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * This method insert savedFile into database
-     * @param savedFile : savedFile that would be saved into database
+     *
+     * @param savedFile   : savedFile that would be saved into database
      * @param nameOfTable : table name where files would store
      * @return: it returns List<SavedFiles>
      */
-    public boolean insert_file(SavedFile savedFile, String nameOfTable){
+    public boolean insert_file(SavedFile savedFile, String nameOfTable) {
 
         db = getWritableDatabase();
 
@@ -130,12 +131,13 @@ public class DBHelper extends SQLiteOpenHelper {
         isAnyChangeInFiles = true;
         return result != -1;
     }
+
     /**
      * @param folderName : Folder name
-     * @param FileType : Types of files will be in the folder. e.g TYPE_VIDEOS, TYPE_PHOTOS and TYPE_OTHERS
+     * @param FileType   : Types of files will be in the folder. e.g TYPE_VIDEOS, TYPE_PHOTOS and TYPE_OTHERS
      * @return if the folder created then true else return false
      */
-    public boolean create_folder(String folderName, int FileType){
+    public boolean create_folder(String folderName, int FileType) {
         db = getWritableDatabase();
 
         String tableName = getFolderTableName(FileType);
@@ -154,14 +156,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    public List<SavedFolder> getSavedFolders(int FILE_TYPE){
+    public List<SavedFolder> getSavedFolders(int FILE_TYPE) {
         db = getReadableDatabase();
         String tableName = getFolderTableName(FILE_TYPE);
         Cursor cursor = db.rawQuery("SELECT * FROM " + tableName, null);
 
         List<SavedFolder> savedFolderList = new ArrayList<>();
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             SavedFolder folder = new SavedFolder();
             folder.setId(cursor.getInt(0));
             folder.setName(cursor.getString(1));
@@ -176,18 +178,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * This method get saved files from database
+     *
      * @param table : tables names from where database needs to get
      * @return it return List<SavedFiles>.
      */
-    public List<SavedFile> getSavedFiles(String table){
+    public List<SavedFile> getSavedFiles(String table) {
         db = getReadableDatabase();
         Cursor cursor;
 
-        cursor = db.rawQuery("SELECT * FROM  " + table,null );
+        cursor = db.rawQuery("SELECT * FROM  " + table, null);
 
         List<SavedFile> savedFilesList = new ArrayList<>();
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             SavedFile savedFile = new SavedFile();
             savedFile.setId(cursor.getInt(0));
             savedFile.setOriginalPath(cursor.getString(1));
@@ -208,7 +211,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public int getDBRecord(int key){
+    public int getDBRecord(int key) {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM DBRecord WHERE _key=" + key, null);
         cursor.moveToNext();
@@ -217,19 +220,19 @@ public class DBHelper extends SQLiteOpenHelper {
         return record;
     }
 
-    public void updateDBRecord(int key, int value){
+    public void updateDBRecord(int key, int value) {
         db = getWritableDatabase();
-        db.execSQL("UPDATE " + DB_RECORD_TABLE + " SET value=" + value + " WHERE _key=" +key );
+        db.execSQL("UPDATE " + DB_RECORD_TABLE + " SET value=" + value + " WHERE _key=" + key);
     }
 
-    private boolean IntToBoolean(int i){
+    private boolean IntToBoolean(int i) {
         return i != 0;
     }
 
 
     public void updateFileDateAndTime(String newDateAndTime, int id, String table) {
         db = getWritableDatabase();
-        db.execSQL("UPDATE " + table + " SET " + UNLOCK_DATE_TIME + " = `" + newDateAndTime + "` WHERE id=" +id);
+        db.execSQL("UPDATE " + table + " SET " + UNLOCK_DATE_TIME + " = `" + newDateAndTime + "` WHERE id=" + id);
     }
 
     public void deleteFileFromDB(String table, int id) {
@@ -237,9 +240,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.delete(table, "id=" + id, null);
     }
 
-    private String getFolderTableName(int FileType){
+    private String getFolderTableName(int FileType) {
         String tableName = "";
-        switch (FileType){
+        switch (FileType) {
             case VIDEO_TYPE:
                 tableName = VIDEO_FOLDERS_TABLE;
                 break;
@@ -256,14 +259,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select MAX(id) from " + tableName, null);
         cursor.moveToNext();
-        int maxId = cursor.getInt(0)+1;
+        int maxId = cursor.getInt(0) + 1;
         cursor.close();
         return tableName.charAt(0) + "_" + maxId;
 
     }
 
     // Due to the FATAL EXCEPTION: pool-1-thread-1. This function create folder first time.
-    private void createFolderFirstTime(SQLiteDatabase db, int FILE_TYPE, String folderName){
+    private void createFolderFirstTime(SQLiteDatabase db, int FILE_TYPE, String folderName) {
         String tableName = getFolderTableName(FILE_TYPE);
         String folderFilesTableName = tableName.charAt(0) + "_" + "0";
 

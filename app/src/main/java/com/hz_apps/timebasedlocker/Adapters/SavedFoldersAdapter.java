@@ -25,7 +25,7 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
     public SavedFoldersAdapter(Context context, List<SavedFolder> savedFolderList, int FILES_TYPE) {
         this.context = context;
         this.savedFolderList = savedFolderList;
-        this.FILES_TYPE =  FILES_TYPE;
+        this.FILES_TYPE = FILES_TYPE;
     }
 
     @NonNull
@@ -56,6 +56,7 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private ShapeableImageView imageView;
         private TextView folder_name;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.folder_image_view);

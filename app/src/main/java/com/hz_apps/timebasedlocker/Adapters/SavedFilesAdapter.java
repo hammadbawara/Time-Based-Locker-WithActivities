@@ -2,10 +2,8 @@ package com.hz_apps.timebasedlocker.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -33,10 +30,8 @@ import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 import com.hz_apps.timebasedlocker.ui.videos.VideoPlayerActivity;
 
 import java.io.File;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
@@ -66,13 +61,13 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         // Select file if it is selected if it is not selected then unselect
-        if (selectedFilesList[holder.getBindingAdapterPosition()]){
+        if (selectedFilesList[holder.getBindingAdapterPosition()]) {
             selectItem(holder);
-        }else {
+        } else {
             unselectItem(holder);
         }
 
-        SavedFile file  = savedFileList.get(position);
+        SavedFile file = savedFileList.get(position);
 
         Glide.with(context).load(file.getPath())
                 .centerCrop()
@@ -83,15 +78,15 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
 
         holder.itemView.setOnClickListener(v -> {
-            if (mActionMode != null){
-                if (selectedFilesList[position]){
+            if (mActionMode != null) {
+                if (selectedFilesList[position]) {
                     unselectItem(holder);
                     numberOfSelectedFiles -= 1;
-                }else {
+                } else {
                     selectItem(holder);
                     numberOfSelectedFiles += 1;
                 }
-            }else{
+            } else {
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
                 intent.putExtra("video_path", file.getPath());
                 context.startActivity(intent);
@@ -99,7 +94,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         });
 
         holder.itemView.setOnLongClickListener(v -> {
-            if (mActionMode != null){
+            if (mActionMode != null) {
                 return false;
             }
             selectItem(holder);
@@ -107,7 +102,6 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             mActionMode = toolbar.startActionMode(mActionModeCallBack);
             return true;
         });
-
 
 
     }
@@ -121,6 +115,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         private final TextView time_remaining;
         private final ImageView imageView;
         private final ImageView checkbox;
+
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.saved_photo_image_view);
@@ -129,28 +124,28 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         }
     }
 
-    private String getRemainingTime(DateAndTime lockDT, DateAndTime unlockDT){
+    private String getRemainingTime(DateAndTime lockDT, DateAndTime unlockDT) {
         LocalDate lDate = lockDT.getDate();
         LocalTime lTime = lockDT.getTime();
         LocalDate unlDate = unlockDT.getDate();
         LocalTime unTime = unlockDT.getTime();
 
-        if ((unlDate.getYear() - lDate.getYear())>0){
+        if ((unlDate.getYear() - lDate.getYear()) > 0) {
             return ((unlDate.getYear() - lDate.getYear() + " years"));
         }
-        if ((unlDate.getMonthValue() - lDate.getMonthValue())>0){
+        if ((unlDate.getMonthValue() - lDate.getMonthValue()) > 0) {
             return ((unlDate.getMonthValue() - lDate.getMonthValue() + " mon"));
         }
-        if ((unlDate.getDayOfMonth() - lDate.getDayOfMonth())>0){
+        if ((unlDate.getDayOfMonth() - lDate.getDayOfMonth()) > 0) {
             return (unlDate.getDayOfMonth() - lDate.getDayOfMonth()) + " days";
         }
-        if ((unTime.getHour() - lTime.getHour())>0){
+        if ((unTime.getHour() - lTime.getHour()) > 0) {
             return (unTime.getHour() - lTime.getHour()) + " hours";
         }
-        if ((unTime.getMinute() - lTime.getMinute())>0){
+        if ((unTime.getMinute() - lTime.getMinute()) > 0) {
             return (unTime.getMinute() - lTime.getMinute()) + " min";
         }
-        if ((unTime.getSecond() - lTime.getSecond())>0){
+        if ((unTime.getSecond() - lTime.getSecond()) > 0) {
             return (unTime.getMinute() - lTime.getMinute()) + " sec";
         }
 
@@ -173,18 +168,18 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         @SuppressLint("NonConstantResourceId")
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.select_all_saved_file:
-                    if (isAllItemsSelected){
+                    if (isAllItemsSelected) {
                         unselectAllItems();
                         isAllItemsSelected = false;
-                    }else{
+                    } else {
                         selectAllItems();
                         isAllItemsSelected = true;
                     }
                     return true;
                 case R.id.delete_btn_saved_file:
-                    if (numberOfSelectedFiles>0){
+                    if (numberOfSelectedFiles > 0) {
                         askUserBeforeDeleting(mode);
                     }
                     return true;
@@ -206,15 +201,15 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         selectedFilesList[holder.getBindingAdapterPosition()] = true;
     }
 
-    private void unselectItem(myViewHolder holder){
+    private void unselectItem(myViewHolder holder) {
         holder.checkbox.setVisibility(View.GONE);
         holder.imageView.clearColorFilter();
         selectedFilesList[holder.getBindingAdapterPosition()] = false;
     }
 
-    public void unselectAllItems(){
-        for (int i=0; i<selectedFilesList.length; i++){
-            if (selectedFilesList[i]){
+    public void unselectAllItems() {
+        for (int i = 0; i < selectedFilesList.length; i++) {
+            if (selectedFilesList[i]) {
                 selectedFilesList[i] = false;
                 notifyItemChanged(i);
             }
@@ -222,9 +217,9 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         numberOfSelectedFiles = 0;
     }
 
-    public void selectAllItems(){
-        for (int i=0; i<selectedFilesList.length; i++){
-            if (!selectedFilesList[i]){
+    public void selectAllItems() {
+        for (int i = 0; i < selectedFilesList.length; i++) {
+            if (!selectedFilesList[i]) {
                 selectedFilesList[i] = true;
                 notifyItemChanged(i);
             }
@@ -232,17 +227,17 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         numberOfSelectedFiles = selectedFilesList.length;
     }
 
-    private String createStringOfSelectedFiles(){
+    private String createStringOfSelectedFiles() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i=0; i<selectedFilesList.length; i++){
-            if (selectedFilesList[i]){
+        for (int i = 0; i < selectedFilesList.length; i++) {
+            if (selectedFilesList[i]) {
                 stringBuilder.append(savedFileList.get(i).getName()).append("\n");
             }
         }
         return stringBuilder.toString();
     }
 
-    private void askUserBeforeDeleting(ActionMode mode){
+    private void askUserBeforeDeleting(ActionMode mode) {
         CustomAlertDialogBinding binding = CustomAlertDialogBinding.inflate(LayoutInflater.from(context));
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setView(binding.getRoot());
@@ -256,19 +251,19 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         dialog.setPositiveButton("Ok", (dialog12, which) -> {
             DBHelper db = DBHelper.getINSTANCE();
             int numberOfFilesRemoved = 0;
-            for (int i=0; i<selectedFilesList.length; i++){
-                if (selectedFilesList[i]){
-                    SavedFile savedFile = savedFileList.get(i-numberOfFilesRemoved);
+            for (int i = 0; i < selectedFilesList.length; i++) {
+                if (selectedFilesList[i]) {
+                    SavedFile savedFile = savedFileList.get(i - numberOfFilesRemoved);
                     File file = new File(savedFile.getPath());
                     db.deleteFileFromDB(SavedFilesActivity.FILES_TABLE_NAME, savedFile.getId());
                     file.delete();
-                    savedFileList.remove(i-numberOfFilesRemoved);
-                    notifyItemChanged(i-numberOfFilesRemoved);
+                    savedFileList.remove(i - numberOfFilesRemoved);
+                    notifyItemChanged(i - numberOfFilesRemoved);
                     numberOfFilesRemoved += 1;
                     Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
                 }
             }
-            
+
             selectedFilesList = new boolean[savedFileList.size()];
 
             notifyItemRangeChanged(0, savedFileList.size());

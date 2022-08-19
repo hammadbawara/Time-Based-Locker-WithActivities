@@ -19,7 +19,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-
         String path = getIntent().getStringExtra("video_path");
 
         VideoView videoView = binding.videoView;

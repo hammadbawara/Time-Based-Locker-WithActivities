@@ -9,7 +9,7 @@ public class SelectFilesViewModel extends ViewModel {
 
     private ArrayList<File> filesList;
 
-    public SelectFilesViewModel(){
+    public SelectFilesViewModel() {
         filesList = new ArrayList<>();
     }
 
@@ -21,7 +21,7 @@ public class SelectFilesViewModel extends ViewModel {
         this.filesList = filesList;
     }
 
-    public void addFileInFilesList(File file){
+    public void addFileInFilesList(File file) {
         filesList.add(file);
     }
 }

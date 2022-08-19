@@ -27,6 +27,7 @@ public class SavedFilesActivity extends AppCompatActivity {
     SavedFilesAdapter adapter;
     public static int FILES_TYPE;
     public static String FILES_TABLE_NAME;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +51,9 @@ public class SavedFilesActivity extends AppCompatActivity {
         binding.swipeRefreshSavedFiles.setOnRefreshListener(this::main);
 
 
-
     }
 
-    private void main(){
+    private void main() {
         binding.progressBarSavedFiles.setVisibility(View.VISIBLE);
         Executors.newSingleThreadExecutor().execute(() -> {
             fetchDataFromDB();
@@ -61,19 +61,19 @@ public class SavedFilesActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchDataFromDB(){
+    private void fetchDataFromDB() {
         DBHelper db = DBHelper.getINSTANCE();
         List<SavedFile> savedFileList = db.getSavedFiles(savedFolder.getFilesTable());
         viewModel.setSavedFilesList(savedFileList);
         adapter = new SavedFilesAdapter(this, viewModel.getSavedFilesList(), binding.toolbarSavedFiles);
     }
 
-    private void setFilesInRecyclerView(){
+    private void setFilesInRecyclerView() {
         RecyclerView recyclerView = binding.recyclerviewSavedFiles;
         recyclerView.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/120;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels / displayMetrics.density) / 120;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
         binding.progressBarSavedFiles.setVisibility(View.GONE);
         binding.swipeRefreshSavedFiles.setRefreshing(false);
@@ -81,7 +81,7 @@ public class SavedFilesActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        if (DBHelper.isAnyChangeInFiles){
+        if (DBHelper.isAnyChangeInFiles) {
             main();
             DBHelper.isAnyChangeInFiles = false;
         }

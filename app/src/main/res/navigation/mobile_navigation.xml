@@ -41,6 +41,5 @@
         android:id="@+id/BSDialog"
         android:name="com.hz_apps.timebasedlocker.Dialogs.BSDialogFragment"
         android:label="fragment_b_s_dialog"
-        tools:layout="@layout/fragment_b_s_dialog" >
-    </dialog>
+        tools:layout="@layout/fragment_b_s_dialog"></dialog>
 </navigation>

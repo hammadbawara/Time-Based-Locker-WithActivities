@@ -11,7 +11,7 @@ public class SavedFilesViewModel extends ViewModel {
 
     private List<SavedFile> savedFilesList;
 
-    public SavedFilesViewModel(){
+    public SavedFilesViewModel() {
         savedFilesList = new ArrayList<>();
     }
 

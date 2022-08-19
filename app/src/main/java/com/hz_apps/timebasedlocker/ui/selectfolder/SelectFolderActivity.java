@@ -41,21 +41,22 @@ public class SelectFolderActivity extends AppCompatActivity {
 
     }
 
-    private void main(){
+    private void main() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(()->{
+        executor.execute(() -> {
             getFoldersFromStorage();
             this.runOnUiThread(this::showItemsInRecyclerView);
         });
     }
-    private void getFoldersFromStorage(){
-        if (mViewModel.getFoldersList().size() == 0){
+
+    private void getFoldersFromStorage() {
+        if (mViewModel.getFoldersList().size() == 0) {
             String path = System.getenv("EXTERNAL_STORAGE");
 
             // extension tells which types of files we are looking
             String[] extensions;
             FILES_TYPE = SavedFilesActivity.FILES_TYPE;
-            switch (FILES_TYPE){
+            switch (FILES_TYPE) {
                 case DBHelper.VIDEO_TYPE:
                     extensions = FilesExtensions.videosExtensions;
                     break;
@@ -68,14 +69,14 @@ public class SelectFolderActivity extends AppCompatActivity {
 
             // Getting folders list containing images
             FindSpecificFilesFolders findSpecificFilesFolders = new FindSpecificFilesFolders(path, extensions,
-                    new String[] {"Android"});
+                    new String[]{"Android"});
             mViewModel.setFoldersList(findSpecificFilesFolders.getFoldersList());
         }
     }
 
-    private void showItemsInRecyclerView(){
+    private void showItemsInRecyclerView() {
         // check if folderList is zero then set message
-        if (mViewModel.getFoldersList().size() == 0){
+        if (mViewModel.getFoldersList().size() == 0) {
             binding.filesNotFoundTextView.setVisibility(View.VISIBLE);
             // hiding progressbar when all tasks completes
             binding.progressBarSelectFolder.setVisibility(View.GONE);
@@ -86,14 +87,14 @@ public class SelectFolderActivity extends AppCompatActivity {
         binding.selectFolderRecyclerView.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/155;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels / displayMetrics.density) / 155;
         binding.selectFolderRecyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
 
         // hiding progressbar when all tasks completes
         binding.progressBarSelectFolder.setVisibility(View.GONE);
     }
 
-    private void showDetailOfPermission(){
+    private void showDetailOfPermission() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setMessage("Storage Permission is necessary for getting files.");
         dialog.setPositiveButton("Allow", (dialog1, which) -> requestPermission());
@@ -101,7 +102,7 @@ public class SelectFolderActivity extends AppCompatActivity {
         dialog.create().show();
     }
 
-    private void requestPermission(){
+    private void requestPermission() {
         Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {

@@ -58,6 +58,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
     public class myViewHolder extends RecyclerView.ViewHolder {
         private ShapeableImageView imageView;
         private TextView folder_name;
+
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.folder_image_view);

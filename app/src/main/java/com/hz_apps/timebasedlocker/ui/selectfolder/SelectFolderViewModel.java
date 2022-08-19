@@ -8,7 +8,7 @@ public class SelectFolderViewModel extends ViewModel {
     private ArrayList<Folder> foldersList;
 
 
-    public SelectFolderViewModel(){
+    public SelectFolderViewModel() {
         foldersList = new ArrayList<>();
     }
 

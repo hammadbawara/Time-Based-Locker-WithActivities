@@ -11,8 +11,9 @@
         android:icon="@drawable/ic_photos"
         android:title="Photos" />
 
-    <item android:title="Others"
+    <item
+        android:title="Others"
         android:id="@+id/navigation_others"
-        android:icon="@drawable/ic_others"/>
+        android:icon="@drawable/ic_others" />
 
 </menu>

@@ -24,7 +24,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myViewHolder>{
+public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myViewHolder> {
 
     private final Context context;
     // List of images that will shown to user
@@ -52,7 +52,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         DAY_OF_MONTH = calendar.get(Calendar.DAY_OF_MONTH);
         this.dateAndTimeList = new DateAndTime[imagesList.size()];
         // Initializing all items in dateAndTimeList. So we do not get null Pointer exception.
-        for (int i=0; i<imagesList.size(); i++){
+        for (int i = 0; i < imagesList.size(); i++) {
             dateAndTimeList[i] = new DateAndTime();
         }
         // TODO: This color does not change with theme
@@ -80,13 +80,13 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         }
 
 
-        if (DateForAllItems != null){
+        if (DateForAllItems != null) {
             dateAndTimeList[position].setDate(DateForAllItems);
             holder.set_date.setTextColor(defaultTextViewColor);
             holder.set_date.setText(DateForAllItems.getDayOfMonth() + "-" + getMonthInText(DateForAllItems.getMonthValue()) + "-" + DateForAllItems.getYear());
         }
 
-        if (TimeForAllItems != null){
+        if (TimeForAllItems != null) {
             dateAndTimeList[position].setTime(TimeForAllItems);
             holder.set_time.setText(TimeForAllItems.getHour() + " : " + TimeForAllItems.getMinute());
         }
@@ -107,6 +107,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         private final TextView set_date;
         private final TextView lock_file_title;
         private final TextView set_time;
+
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.lock_file_imageview);
@@ -116,12 +117,12 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         }
     }
 
-    private void showDatePickerDialog(myViewHolder holder){
+    private void showDatePickerDialog(myViewHolder holder) {
         // show date picker dialog on click of set date text view
-        holder.set_date.setOnClickListener(v ->{
+        holder.set_date.setOnClickListener(v -> {
             datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
                 // storing date in dateAndTimeList
-                dateAndTimeList[holder.getBindingAdapterPosition()].setDate(LocalDate.of(year, month+1, dayOfMonth));
+                dateAndTimeList[holder.getBindingAdapterPosition()].setDate(LocalDate.of(year, month + 1, dayOfMonth));
                 // setting date in textView
                 holder.set_date.setText(dayOfMonth + "-" + getMonthInText(month) + "-" + year);
                 // setting color of textView to default. Because color of textView can be red.
@@ -133,7 +134,7 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     }
 
     // Time picker dialog
-    private void showTimePickerDialog(myViewHolder holder){
+    private void showTimePickerDialog(myViewHolder holder) {
         timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -142,17 +143,17 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
                 // setting time in textView
                 holder.set_time.setText(hourOfDay + " : " + minute);
             }
-        },12, 0, true );
+        }, 12, 0, true);
         timePickerDialog.show();
     }
 
-    public void setDateForAllItems(LocalDate localDate){
+    public void setDateForAllItems(LocalDate localDate) {
         TimeForAllItems = null;
         dateNotSetWarning = false;
         DateForAllItems = localDate;
     }
 
-    public DateAndTime[] getDateAndTimeList(){
+    public DateAndTime[] getDateAndTimeList() {
         return dateAndTimeList;
     }
 
@@ -162,14 +163,13 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         TimeForAllItems = timeForAllItems;
     }
 
-    public void setDateNotSetWarning(boolean b){
+    public void setDateNotSetWarning(boolean b) {
         this.dateNotSetWarning = b;
     }
 
 
-
-    private String getMonthInText(int month){
-        switch (month){
+    private String getMonthInText(int month) {
+        switch (month) {
             case 0:
                 return "Jan";
             case 1:

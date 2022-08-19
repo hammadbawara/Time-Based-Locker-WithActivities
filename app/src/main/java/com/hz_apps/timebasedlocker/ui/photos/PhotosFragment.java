@@ -30,9 +30,9 @@ public class PhotosFragment extends Fragment {
         binding = FragmentPhotosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        if (viewModel.getSavedFolderList().size() == 0){
+        if (viewModel.getSavedFolderList().size() == 0) {
             fetchDataFromDB();
-        }else{
+        } else {
             setDataInRV();
         }
 
@@ -47,7 +47,7 @@ public class PhotosFragment extends Fragment {
     }
 
     // This method fetch data from database and also set that data in recycler view
-    private void fetchDataFromDB(){
+    private void fetchDataFromDB() {
         // Showing progressBar before fetching data from Database and setting into recycler view
         binding.progressBarPhotosFragment.setVisibility(View.VISIBLE);
 
@@ -59,20 +59,22 @@ public class PhotosFragment extends Fragment {
             requireActivity().runOnUiThread(this::setDataInRV);
         });
     }
+
     // This function set data in Recycler View
-    private void setDataInRV(){
+    private void setDataInRV() {
         SavedFoldersAdapter adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList(), DBHelper.PHOTO_TYPE);
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/155;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels / displayMetrics.density) / 155;
         binding.recyclerviewPhotoFragment.setLayoutManager(new GridLayoutManager(getContext(), numberOfImagesInOneRow));
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
 
         // Hiding Progress Bar after showing data in recycler view
         binding.progressBarPhotosFragment.setVisibility(View.GONE);
 
-        if (binding.swipeRefreshPhotosFragment.isRefreshing()) binding.swipeRefreshPhotosFragment.setRefreshing(false);
+        if (binding.swipeRefreshPhotosFragment.isRefreshing())
+            binding.swipeRefreshPhotosFragment.setRefreshing(false);
     }
 
     @Override
@@ -83,7 +85,7 @@ public class PhotosFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if (DBHelper.isAnyChangeInFolders){
+        if (DBHelper.isAnyChangeInFolders) {
             fetchDataFromDB();
             DBHelper.isAnyChangeInFolders = false;
         }

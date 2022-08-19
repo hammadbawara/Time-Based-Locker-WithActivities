@@ -1,32 +1,23 @@
 package com.hz_apps.timebasedlocker.Dialogs;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.FileProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
-import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.databinding.FragmentBSDialogBinding;
-import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
 
 public class BSDialogFragment extends BottomSheetDialogFragment {
     FragmentBSDialogBinding binding;
     DatePickerDialog datePickerDialog;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

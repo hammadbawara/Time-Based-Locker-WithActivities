@@ -11,11 +11,11 @@ public class DateAndTime implements Serializable {
     private LocalDate date;
     private LocalTime time = LocalTime.MIN;
 
-    public DateAndTime(){
+    public DateAndTime() {
 
     }
 
-    public DateAndTime(@NonNull LocalDate date, @NonNull LocalTime time){
+    public DateAndTime(@NonNull LocalDate date, @NonNull LocalTime time) {
         this.date = date;
         this.time = time;
     }
@@ -46,18 +46,18 @@ public class DateAndTime implements Serializable {
 
     @NonNull
     @Override
-    public String toString(){
+    public String toString() {
         return date.toString() + " " + time.toString();
     }
 
-    public static DateAndTime parse(String dateAndTime){
+    public static DateAndTime parse(String dateAndTime) {
         String[] dateAndTimeArray = dateAndTime.split(" ");
         LocalDate date = LocalDate.parse(dateAndTimeArray[0]);
         LocalTime time = LocalTime.parse(dateAndTimeArray[1]);
         return new DateAndTime(date, time);
     }
 
-    public static DateAndTime of(int YEAR, int MONTH, int DayOfMonth, int Hour, int Minute){
+    public static DateAndTime of(int YEAR, int MONTH, int DayOfMonth, int Hour, int Minute) {
         LocalDate localDate = LocalDate.of(YEAR, MONTH, DayOfMonth);
         LocalTime localTime = LocalTime.of(Hour, Minute);
         return new DateAndTime(localDate, localTime);

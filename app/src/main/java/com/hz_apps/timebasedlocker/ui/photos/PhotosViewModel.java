@@ -11,7 +11,7 @@ public class PhotosViewModel extends ViewModel {
 
     private List<SavedFolder> savedFolderList;
 
-    public PhotosViewModel(){
+    public PhotosViewModel() {
         savedFolderList = new ArrayList<>();
     }
 

@@ -14,7 +14,7 @@ public class SavedFolder implements Serializable {
         this.filesTable = files_table;
     }
 
-    public SavedFolder(){
+    public SavedFolder() {
 
     }
 

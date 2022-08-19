@@ -11,7 +11,7 @@ public class VideosViewModel extends ViewModel {
 
     private List<SavedFolder> savedFolderList;
 
-    public VideosViewModel(){
+    public VideosViewModel() {
         savedFolderList = new ArrayList<>();
     }
 

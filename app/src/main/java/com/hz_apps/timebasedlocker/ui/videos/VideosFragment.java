@@ -34,9 +34,9 @@ public class VideosFragment extends Fragment {
         // creating database instance for all over application
         DBHelper.createInstanceForOverApplication(requireActivity().getApplication());
 
-        if (viewModel.getSavedFolderList().size() == 0){
+        if (viewModel.getSavedFolderList().size() == 0) {
             fetchDataFromDB();
-        }else{
+        } else {
             setDataInRV();
         }
 
@@ -49,7 +49,7 @@ public class VideosFragment extends Fragment {
         return root;
     }
 
-    private void fetchDataFromDB(){
+    private void fetchDataFromDB() {
 
         binding.progressBarVideosFragment.setVisibility(View.VISIBLE);
 
@@ -61,24 +61,26 @@ public class VideosFragment extends Fragment {
         });
 
     }
+
     // This function set data in Recycler View
-    private void setDataInRV(){
+    private void setDataInRV() {
         adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList(), DBHelper.VIDEO_TYPE);
         binding.recyclerviewSavedVideos.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/155;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels / displayMetrics.density) / 155;
         binding.recyclerviewSavedVideos.setLayoutManager(new GridLayoutManager(getContext(), numberOfImagesInOneRow));
         binding.recyclerviewSavedVideos.setAdapter(adapter);
 
         binding.progressBarVideosFragment.setVisibility(View.GONE);
 
-        if (binding.swipeRefreshVideosFragment.isRefreshing()) binding.swipeRefreshVideosFragment.setRefreshing(false);
+        if (binding.swipeRefreshVideosFragment.isRefreshing())
+            binding.swipeRefreshVideosFragment.setRefreshing(false);
     }
 
     @Override
     public void onResume() {
-        if (DBHelper.isAnyChangeInFolders){
+        if (DBHelper.isAnyChangeInFolders) {
             fetchDataFromDB();
             DBHelper.isAnyChangeInFolders = false;
         }

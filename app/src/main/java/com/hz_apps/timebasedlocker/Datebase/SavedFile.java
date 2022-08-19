@@ -31,7 +31,7 @@ public class SavedFile implements Serializable {
         this.isAllowedToSeeTitle = isAllowedToSeeTitle;
     }
 
-    public SavedFile(){
+    public SavedFile() {
 
     }
 
