@@ -1,6 +1,8 @@
 package com.hz_apps.timebasedlocker.Datebase;
 
-public class SavedFolder {
+import java.io.Serializable;
+
+public class SavedFolder implements Serializable {
     private int id;
     private String name;
     // Files inside the folder table

@@ -1,6 +1,7 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
 import com.hz_apps.timebasedlocker.R;
+import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 
 import java.util.List;
 
@@ -35,6 +37,12 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         SavedFolder folder = savedFolderList.get(position);
         holder.folder_name.setText(folder.getName());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, SavedFilesActivity.class);
+            intent.putExtra("saved_folder", folder);
+            context.startActivity(intent);
+        });
     }
 
     @Override
