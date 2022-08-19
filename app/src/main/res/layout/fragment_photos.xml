@@ -21,19 +21,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarPhotosFragment"
             app:spanCount="2"
-            tools:listitem="@layout/saved_file_view">
+            tools:listitem="@layout/folder_view">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/add_folder_photos_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:backgroundTint="@color/white"
             android:clickable="true"
-            android:src="@drawable/ic_add_photos"
+            android:src="@drawable/ic_add_folder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

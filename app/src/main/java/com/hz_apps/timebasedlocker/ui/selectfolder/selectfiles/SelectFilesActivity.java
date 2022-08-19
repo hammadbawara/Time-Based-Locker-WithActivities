@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hz_apps.timebasedlocker.Adapters.FilesListAdapter;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFilesBinding;
+import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 import com.hz_apps.timebasedlocker.ui.selectfolder.FilesExtensions;
 import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
 
@@ -26,7 +27,7 @@ public class SelectFilesActivity extends AppCompatActivity {
     private ActivitySelectFilesBinding binding;
     private SelectFilesViewModel mViewModel;
     FilesListAdapter adapter;
-    public static int TYPES_OF_FILES;
+    public static int FILES_TYPE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class SelectFilesActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
-        TYPES_OF_FILES = getIntent().getIntExtra("TypesOfFiles", -1);
+        FILES_TYPE = SavedFilesActivity.FILES_TYPE;
 
         mViewModel = new ViewModelProvider(this).get(SelectFilesViewModel.class);
         runBackground();
@@ -101,7 +102,7 @@ public class SelectFilesActivity extends AppCompatActivity {
     private void getFiles(){
         Folder folder = (Folder) getIntent().getSerializableExtra("folder");
         String[] extensions = new String[] {""};
-        switch (TYPES_OF_FILES){
+        switch (FILES_TYPE){
             case 0:
                 extensions = FilesExtensions.videosExtensions;
                 break;

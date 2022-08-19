@@ -1,6 +1,5 @@
 package com.hz_apps.timebasedlocker.ui.photos;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -12,11 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.FragmentPhotosBinding;
-import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
 import java.util.concurrent.Executors;
 
@@ -40,10 +37,8 @@ public class PhotosFragment extends Fragment {
         }
 
 
-        binding.floatingActionButton.setOnClickListener((v) -> {
-            Intent intent = new Intent(requireActivity(), SelectFolderActivity.class);
-            intent.putExtra("Type_Of_Files", DBHelper.TYPE_PHOTO);
-            startActivity(intent);
+        binding.addFolderPhotosFragment.setOnClickListener((v) -> {
+
         });
 
         binding.swipeRefreshPhotosFragment.setOnRefreshListener(this::fetchDataFromDB);
@@ -59,14 +54,14 @@ public class PhotosFragment extends Fragment {
         Executors.newSingleThreadExecutor().execute(() -> {
 
             db = DBHelper.getINSTANCE();
-            viewModel.setSavedFolderList(db.getSavedFolders(DBHelper.TYPE_PHOTO));
+            viewModel.setSavedFolderList(db.getSavedFolders(DBHelper.PHOTO_TYPE));
 
             requireActivity().runOnUiThread(this::setDataInRV);
         });
     }
     // This function set data in Recycler View
     private void setDataInRV(){
-        SavedFoldersAdapter adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList());
+        SavedFoldersAdapter adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList(), DBHelper.PHOTO_TYPE);
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

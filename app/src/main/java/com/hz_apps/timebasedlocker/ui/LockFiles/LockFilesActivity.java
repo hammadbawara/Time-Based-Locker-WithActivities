@@ -18,6 +18,7 @@ import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.MainActivity;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
+import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +40,7 @@ public class LockFilesActivity extends AppCompatActivity {
     int YEAR, MONTH, DAY_OF_MONTH, HOUR, MINUTE;
     Calendar calendar;
     ArrayList<File> selectedFiles;
-    int TYPES_OF_FILES;
+    int FILES_TYPES;
     private DBHelper db;
     private String destinationFolder;
     int last_id = 1;
@@ -54,7 +55,10 @@ public class LockFilesActivity extends AppCompatActivity {
         updateTime();
 
         selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
-        TYPES_OF_FILES = getIntent().getIntExtra("TYPES_OF_FILES", -1);
+        FILES_TYPES = SavedFilesActivity.FILES_TYPE;
+
+        // Initializing Database
+        db = DBHelper.getINSTANCE();
 
         adapter = new LockFileAdapter(this, selectedFiles);
 
@@ -97,8 +101,6 @@ public class LockFilesActivity extends AppCompatActivity {
         });
 
         executor.execute(() ->{
-            // Initializing Database
-            db = DBHelper.getINSTANCE();
 
             // updating time for time when file is locked
             updateTime();
@@ -109,8 +111,17 @@ public class LockFilesActivity extends AppCompatActivity {
                     LocalTime.of(HOUR, MINUTE));
             // update path where files store and also last id
             updateValuesAccordingToFile();
+            System.out.println("Destination Folder " + destinationFolder);
+            System.out.println("FILE TYPE  " +  FILES_TYPES);
 
             int total_files = selectedFiles.size();
+
+            // Create folder if not exists
+            File destination = new File(destinationFolder);
+            if (!destination.isDirectory()){
+                destination.mkdirs();
+            }
+
             for (int i=0; i<total_files; i++){
 
                 File source = selectedFiles.get(i);
@@ -142,17 +153,10 @@ public class LockFilesActivity extends AppCompatActivity {
                 file.setAllowedToSeePhoto(true);
                 file.setAllowedToSeeTitle(true);
                 file.setPath(destinationFolder + last_id);
+                file.setFileType(FILES_TYPES);
 
-                switch (TYPES_OF_FILES){
-                    case DBHelper.TYPE_VIDEO:
-                        file.setFileType(DBHelper.TYPE_VIDEO);
-                        db.insert_file(file, DBHelper.SAVED_VIDEO_TABLE);
-                        break;
-                    case DBHelper.TYPE_PHOTO:
-                        file.setFileType(DBHelper.TYPE_PHOTO);
-                        db.insert_file(file, DBHelper.SAVED_PHOTO_TABLE);
-                        break;
-                }
+                db.insert_file(file, SavedFilesActivity.FILES_TABLE_NAME);
+
                 last_id += 1;
                 updateLastIdInDatabase();
             }
@@ -172,10 +176,6 @@ public class LockFilesActivity extends AppCompatActivity {
      * internal storage to app directory so I am copying files from internal storage and then delete that file
      */
     boolean moveFile(File source, File destination) {
-        if (!destination.getParentFile().isDirectory()){
-            File parent = destination.getParentFile();
-            parent.mkdirs();
-        }
 
         long total_size_of_file = source.length();
         long file_copied = 0;
@@ -266,12 +266,12 @@ public class LockFilesActivity extends AppCompatActivity {
      * This function updates necessary values
      */
     private void updateValuesAccordingToFile(){
-        switch (TYPES_OF_FILES){
-            case DBHelper.TYPE_VIDEO:
+        switch (FILES_TYPES){
+            case DBHelper.VIDEO_TYPE:
                 last_id = db.getDBRecord(DBHelper.LAST_SAVED_VIDEO_KEY);
                 destinationFolder = getString(R.string.saved_videos_path);
                 break;
-            case DBHelper.TYPE_PHOTO:
+            case DBHelper.PHOTO_TYPE:
                 last_id = db.getDBRecord(DBHelper.LAST_SAVED_PHOTO_KEY);
                 destinationFolder = getString(R.string.saved_photos_path);
                 break;
@@ -279,11 +279,11 @@ public class LockFilesActivity extends AppCompatActivity {
     }
 
     private void updateLastIdInDatabase(){
-        switch (TYPES_OF_FILES){
-            case 0:
+        switch (FILES_TYPES){
+            case DBHelper.VIDEO_TYPE:
                 db.updateDBRecord(DBHelper.LAST_SAVED_VIDEO_KEY, last_id);
                 break;
-            case 1:
+            case DBHelper.PHOTO_TYPE:
                 db.updateDBRecord(DBHelper.LAST_SAVED_PHOTO_KEY, last_id);
                 break;
         }

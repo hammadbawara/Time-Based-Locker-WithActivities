@@ -12,14 +12,14 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_videos_btn"
+            android:id="@+id/add_folder_videos_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:backgroundTint="@color/white"
-            android:src="@drawable/ic_add_video"
+            android:src="@drawable/ic_add_folder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

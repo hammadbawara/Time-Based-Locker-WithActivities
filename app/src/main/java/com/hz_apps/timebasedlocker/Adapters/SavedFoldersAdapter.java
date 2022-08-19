@@ -20,10 +20,12 @@ import java.util.List;
 public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapter.MyViewHolder> {
     private final Context context;
     private final List<SavedFolder> savedFolderList;
+    private final int FILES_TYPE;
 
-    public SavedFoldersAdapter(Context context, List<SavedFolder> savedFolderList) {
+    public SavedFoldersAdapter(Context context, List<SavedFolder> savedFolderList, int FILES_TYPE) {
         this.context = context;
         this.savedFolderList = savedFolderList;
+        this.FILES_TYPE =  FILES_TYPE;
     }
 
     @NonNull
@@ -41,6 +43,7 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SavedFilesActivity.class);
             intent.putExtra("saved_folder", folder);
+            intent.putExtra("FILES_TYPE", FILES_TYPE);
             context.startActivity(intent);
         });
     }

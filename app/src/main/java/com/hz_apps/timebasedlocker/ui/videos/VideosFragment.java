@@ -1,6 +1,5 @@
 package com.hz_apps.timebasedlocker.ui.videos;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
-import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
 import java.util.concurrent.Executors;
 
@@ -42,10 +40,8 @@ public class VideosFragment extends Fragment {
             setDataInRV();
         }
 
-        binding.addVideosBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(requireActivity(), SelectFolderActivity.class);
-            intent.putExtra("Type_Of_Files", 0);
-            startActivity(intent);
+        binding.addFolderVideosFragment.setOnClickListener(view -> {
+
         });
 
         binding.swipeRefreshVideosFragment.setOnRefreshListener(this::fetchDataFromDB);
@@ -59,7 +55,7 @@ public class VideosFragment extends Fragment {
 
         Executors.newSingleThreadExecutor().execute(() -> {
             db = DBHelper.getINSTANCE();
-            viewModel.setSavedFolderList(db.getSavedFolders(DBHelper.TYPE_VIDEO));
+            viewModel.setSavedFolderList(db.getSavedFolders(DBHelper.VIDEO_TYPE));
 
             requireActivity().runOnUiThread(this::setDataInRV);
         });
@@ -67,7 +63,7 @@ public class VideosFragment extends Fragment {
     }
     // This function set data in Recycler View
     private void setDataInRV(){
-        adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList());
+        adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList(), DBHelper.VIDEO_TYPE);
         binding.recyclerviewSavedVideos.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

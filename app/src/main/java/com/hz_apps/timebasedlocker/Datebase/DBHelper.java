@@ -29,9 +29,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String IS_ALLOWED_TO_SEE_TITLE = "is_allowed_to_see_title";
     public static final int LAST_SAVED_VIDEO_KEY = 1;
     public static final int LAST_SAVED_PHOTO_KEY = 2;
-    public static final int TYPE_VIDEO = 0;
-    public static final int TYPE_PHOTO = 1;
-    public static final int TYPE_OTHERS = 2;
+    public static final int VIDEO_TYPE = 0;
+    public static final int PHOTO_TYPE = 1;
+    public static final int OTHER_TYPE = 2;
     private static final String FOLDER_FILES_TABLE_NAME = "folder_files_table_name";
 
     // Tables names
@@ -94,9 +94,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(1, 1)");
         db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(2, 1)");
-        createFolderFirstTime(db, TYPE_VIDEO, "Videos");
-        createFolderFirstTime(db, TYPE_OTHERS, "Other Files");
-        createFolderFirstTime(db, TYPE_PHOTO, "Photos");
+        createFolderFirstTime(db, VIDEO_TYPE, "Videos");
+        createFolderFirstTime(db, OTHER_TYPE, "Other Files");
+        createFolderFirstTime(db, PHOTO_TYPE, "Photos");
     }
 
     @Override
@@ -240,13 +240,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private String getFolderTableName(int FileType){
         String tableName = "";
         switch (FileType){
-            case TYPE_VIDEO:
+            case VIDEO_TYPE:
                 tableName = VIDEO_FOLDERS_TABLE;
                 break;
-            case TYPE_PHOTO:
+            case PHOTO_TYPE:
                 tableName = PHOTO_FOLDERS_TABLE;
                 break;
-            case TYPE_OTHERS:
+            case OTHER_TYPE:
                 tableName = OTHER_FOLDERS_TABLE;
         }
         return tableName;

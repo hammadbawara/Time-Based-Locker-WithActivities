@@ -1,20 +1,21 @@
 package com.hz_apps.timebasedlocker.ui.ShowSavedFiles;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.View;
-
 import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
-import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.ActivitySavedFilesBinding;
+import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -24,6 +25,8 @@ public class SavedFilesActivity extends AppCompatActivity {
     SavedFilesViewModel viewModel;
     SavedFolder savedFolder;
     SavedFilesAdapter adapter;
+    public static int FILES_TYPE;
+    public static String FILES_TABLE_NAME;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +36,18 @@ public class SavedFilesActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(SavedFilesViewModel.class);
 
         savedFolder = (SavedFolder) getIntent().getSerializableExtra("saved_folder");
+        FILES_TYPE = getIntent().getIntExtra("FILES_TYPE", -1);
+        FILES_TABLE_NAME = savedFolder.getFilesTable();
+
 
         Executors.newSingleThreadExecutor().execute(() -> {
             fetchDataFromDB();
             runOnUiThread(this::setFilesInRecyclerView);
+        });
+
+        binding.addFilesSavedFiles.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SelectFolderActivity.class);
+            startActivity(intent);
         });
 
 
