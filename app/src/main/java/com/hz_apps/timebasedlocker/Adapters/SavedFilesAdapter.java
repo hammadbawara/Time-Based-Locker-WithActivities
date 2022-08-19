@@ -1,8 +1,11 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,31 +16,38 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
+import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 import com.hz_apps.timebasedlocker.ui.videos.VideoPlayerActivity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
     private final Context context;
-    private final List<SavedFile> savedPhotoList;
+    private final List<SavedFile> savedFileList;
     private ActionMode mActionMode;
     private final MaterialToolbar toolbar;
     private boolean[] selectedFilesList;
     private int numberOfSelectedFiles = 0;
+    private boolean isAllItemsSelected = false;
+
 
     public SavedFilesAdapter(Context context, List<SavedFile> savedFileList, MaterialToolbar toolbar) {
         this.context = context;
-        this.savedPhotoList = savedFileList;
+        this.savedFileList = savedFileList;
         this.toolbar = toolbar;
         selectedFilesList = new boolean[savedFileList.size()];
     }
@@ -58,7 +68,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             unselectItem(holder);
         }
 
-        SavedFile file  = savedPhotoList.get(position);
+        SavedFile file  = savedFileList.get(position);
 
         Glide.with(context).load(file.getPath())
                 .centerCrop()
@@ -72,8 +82,10 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             if (mActionMode != null){
                 if (selectedFilesList[position]){
                     unselectItem(holder);
+                    numberOfSelectedFiles -= 1;
                 }else {
                     selectItem(holder);
+                    numberOfSelectedFiles += 1;
                 }
             }else{
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
@@ -87,6 +99,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                 return false;
             }
             selectItem(holder);
+            numberOfSelectedFiles += 1;
             mActionMode = toolbar.startActionMode(mActionModeCallBack);
             return true;
         });
@@ -97,7 +110,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
     @Override
     public int getItemCount() {
-        return savedPhotoList.size();
+        return savedFileList.size();
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder {
@@ -153,15 +166,25 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             return false;
         }
 
+        @SuppressLint("NonConstantResourceId")
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()){
                 case R.id.select_all_saved_file:
-                    selectAllItems();
-                    break;
-                case R.id.unselect_all_saved_file:
-                    unselectAllItems();
-                    break;
+                    if (isAllItemsSelected){
+                        unselectAllItems();
+                        isAllItemsSelected = false;
+                    }else{
+                        selectAllItems();
+                        isAllItemsSelected = true;
+                    }
+                    return true;
+                case R.id.delete_btn_saved_file:
+                    System.out.println("numberOfSelected " + numberOfSelectedFiles);
+                    if (numberOfSelectedFiles>0){
+                        askUserBeforeDeleting();
+                    }
+                    return true;
             }
             return false;
         }
@@ -178,14 +201,12 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.black_opacity_25),
                 PorterDuff.Mode.SRC_OVER);
         selectedFilesList[holder.getBindingAdapterPosition()] = true;
-        numberOfSelectedFiles += 1;
     }
 
     private void unselectItem(myViewHolder holder){
         holder.checkbox.setVisibility(View.GONE);
         holder.imageView.clearColorFilter();
         selectedFilesList[holder.getBindingAdapterPosition()] = false;
-        numberOfSelectedFiles -= 1;
     }
 
     public void unselectAllItems(){
@@ -195,6 +216,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                 notifyItemChanged(i);
             }
         }
+        numberOfSelectedFiles = 0;
     }
 
     public void selectAllItems(){
@@ -204,5 +226,37 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                 notifyItemChanged(i);
             }
         }
+        numberOfSelectedFiles = selectedFilesList.length;
+    }
+
+    private List<SavedFile> getSelectedFiles(){
+        List<SavedFile> mSavedFilesList = new ArrayList<>();
+        for (int i=0; i<selectedFilesList.length; i++){
+            if (selectedFilesList[i]){
+                mSavedFilesList.add(savedFileList.get(i));
+            }
+        }
+        return mSavedFilesList;
+    }
+
+    private void askUserBeforeDeleting(){
+        CustomAlertDialogBinding binding = CustomAlertDialogBinding.inflate(LayoutInflater.from(context));
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setView(binding.getRoot());
+        StringBuilder files_names = new StringBuilder();
+        for (SavedFile savedFile : getSelectedFiles()){
+            files_names.append(savedFile.getName()).append("\n");
+        }
+
+        binding.fileNameTextView.setText(files_names.toString());
+
+        dialog.setNegativeButton("Cancel", (dialog1, which) -> {
+
+        });
+        dialog.setPositiveButton("Ok", (dialog12, which) -> {
+
+        });
+
+        dialog.create().show();
     }
 }

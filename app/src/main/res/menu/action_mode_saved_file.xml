@@ -5,4 +5,8 @@
         android:id="@+id/select_all_saved_file"
         android:icon="@drawable/ic_select_all"
         android:title="Select All" />
+    <item
+        android:id="@+id/delete_btn_saved_file"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/delete" />
 </menu>

@@ -9,33 +9,7 @@
     tools:context=".Dialogs.BSDialogFragment">
 
     <TextView
-        android:id="@+id/share_btn_saved_file"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:drawablePadding="12dp"
-        android:fontFamily="@font/roboto_condensed_regular"
-        android:padding="9dp"
-        android:text="Share"
-        android:textSize="24sp"
-        app:drawableTint="?attr/colorOnSecondary"
-        app:drawableStartCompat="@drawable/ic_simple_share" />
-
-    <TextView
-        android:id="@+id/extend_date_btn_saved_file"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:drawablePadding="12dp"
-        android:fontFamily="@font/roboto_condensed_regular"
-        android:padding="9dp"
-        android:text="Extend Date"
-        android:textSize="24sp"
-        app:drawableTint="?attr/colorOnSecondary"
-        app:drawableStartCompat="@drawable/ic_extend_date" />
-
-    <TextView
-        android:id="@+id/info_btn_saved_file"
+        android:id="@+id/info_btn_saved_folder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -48,7 +22,7 @@
         app:drawableStartCompat="@drawable/ic_info" />
 
     <TextView
-        android:id="@+id/delete_btn_saved_file"
+        android:id="@+id/delete_btn_saved_folder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
