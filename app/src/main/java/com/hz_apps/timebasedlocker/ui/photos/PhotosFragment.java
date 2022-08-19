@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
+import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.FragmentPhotosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
@@ -32,7 +33,7 @@ public class PhotosFragment extends Fragment {
         binding = FragmentPhotosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        if (viewModel.getSavedFileList().size() == 0){
+        if (viewModel.getSavedFolderList().size() == 0){
             fetchDataFromDB();
         }else{
             setDataInRV();
@@ -41,7 +42,7 @@ public class PhotosFragment extends Fragment {
 
         binding.floatingActionButton.setOnClickListener((v) -> {
             Intent intent = new Intent(requireActivity(), SelectFolderActivity.class);
-            intent.putExtra("Type_Of_Files", 1);
+            intent.putExtra("Type_Of_Files", DBHelper.TYPE_PHOTO);
             startActivity(intent);
         });
 
@@ -55,19 +56,17 @@ public class PhotosFragment extends Fragment {
         // Showing progressBar before fetching data from Database and setting into recycler view
         binding.progressBarPhotosFragment.setVisibility(View.VISIBLE);
 
-        System.out.println("Fetched");
-
         Executors.newSingleThreadExecutor().execute(() -> {
 
             db = DBHelper.getINSTANCE();
-            viewModel.setSavedFileList(db.getSavedFiles(DBHelper.SAVED_PHOTO_TABLE));
+            viewModel.setSavedFolderList(db.getSavedFolders(DBHelper.TYPE_PHOTO));
 
             requireActivity().runOnUiThread(this::setDataInRV);
         });
     }
     // This function set data in Recycler View
     private void setDataInRV(){
-        SavedFilesAdapter adapter = new SavedFilesAdapter(requireContext(), viewModel.getSavedFileList(), binding.toolbarPhotosFragment);
+        SavedFoldersAdapter adapter = new SavedFoldersAdapter(requireContext(), viewModel.getSavedFolderList());
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -89,9 +88,9 @@ public class PhotosFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if (DBHelper.isAnyChangeInFiles){
+        if (DBHelper.isAnyChangeInFolders){
             fetchDataFromDB();
-            DBHelper.isAnyChangeInFiles = false;
+            DBHelper.isAnyChangeInFolders = false;
         }
         super.onResume();
     }
