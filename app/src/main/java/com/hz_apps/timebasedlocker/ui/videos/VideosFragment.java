@@ -67,7 +67,7 @@ public class VideosFragment extends Fragment {
         binding.recyclerviewSavedVideos.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/130;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/155;
         binding.recyclerviewSavedVideos.setLayoutManager(new GridLayoutManager(getContext(), numberOfImagesInOneRow));
         binding.recyclerviewSavedVideos.setAdapter(adapter);
 

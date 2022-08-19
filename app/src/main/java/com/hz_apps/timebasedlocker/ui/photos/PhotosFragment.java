@@ -65,7 +65,7 @@ public class PhotosFragment extends Fragment {
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/100;
+        int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels/displayMetrics.density)/155;
         binding.recyclerviewPhotoFragment.setLayoutManager(new GridLayoutManager(getContext(), numberOfImagesInOneRow));
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
 

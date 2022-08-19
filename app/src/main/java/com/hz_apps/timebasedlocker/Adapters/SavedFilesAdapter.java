@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -23,12 +24,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
+import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 import com.hz_apps.timebasedlocker.ui.videos.VideoPlayerActivity;
 
+import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -180,9 +184,8 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                     }
                     return true;
                 case R.id.delete_btn_saved_file:
-                    System.out.println("numberOfSelected " + numberOfSelectedFiles);
                     if (numberOfSelectedFiles>0){
-                        askUserBeforeDeleting();
+                        askUserBeforeDeleting(mode);
                     }
                     return true;
             }
@@ -229,31 +232,47 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         numberOfSelectedFiles = selectedFilesList.length;
     }
 
-    private List<SavedFile> getSelectedFiles(){
-        List<SavedFile> mSavedFilesList = new ArrayList<>();
+    private String createStringOfSelectedFiles(){
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i=0; i<selectedFilesList.length; i++){
             if (selectedFilesList[i]){
-                mSavedFilesList.add(savedFileList.get(i));
+                stringBuilder.append(savedFileList.get(i).getName()).append("\n");
             }
         }
-        return mSavedFilesList;
+        return stringBuilder.toString();
     }
 
-    private void askUserBeforeDeleting(){
+    private void askUserBeforeDeleting(ActionMode mode){
         CustomAlertDialogBinding binding = CustomAlertDialogBinding.inflate(LayoutInflater.from(context));
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setView(binding.getRoot());
-        StringBuilder files_names = new StringBuilder();
-        for (SavedFile savedFile : getSelectedFiles()){
-            files_names.append(savedFile.getName()).append("\n");
-        }
 
-        binding.fileNameTextView.setText(files_names.toString());
+
+        binding.fileNameTextView.setText(createStringOfSelectedFiles());
 
         dialog.setNegativeButton("Cancel", (dialog1, which) -> {
 
         });
         dialog.setPositiveButton("Ok", (dialog12, which) -> {
+            DBHelper db = DBHelper.getINSTANCE();
+            int numberOfFilesRemoved = 0;
+            for (int i=0; i<selectedFilesList.length; i++){
+                if (selectedFilesList[i]){
+                    SavedFile savedFile = savedFileList.get(i-numberOfFilesRemoved);
+                    File file = new File(savedFile.getPath());
+                    db.deleteFileFromDB(SavedFilesActivity.FILES_TABLE_NAME, savedFile.getId());
+                    file.delete();
+                    savedFileList.remove(i-numberOfFilesRemoved);
+                    notifyItemChanged(i-numberOfFilesRemoved);
+                    numberOfFilesRemoved += 1;
+                    Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
+                }
+            }
+            
+            selectedFilesList = new boolean[savedFileList.size()];
+
+            notifyItemRangeChanged(0, savedFileList.size());
+            mode.finish();
 
         });
 

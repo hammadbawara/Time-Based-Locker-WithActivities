@@ -78,4 +78,13 @@ public class SavedFilesActivity extends AppCompatActivity {
         binding.progressBarSavedFiles.setVisibility(View.GONE);
         binding.swipeRefreshSavedFiles.setRefreshing(false);
     }
+
+    @Override
+    protected void onResume() {
+        if (DBHelper.isAnyChangeInFiles){
+            main();
+            DBHelper.isAnyChangeInFiles = false;
+        }
+        super.onResume();
+    }
 }
