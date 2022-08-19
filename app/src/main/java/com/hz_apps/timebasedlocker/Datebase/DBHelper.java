@@ -83,7 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + DB_RECORD_TABLE + "(_key INTEGER PRIMARY KEY, value INTEGER)");
 
         final String CREATE_FOLDERS_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                NAME + " TEXT" +
+                NAME + " TEXT," +
                 FOLDER_FILES_TABLE_NAME + " TEXT" +
                 ")";
 
@@ -93,9 +93,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(1, 1)");
         db.execSQL("INSERT INTO "  + DB_RECORD_TABLE + "(_key, value) VALUES(2, 1)");
-        this.create_folder("Videos", TYPE_VIDEO);
-        this.create_folder("Photos", TYPE_PHOTO);
-        this.create_folder("Other Files", TYPE_OTHERS);
+        createFolderFirstTime(db, TYPE_VIDEO, "Videos");
+        createFolderFirstTime(db, TYPE_OTHERS, "Other Files");
+        createFolderFirstTime(db, TYPE_PHOTO, "Photos");
     }
 
     @Override
@@ -253,9 +253,23 @@ public class DBHelper extends SQLiteOpenHelper {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select MAX(id) from " + tableName, null);
         cursor.moveToNext();
-        int maxId = cursor.getInt(0);
+        int maxId = cursor.getInt(0)+1;
         cursor.close();
-        return tableName.charAt(0) + " " + maxId;
+        return tableName.charAt(0) + "_" + maxId;
 
+    }
+
+    // Due to the FATAL EXCEPTION: pool-1-thread-1. This function create folder first time.
+    private void createFolderFirstTime(SQLiteDatabase db, int FILE_TYPE, String folderName){
+        String tableName = getFolderTableName(FILE_TYPE);
+        String folderFilesTableName = tableName.charAt(0) + "_" + "0";
+
+        ContentValues values = new ContentValues(2);
+        values.put(NAME, folderName);
+        values.put(FOLDER_FILES_TABLE_NAME, folderFilesTableName);
+        db.insert(tableName, null, values);
+
+        // creating folder for saving folder files
+        db.execSQL("CREATE TABLE " + folderFilesTableName + CREATE_TABLE_QUERY);
     }
 }
