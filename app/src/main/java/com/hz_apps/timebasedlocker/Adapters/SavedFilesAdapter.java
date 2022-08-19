@@ -2,7 +2,10 @@ package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
@@ -23,11 +27,14 @@ import java.util.List;
 
 public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
     private final Context context;
-    private List<SavedFile> savedPhotoList;
+    private final List<SavedFile> savedPhotoList;
+    private ActionMode mActionMode;
+    private final MaterialToolbar toolbar;
 
-    public SavedFilesAdapter(Context context, List<SavedFile> savedFileList) {
+    public SavedFilesAdapter(Context context, List<SavedFile> savedFileList, MaterialToolbar toolbar) {
         this.context = context;
         this.savedPhotoList = savedFileList;
+        this.toolbar = toolbar;
     }
 
     @NonNull
@@ -57,6 +64,14 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             Intent intent = new Intent(context, VideoPlayerActivity.class);
             intent.putExtra("video_path", file.getPath());
             context.startActivity(intent);
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (mActionMode != null){
+                return false;
+            }
+            mActionMode = toolbar.startActionMode(mActionModeCallBack);
+            return true;
         });
 
 
@@ -107,7 +122,25 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
     }
 
-    private void savedFilesContextMenu(){
+    private final ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            return true;
+        }
 
-    }
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+        }
+    };
 }

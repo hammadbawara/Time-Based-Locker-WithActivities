@@ -8,12 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.MainActivity;
+import com.hz_apps.timebasedlocker.R;
+import com.hz_apps.timebasedlocker.databinding.ActivityMainBinding;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
@@ -22,9 +27,9 @@ import java.util.concurrent.Executors;
 public class VideosFragment extends Fragment {
 
     private FragmentVideosBinding binding;
-
     DBHelper db;
     VideosViewModel viewModel;
+    SavedFilesAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,7 +73,7 @@ public class VideosFragment extends Fragment {
     }
     // This function set data in Recycler View
     private void setDataInRV(){
-        SavedFilesAdapter adapter = new SavedFilesAdapter(requireContext(), viewModel.getSavedVideosList());
+        adapter = new SavedFilesAdapter(requireContext(), viewModel.getSavedVideosList(), binding.toolbarVideosFragment);
         binding.recyclerviewSavedVideos.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

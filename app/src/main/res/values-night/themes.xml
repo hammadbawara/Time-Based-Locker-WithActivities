@@ -16,5 +16,7 @@
         <item name="android:windowBackground">@color/dark_blue</item>
 
         <item name="colorTertiary">@color/white</item>
+        <!-- This allow Action Mode show on top of toolbar -->
+        <item name="windowActionModeOverlay">true</item>
     </style>
 </resources>

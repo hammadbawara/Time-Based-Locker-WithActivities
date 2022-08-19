@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.FragmentPhotosBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
@@ -67,7 +69,7 @@ public class PhotosFragment extends Fragment {
     }
     // This function set data in Recycler View
     private void setDataInRV(){
-        SavedFilesAdapter adapter = new SavedFilesAdapter(requireContext(), viewModel.getSavedFileList());
+        SavedFilesAdapter adapter = new SavedFilesAdapter(requireContext(), viewModel.getSavedFileList(), binding.toolbarPhotosFragment);
         binding.recyclerviewPhotoFragment.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();

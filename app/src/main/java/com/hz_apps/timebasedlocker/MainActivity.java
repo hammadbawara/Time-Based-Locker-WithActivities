@@ -32,13 +32,5 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        NavigationUI.setupWithNavController(binding.toolbarMainActivity, navController, appBarConfiguration);
-
-        binding.toolbarMainActivity.inflateMenu(R.menu.option_menu_main_acitivity);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 }

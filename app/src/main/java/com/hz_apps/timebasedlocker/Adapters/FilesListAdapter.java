@@ -140,13 +140,13 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
         holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.black_opacity_25),
                 PorterDuff.Mode.SRC_OVER
         );
-        filesSelectedState[holder.getAdapterPosition()] = true;
+        filesSelectedState[holder.getBindingAdapterPosition()] = true;
         numberOfItemsSelected += 1;
     }
 
     // This function unselect item and also set false in filesSelectedState array
     private void unselectItem(myViewHolder holder){
-        filesSelectedState[holder.getAdapterPosition()] = false;
+        filesSelectedState[holder.getBindingAdapterPosition()] = false;
         holder.imageView.clearColorFilter();
         numberOfItemsSelected -= 1;
     }
