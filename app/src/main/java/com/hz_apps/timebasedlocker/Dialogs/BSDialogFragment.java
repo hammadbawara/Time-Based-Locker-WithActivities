@@ -71,7 +71,7 @@ public class BSDialogFragment extends BottomSheetDialogFragment {
             CustomAlertDialogBinding dialogBinding = CustomAlertDialogBinding.inflate(getLayoutInflater());
             dialog.setView(dialogBinding.getRoot());
 
-            dialogBinding.fileNameTextView.setText(savedFile.getTitle());
+            dialogBinding.fileNameTextView.setText(savedFile.getName());
 
             dialog.setPositiveButton("Ok", (dialog1, which) -> {
                 boolean isFileDeleted = file.delete();

@@ -10,7 +10,7 @@ public class SavedFile implements Serializable {
     private int id;
     private String path;
     private String originalPath;
-    private String title;
+    private String name;
     private DateAndTime unlockDateTime;
     private DateAndTime lockDateTime;
     private int fileType;
@@ -19,9 +19,9 @@ public class SavedFile implements Serializable {
     private boolean isAllowedToSeePhoto;
     private boolean isAllowedToSeeTitle;
 
-    public SavedFile(String originalPath, String title, DateAndTime unlockDateTime, DateAndTime lockDateTime, int fileType, boolean isFile, boolean isAllowedToExtendDateTime, boolean isAllowedToSeePhoto, boolean isAllowedToSeeTitle) {
+    public SavedFile(String originalPath, String name, DateAndTime unlockDateTime, DateAndTime lockDateTime, int fileType, boolean isFile, boolean isAllowedToExtendDateTime, boolean isAllowedToSeePhoto, boolean isAllowedToSeeTitle) {
         this.originalPath = originalPath;
-        this.title = title;
+        this.name = name;
         this.unlockDateTime = unlockDateTime;
         this.lockDateTime = lockDateTime;
         this.fileType = fileType;
@@ -53,12 +53,12 @@ public class SavedFile implements Serializable {
     }
 
     @NonNull
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(@NonNull String title) {
-        this.title = title;
+    public void setName(@NonNull String name) {
+        this.name = name;
     }
 
     @NonNull

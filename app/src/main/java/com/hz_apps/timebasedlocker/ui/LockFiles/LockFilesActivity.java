@@ -134,7 +134,7 @@ public class LockFilesActivity extends AppCompatActivity {
                 SavedFile file = new SavedFile();
                 file.setId(last_id);
                 file.setOriginalPath(source.getPath());
-                file.setTitle(source.getName());
+                file.setName(source.getName());
                 file.setUnlockDateTime(dateAndTimeList[i]);
                 file.setLockDateTime(lockDateAndTime);
                 file.setFile(true);
