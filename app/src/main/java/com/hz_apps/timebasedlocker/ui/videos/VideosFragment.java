@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
 
 import java.util.concurrent.Executors;
@@ -45,6 +47,12 @@ public class VideosFragment extends Fragment {
         });
 
         binding.swipeRefreshVideosFragment.setOnRefreshListener(this::fetchDataFromDB);
+
+        binding.addFolderVideosFragment.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("FILES_TYPE", DBHelper.VIDEO_TYPE);
+            Navigation.findNavController(requireView()).navigate(R.id.getInputDialogFragment, bundle);
+        });
 
         return root;
     }

@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
@@ -39,6 +41,8 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         SavedFolder folder = savedFolderList.get(position);
         holder.folder_name.setText(folder.getName());
+
+        holder.imageView.setImageDrawable(context.getDrawable(R.drawable.ic_folder));
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SavedFilesActivity.class);
