@@ -251,18 +251,24 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         dialog.setPositiveButton("Ok", (dialog12, which) -> {
             DBHelper db = DBHelper.getINSTANCE();
             int numberOfFilesRemoved = 0;
-            for (int i = 0; i < selectedFilesList.length; i++) {
+            for (int i=0; i<selectedFilesList.length; i++) {
                 if (selectedFilesList[i]) {
+                    // Getting desired file
                     SavedFile savedFile = savedFileList.get(i - numberOfFilesRemoved);
                     File file = new File(savedFile.getPath());
+                    //Deleting file from Database Record
                     db.deleteFileFromDB(SavedFilesActivity.FILES_TABLE_NAME, savedFile.getId());
+                    // Deleting original file
                     file.delete();
+
+                    // Removing file from recyclerView list
                     savedFileList.remove(i - numberOfFilesRemoved);
-                    notifyItemChanged(i - numberOfFilesRemoved);
                     numberOfFilesRemoved += 1;
                     Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
                 }
             }
+
+            notifyItemRangeRemoved(0, selectedFilesList.length);
 
             selectedFilesList = new boolean[savedFileList.size()];
 
