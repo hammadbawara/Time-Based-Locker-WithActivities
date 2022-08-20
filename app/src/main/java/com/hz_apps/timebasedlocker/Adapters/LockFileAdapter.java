@@ -29,18 +29,18 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     private final Context context;
     // List of images that will shown to user
     private final ArrayList<File> imagesList;
-    DatePickerDialog datePickerDialog;
-    TimePickerDialog timePickerDialog;
     private final int YEAR, MONTH, DAY_OF_MONTH;
-    private LocalDate DateForAllItems;
+    // This is the default colo of TextView of "Select Date".
+    private final int defaultTextViewColor;
     // This is the array in which all dates will store that user select
     public DateAndTime[] dateAndTimeList;
+    DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
+    Calendar calendar;
+    private LocalDate DateForAllItems;
     // If this true then it will set button red to show warning that date is not selelcted
     private boolean dateNotSetWarning = false;
     private LocalTime TimeForAllItems;
-    // This is the default colo of TextView of "Select Date".
-    private final int defaultTextViewColor;
-    Calendar calendar;
 
 
     public LockFileAdapter(Context context, ArrayList<File> imagesList) {
@@ -102,21 +102,6 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         return imagesList.size();
     }
 
-    public static class myViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
-        private final TextView set_date;
-        private final TextView lock_file_title;
-        private final TextView set_time;
-
-        public myViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.lock_file_imageview);
-            set_date = itemView.findViewById(R.id.set_date_lock_file);
-            lock_file_title = itemView.findViewById(R.id.lock_file_title);
-            set_time = itemView.findViewById(R.id.set_time_lock_file);
-        }
-    }
-
     private void showDatePickerDialog(myViewHolder holder) {
         // show date picker dialog on click of set date text view
         holder.set_date.setOnClickListener(v -> {
@@ -167,7 +152,6 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         this.dateNotSetWarning = b;
     }
 
-
     private String getMonthInText(int month) {
         switch (month) {
             case 0:
@@ -196,5 +180,20 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
                 return "Dec";
         }
         return "";
+    }
+
+    public static class myViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageView;
+        private final TextView set_date;
+        private final TextView lock_file_title;
+        private final TextView set_time;
+
+        public myViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.lock_file_imageview);
+            set_date = itemView.findViewById(R.id.set_date_lock_file);
+            lock_file_title = itemView.findViewById(R.id.lock_file_title);
+            set_time = itemView.findViewById(R.id.set_time_lock_file);
+        }
     }
 }

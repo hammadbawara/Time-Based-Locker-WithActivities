@@ -26,14 +26,14 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     private final Context context;
     private final ArrayList<File> imagesFilesList;
-    private boolean allItemsSelectedFlag = false;
-    private boolean allItemsUnselectedFlag = false;
     // Just making program fast: I take a array of in which all elements are in false state
     // if user select any of the item then that particular item will select to true state
     // At the end of this i will make a new array that contain elements on the basis of true and false
     private final boolean[] filesSelectedState;
     private final ImageButton nextBtn;
     int numberOfItemsSelected = 0;
+    private boolean allItemsSelectedFlag = false;
+    private boolean allItemsUnselectedFlag = false;
 
     public FilesListAdapter(Context context, ArrayList<File> imagesFilesList, ImageButton nextBtn) {
         this.context = context;
@@ -75,7 +75,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
             }
             if (!isChecked) unselectItem(holder);
 
-            /**
+            /*
              * if selected files are equal to 0 then disable nextBtn
              * if it is not 0 then enable nextBtn
              */
@@ -97,23 +97,6 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
     @Override
     public int getItemCount() {
         return imagesFilesList.size();
-    }
-
-    public class myViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
-        private final CheckBox checkBox;
-
-        public myViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            imageView = itemView.findViewById(R.id.imageView_images_list);
-            checkBox = itemView.findViewById(R.id.checkbox_images_list);
-        }
-    }
-
-
-    public void setAllItemsSelected(boolean b) {
-        allItemsSelectedFlag = b;
     }
 
     public void setAllItemsUnSelectedFlag(boolean allItemsUnselectedFlag) {
@@ -155,11 +138,27 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
         return numberOfItemsSelected == imagesFilesList.size();
     }
 
+    public void setAllItemsSelected(boolean b) {
+        allItemsSelectedFlag = b;
+    }
+
     public boolean isAllItemsUnselected() {
         return numberOfItemsSelected == 0;
     }
 
     public boolean[] getFilesSelectedState() {
         return filesSelectedState;
+    }
+
+    public class myViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageView;
+        private final CheckBox checkBox;
+
+        public myViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            imageView = itemView.findViewById(R.id.imageView_images_list);
+            checkBox = itemView.findViewById(R.id.checkbox_images_list);
+        }
     }
 }

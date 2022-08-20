@@ -37,12 +37,51 @@ import java.util.List;
 public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
     private final Context context;
     private final List<SavedFile> savedFileList;
-    private ActionMode mActionMode;
     private final MaterialToolbar toolbar;
+    private ActionMode mActionMode;
     private boolean[] selectedFilesList;
     private int numberOfSelectedFiles = 0;
     private boolean isAllItemsSelected = false;
+    private final ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.action_mode_saved_file, menu);
+            return true;
+        }
 
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @SuppressLint("NonConstantResourceId")
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.select_all_saved_file:
+                    if (isAllItemsSelected) {
+                        unselectAllItems();
+                        isAllItemsSelected = false;
+                    } else {
+                        selectAllItems();
+                        isAllItemsSelected = true;
+                    }
+                    return true;
+                case R.id.delete_btn_saved_file:
+                    if (numberOfSelectedFiles > 0) {
+                        askUserBeforeDeleting(mode);
+                    }
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            unselectAllItems();
+            mActionMode = null;
+        }
+    };
 
     public SavedFilesAdapter(Context context, List<SavedFile> savedFileList, MaterialToolbar toolbar) {
         this.context = context;
@@ -111,19 +150,6 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         return savedFileList.size();
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder {
-        private final TextView time_remaining;
-        private final ImageView imageView;
-        private final ImageView checkbox;
-
-        public myViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.saved_photo_image_view);
-            time_remaining = itemView.findViewById(R.id.time_remaing_textView);
-            checkbox = itemView.findViewById(R.id.check_box_saved_file);
-        }
-    }
-
     private String getRemainingTime(DateAndTime lockDT, DateAndTime unlockDT) {
         LocalDate lDate = lockDT.getDate();
         LocalTime lTime = lockDT.getTime();
@@ -152,47 +178,6 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         return "unlocked";
 
     }
-
-    private final ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.action_mode_saved_file, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @SuppressLint("NonConstantResourceId")
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.select_all_saved_file:
-                    if (isAllItemsSelected) {
-                        unselectAllItems();
-                        isAllItemsSelected = false;
-                    } else {
-                        selectAllItems();
-                        isAllItemsSelected = true;
-                    }
-                    return true;
-                case R.id.delete_btn_saved_file:
-                    if (numberOfSelectedFiles > 0) {
-                        askUserBeforeDeleting(mode);
-                    }
-                    return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            unselectAllItems();
-            mActionMode = null;
-        }
-    };
 
     private void selectItem(myViewHolder holder) {
         holder.checkbox.setVisibility(View.VISIBLE);
@@ -251,7 +236,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         dialog.setPositiveButton("Ok", (dialog12, which) -> {
             DBHelper db = DBHelper.getINSTANCE();
             int numberOfFilesRemoved = 0;
-            for (int i=0; i<selectedFilesList.length; i++) {
+            for (int i = 0; i < selectedFilesList.length; i++) {
                 if (selectedFilesList[i]) {
                     // Getting desired file
                     SavedFile savedFile = savedFileList.get(i - numberOfFilesRemoved);
@@ -260,7 +245,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                     db.deleteFileFromDB(SavedFilesActivity.FILES_TABLE_NAME, savedFile.getId());
                     // Deleting original file
                     file.delete();
-                    notifyItemRemoved(i-numberOfFilesRemoved);
+                    notifyItemRemoved(i - numberOfFilesRemoved);
 
                     // Removing file from recyclerView list
                     savedFileList.remove(i - numberOfFilesRemoved);
@@ -278,5 +263,18 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         });
 
         dialog.create().show();
+    }
+
+    public class myViewHolder extends RecyclerView.ViewHolder {
+        private final TextView time_remaining;
+        private final ImageView imageView;
+        private final ImageView checkbox;
+
+        public myViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.saved_photo_image_view);
+            time_remaining = itemView.findViewById(R.id.time_remaing_textView);
+            checkbox = itemView.findViewById(R.id.check_box_saved_file);
+        }
     }
 }

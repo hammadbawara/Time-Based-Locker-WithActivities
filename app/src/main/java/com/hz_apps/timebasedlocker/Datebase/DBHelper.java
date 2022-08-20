@@ -16,6 +16,23 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    public static final int LAST_SAVED_VIDEO_KEY = 1;
+    public static final int LAST_SAVED_PHOTO_KEY = 2;
+    public static final int VIDEO_TYPE = 0;
+    public static final int PHOTO_TYPE = 1;
+    public static final int OTHER_TYPE = 2;
+    // Tables names
+    public static final String SAVED_VIDEO_TABLE = "saved_videos";
+    public static final String SAVED_PHOTO_TABLE = "saved_photos";
+    public static final String VIDEO_FOLDERS_TABLE = "video_folders_list";
+    public static final String PHOTO_FOLDERS_TABLE = "photo_folders_list";
+    private static final String FOLDER_FILES_TABLE_NAME = "folder_files_table_name";
+    private static final String DB_RECORD_TABLE = "DBRecord";
+    private static final String OTHER_FOLDERS_TABLE = "others_files_folders_list";
+    // Tracking database
+    public static boolean isAnyChangeInFiles = false;
+    public static boolean isAnyChangeInFolders = false;
+    private static DBHelper dbHelper;
     // Table values
     private final String ORIGINAL_PATH = "orignal_path";
     private final String PATH = "path";
@@ -27,25 +44,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String IS_ALLOWED_TO_EXTEND_TIME = "is_allowed_to_extend_date_time";
     private final String IS_ALLOWED_TO_SEE_PHOTO = "is_allowed_to_see_photo";
     private final String IS_ALLOWED_TO_SEE_TITLE = "is_allowed_to_see_title";
-    public static final int LAST_SAVED_VIDEO_KEY = 1;
-    public static final int LAST_SAVED_PHOTO_KEY = 2;
-    public static final int VIDEO_TYPE = 0;
-    public static final int PHOTO_TYPE = 1;
-    public static final int OTHER_TYPE = 2;
-    private static final String FOLDER_FILES_TABLE_NAME = "folder_files_table_name";
-
-    // Tables names
-    public static final String SAVED_VIDEO_TABLE = "saved_videos";
-    public static final String SAVED_PHOTO_TABLE = "saved_photos";
-    private static final String DB_RECORD_TABLE = "DBRecord";
-    public static final String VIDEO_FOLDERS_TABLE = "video_folders_list";
-    public static final String PHOTO_FOLDERS_TABLE = "photo_folders_list";
-    private static final String OTHER_FOLDERS_TABLE = "others_files_folders_list";
-
-    public static DBHelper getINSTANCE() {
-        return dbHelper;
-    }
-
     private final String CREATE_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
             ORIGINAL_PATH + " TEXT, " + // 1
             PATH + " TEXT," + // 2
@@ -57,23 +55,21 @@ public class DBHelper extends SQLiteOpenHelper {
             IS_ALLOWED_TO_EXTEND_TIME + " INTEGER, " + // 8
             IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 9
             IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 10
+    private SQLiteDatabase db;
+    private DBChangeListener dbChangeListener;
 
-    // Tracking database
-    public static boolean isAnyChangeInFiles = false;
-    public static boolean isAnyChangeInFolders = false;
+    public DBHelper(@Nullable Context context, @Nullable String name) {
+        super(context, name, null, 1);
+    }
 
-    private static DBHelper dbHelper;
+    public static DBHelper getINSTANCE() {
+        return dbHelper;
+    }
 
     public static void createInstanceForOverApplication(Application application) {
         if (dbHelper == null) {
             dbHelper = new DBHelper(application.getApplicationContext(), "filesDB.db");
         }
-    }
-
-    private SQLiteDatabase db;
-
-    public DBHelper(@Nullable Context context, @Nullable String name) {
-        super(context, name, null, 1);
     }
 
     @Override
@@ -152,7 +148,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // creating folder for saving folder files
         db.execSQL("CREATE TABLE " + folderFilesTableName + CREATE_TABLE_QUERY);
 
-        if (dbChangeListener != null){
+        if (dbChangeListener != null) {
             dbChangeListener.onFolderChange();
         }
         return false;
@@ -212,7 +208,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return savedFilesList;
     }
 
-
     public int getDBRecord(int key) {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM DBRecord WHERE _key=" + key, null);
@@ -230,7 +225,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private boolean IntToBoolean(int i) {
         return i != 0;
     }
-
 
     public void updateFileDateAndTime(String newDateAndTime, int id, String table) {
         db = getWritableDatabase();
@@ -267,6 +261,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+
+    // Database change listener
+
     // Due to the FATAL EXCEPTION: pool-1-thread-1. This function create folder first time.
     private void createFolderFirstTime(SQLiteDatabase db, int FILE_TYPE, String folderName) {
         String tableName = getFolderTableName(FILE_TYPE);
@@ -281,16 +278,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + folderFilesTableName + CREATE_TABLE_QUERY);
     }
 
-
-    // Database change listener
-
-    private DBChangeListener dbChangeListener;
-
-    public interface DBChangeListener{
-        void onFolderChange();
+    public void setDBChangeListener(DBChangeListener listener) {
+        dbChangeListener = listener;
     }
 
-    public void setDBChangeListener(DBChangeListener listener){
-        dbChangeListener = listener;
+    public interface DBChangeListener {
+        void onFolderChange();
     }
 }

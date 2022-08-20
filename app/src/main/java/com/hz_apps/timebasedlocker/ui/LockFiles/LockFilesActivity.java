@@ -40,10 +40,10 @@ public class LockFilesActivity extends AppCompatActivity {
     Calendar calendar;
     ArrayList<File> selectedFiles;
     int FILES_TYPES;
-    private DBHelper db;
-    private String destinationFolder;
     int last_id = 1;
     ProgressDialog progress;
+    private DBHelper db;
+    private String destinationFolder;
     private ExecutorService executor;
 
     @Override

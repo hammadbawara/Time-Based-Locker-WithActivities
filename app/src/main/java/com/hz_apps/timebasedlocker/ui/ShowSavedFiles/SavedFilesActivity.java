@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 public class SavedFilesActivity extends AppCompatActivity {
+    public static int FILES_TYPE;
+    public static String FILES_TABLE_NAME;
     ActivitySavedFilesBinding binding;
     SavedFilesViewModel viewModel;
     SavedFolder savedFolder;
     SavedFilesAdapter adapter;
-    public static int FILES_TYPE;
-    public static String FILES_TABLE_NAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

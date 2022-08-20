@@ -41,10 +41,10 @@
         android:id="@+id/BSDialog"
         android:name="com.hz_apps.timebasedlocker.Dialogs.BSDialogFragment"
         android:label="fragment_b_s_dialog"
-        tools:layout="@layout/fragment_b_s_dialog"/>
+        tools:layout="@layout/fragment_b_s_dialog" />
     <dialog
         android:id="@+id/getInputDialogFragment"
         android:name="com.hz_apps.timebasedlocker.Dialogs.GetInputDialogFragment"
         android:label="GetInputDialogFragment"
-        tools:layout="@layout/dialog_get_input"/>
+        tools:layout="@layout/dialog_get_input" />
 </navigation>

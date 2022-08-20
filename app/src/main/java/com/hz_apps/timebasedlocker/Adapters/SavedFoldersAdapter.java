@@ -10,9 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;

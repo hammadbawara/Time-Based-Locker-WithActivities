@@ -20,12 +20,17 @@ public class DateAndTime implements Serializable {
         this.time = time;
     }
 
-    public DateAndTime(LocalDate date) {
-        this.date = date;
+    public static DateAndTime parse(String dateAndTime) {
+        String[] dateAndTimeArray = dateAndTime.split(" ");
+        LocalDate date = LocalDate.parse(dateAndTimeArray[0]);
+        LocalTime time = LocalTime.parse(dateAndTimeArray[1]);
+        return new DateAndTime(date, time);
     }
 
-    public DateAndTime(LocalTime time) {
-        this.time = time;
+    public static DateAndTime of(int YEAR, int MONTH, int DayOfMonth, int Hour, int Minute) {
+        LocalDate localDate = LocalDate.of(YEAR, MONTH, DayOfMonth);
+        LocalTime localTime = LocalTime.of(Hour, Minute);
+        return new DateAndTime(localDate, localTime);
     }
 
     public LocalDate getDate() {
@@ -48,18 +53,5 @@ public class DateAndTime implements Serializable {
     @Override
     public String toString() {
         return date.toString() + " " + time.toString();
-    }
-
-    public static DateAndTime parse(String dateAndTime) {
-        String[] dateAndTimeArray = dateAndTime.split(" ");
-        LocalDate date = LocalDate.parse(dateAndTimeArray[0]);
-        LocalTime time = LocalTime.parse(dateAndTimeArray[1]);
-        return new DateAndTime(date, time);
-    }
-
-    public static DateAndTime of(int YEAR, int MONTH, int DayOfMonth, int Hour, int Minute) {
-        LocalDate localDate = LocalDate.of(YEAR, MONTH, DayOfMonth);
-        LocalTime localTime = LocalTime.of(Hour, Minute);
-        return new DateAndTime(localDate, localTime);
     }
 }

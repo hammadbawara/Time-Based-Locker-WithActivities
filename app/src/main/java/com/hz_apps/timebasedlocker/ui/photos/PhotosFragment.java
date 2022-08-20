@@ -19,9 +19,9 @@ import java.util.concurrent.Executors;
 
 public class PhotosFragment extends Fragment {
 
-    private FragmentPhotosBinding binding;
     DBHelper db;
     PhotosViewModel viewModel;
+    private FragmentPhotosBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

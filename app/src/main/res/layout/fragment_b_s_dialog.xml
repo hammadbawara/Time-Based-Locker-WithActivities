@@ -18,8 +18,8 @@
         android:padding="9dp"
         android:text="Info"
         android:textSize="24sp"
-        app:drawableTint="?attr/colorOnSecondary"
-        app:drawableStartCompat="@drawable/ic_info" />
+        app:drawableStartCompat="@drawable/ic_info"
+        app:drawableTint="?attr/colorOnSecondary" />
 
     <TextView
         android:id="@+id/delete_btn_saved_folder"
@@ -31,6 +31,6 @@
         android:padding="9dp"
         android:text="Delete"
         android:textSize="24sp"
-        app:drawableTint="?attr/colorOnSecondary"
-        app:drawableStartCompat="@drawable/ic_delete" />
+        app:drawableStartCompat="@drawable/ic_delete"
+        app:drawableTint="?attr/colorOnSecondary" />
 </LinearLayout>

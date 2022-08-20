@@ -1,12 +1,10 @@
 package com.hz_apps.timebasedlocker.ui.videos;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,10 +20,10 @@ import java.util.concurrent.Executors;
 
 public class VideosFragment extends Fragment implements DBHelper.DBChangeListener {
 
-    private FragmentVideosBinding binding;
     DBHelper db;
     VideosViewModel viewModel;
     SavedFoldersAdapter adapter;
+    private FragmentVideosBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

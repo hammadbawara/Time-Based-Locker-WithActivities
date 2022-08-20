@@ -24,10 +24,10 @@ import java.util.concurrent.Executors;
 
 public class SelectFilesActivity extends AppCompatActivity {
 
+    public static int FILES_TYPE;
+    FilesListAdapter adapter;
     private ActivitySelectFilesBinding binding;
     private SelectFilesViewModel mViewModel;
-    FilesListAdapter adapter;
-    public static int FILES_TYPE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

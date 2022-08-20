@@ -1,7 +1,6 @@
 package com.hz_apps.timebasedlocker.Dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.DialogGetInputBinding;
 
@@ -34,21 +34,16 @@ public class GetInputDialogFragment extends DialogFragment {
 
             String text = binding.getInputEditText.getText().toString();
 
-            if (text.equals("")){
+            if (text.equals("")) {
                 binding.textView2.setText("Folder name is not valid");
-            }else{
+            } else {
                 DBHelper.getINSTANCE().create_folder(text, FILES_TYPE);
             }
 
 
         });
 
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dismiss();
-            }
-        });
+        dialog.setNegativeButton("Cancel", (dialog12, which) -> dismiss());
 
 
         return dialog.create();

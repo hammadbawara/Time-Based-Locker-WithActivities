@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipe_refresh_videos_fragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_refresh_videos_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.videos.VideosFragment">
@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:clickable="true"
             android:backgroundTint="@color/white"
+            android:clickable="true"
             android:src="@drawable/ic_add_folder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
