@@ -152,7 +152,9 @@ public class DBHelper extends SQLiteOpenHelper {
         // creating folder for saving folder files
         db.execSQL("CREATE TABLE " + folderFilesTableName + CREATE_TABLE_QUERY);
 
-        isAnyChangeInFolders = true;
+        if (dbChangeListener != null){
+            dbChangeListener.onFolderChange();
+        }
         return false;
     }
 
@@ -277,5 +279,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // creating folder for saving folder files
         db.execSQL("CREATE TABLE " + folderFilesTableName + CREATE_TABLE_QUERY);
+    }
+
+
+    // Database change listener
+
+    private DBChangeListener dbChangeListener;
+
+    public interface DBChangeListener{
+        void onFolderChange();
+    }
+
+    public void setDBChangeListener(DBChangeListener listener){
+        dbChangeListener = listener;
     }
 }

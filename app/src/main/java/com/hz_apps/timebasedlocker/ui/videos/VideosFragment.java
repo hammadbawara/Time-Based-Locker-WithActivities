@@ -1,25 +1,26 @@
 package com.hz_apps.timebasedlocker.ui.videos;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
-import com.hz_apps.timebasedlocker.R;
+import com.hz_apps.timebasedlocker.Dialogs.GetInputDialogFragment;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
 
 import java.util.concurrent.Executors;
 
-public class VideosFragment extends Fragment {
+public class VideosFragment extends Fragment implements DBHelper.DBChangeListener {
 
     private FragmentVideosBinding binding;
     DBHelper db;
@@ -35,6 +36,7 @@ public class VideosFragment extends Fragment {
 
         // creating database instance for all over application
         DBHelper.createInstanceForOverApplication(requireActivity().getApplication());
+        DBHelper.getINSTANCE().setDBChangeListener(this);
 
         if (viewModel.getSavedFolderList().size() == 0) {
             fetchDataFromDB();
@@ -51,7 +53,9 @@ public class VideosFragment extends Fragment {
         binding.addFolderVideosFragment.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putInt("FILES_TYPE", DBHelper.VIDEO_TYPE);
-            Navigation.findNavController(requireView()).navigate(R.id.getInputDialogFragment, bundle);
+            GetInputDialogFragment dialogFragment = new GetInputDialogFragment();
+            dialogFragment.setArguments(bundle);
+            dialogFragment.show(getChildFragmentManager(), "GET");
         });
 
         return root;
@@ -87,17 +91,14 @@ public class VideosFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        if (DBHelper.isAnyChangeInFolders) {
-            fetchDataFromDB();
-            DBHelper.isAnyChangeInFolders = false;
-        }
-        super.onResume();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onFolderChange() {
+        fetchDataFromDB();
+        setDataInRV();
     }
 }

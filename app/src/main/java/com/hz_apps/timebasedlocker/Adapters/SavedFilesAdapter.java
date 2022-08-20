@@ -260,15 +260,15 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                     db.deleteFileFromDB(SavedFilesActivity.FILES_TABLE_NAME, savedFile.getId());
                     // Deleting original file
                     file.delete();
+                    notifyItemRemoved(i-numberOfFilesRemoved);
 
                     // Removing file from recyclerView list
                     savedFileList.remove(i - numberOfFilesRemoved);
                     numberOfFilesRemoved += 1;
-                    Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
                 }
             }
 
-            notifyItemRangeRemoved(0, selectedFilesList.length);
+            Toast.makeText(context, "Delete Successful", Toast.LENGTH_SHORT).show();
 
             selectedFilesList = new boolean[savedFileList.size()];
 
