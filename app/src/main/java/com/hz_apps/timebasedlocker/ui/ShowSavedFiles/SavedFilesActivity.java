@@ -3,6 +3,7 @@ package com.hz_apps.timebasedlocker.ui.ShowSavedFiles;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,12 +34,18 @@ public class SavedFilesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySavedFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbarSavedFiles);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.toolbarSavedFiles.setNavigationOnClickListener((arrow) -> onBackPressed());
 
         viewModel = new ViewModelProvider(this).get(SavedFilesViewModel.class);
 
         savedFolder = (SavedFolder) getIntent().getSerializableExtra("saved_folder");
         FILES_TYPE = getIntent().getIntExtra("FILES_TYPE", -1);
         FILES_TABLE_NAME = savedFolder.getFilesTable();
+
+        getSupportActionBar().setTitle(savedFolder.getName());
 
         main();
 

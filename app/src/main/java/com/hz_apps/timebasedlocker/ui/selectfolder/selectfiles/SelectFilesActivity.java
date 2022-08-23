@@ -22,6 +22,7 @@ import com.hz_apps.timebasedlocker.ui.selectfolder.FilesExtensions;
 import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
 
 import java.io.File;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,14 +32,21 @@ public class SelectFilesActivity extends AppCompatActivity {
     FilesListAdapter adapter;
     private ActivitySelectFilesBinding binding;
     private SelectFilesViewModel mViewModel;
+    Folder folder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySelectFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbarSelectFiles);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.toolbarSelectFiles.setNavigationOnClickListener((arrow) -> onBackPressed());
         setOptionMenu();
         ImageButton nextBtn = binding.nextBtnActivitySelectFiles;
+
+        folder =  (Folder) getIntent().getSerializableExtra("folder");
 
         nextBtn.setOnClickListener(v -> {
             if (adapter.numberOfItemsSelected == 0) {
@@ -49,6 +57,8 @@ public class SelectFilesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        getSupportActionBar().setTitle(folder.getName());
 
 
         FILES_TYPE = SavedFilesActivity.FILES_TYPE;
@@ -65,13 +75,13 @@ public class SelectFilesActivity extends AppCompatActivity {
             // files when files already been fetched.
             if (mViewModel.getFilesList().size() == 0) getFiles();
             // setting recyclerview in background thread
-            this.runOnUiThread(this::setRecyclerView);
+            adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtnActivitySelectFiles);
+            runOnUiThread(this::setRecyclerView);
         });
     }
 
     private void setRecyclerView() {
         RecyclerView recyclerView = binding.selectFilesRecyclerView;
-        adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtnActivitySelectFiles);
         recyclerView.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -84,24 +94,21 @@ public class SelectFilesActivity extends AppCompatActivity {
 
     private void setOptionMenu(){
 
-        binding.toolbar.inflateMenu(R.menu.action_mode_saved_file);
+        binding.toolbarSelectFiles.inflateMenu(R.menu.action_mode_saved_file);
 
-        binding.toolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()){
-                case R.id.select_all_saved_file:
-                    if (adapter.isAllItemsSelected()){
-                        adapter.setAllItemsUnselected();
-                    }else{
-                        adapter.setAllItemsSelected();
-                    }
-
+        binding.toolbarSelectFiles.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.select_all_saved_file) {
+                if (adapter.isAllItemsSelected()) {
+                    adapter.setAllItemsUnselected();
+                } else {
+                    adapter.setAllItemsSelected();
+                }
             }
             return false;
         });
     }
 
     private void getFiles() {
-        Folder folder = (Folder) getIntent().getSerializableExtra("folder");
         String[] extensions = new String[]{""};
         switch (FILES_TYPE) {
             case DBHelper.VIDEO_TYPE:

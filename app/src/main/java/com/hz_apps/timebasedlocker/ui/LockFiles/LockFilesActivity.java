@@ -54,7 +54,12 @@ public class LockFilesActivity extends AppCompatActivity implements Confirmation
         super.onCreate(savedInstanceState);
         binding = ActivityLockFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbarLockFiles);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.toolbarLockFiles.setNavigationOnClickListener((arrow) -> onBackPressed());
         updateTime();
+        getSupportActionBar().setTitle("Select Unlock Date and Time");
 
         selectedFiles = (ArrayList<File>) getIntent().getSerializableExtra("selected_files");
         FILES_TYPES = SavedFilesActivity.FILES_TYPE;

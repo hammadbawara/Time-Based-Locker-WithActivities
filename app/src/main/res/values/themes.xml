@@ -18,6 +18,8 @@
         <item name="colorTertiary">@color/black</item>
         <!-- This allow Action Mode show on top of toolbar -->
         <item name="windowActionModeOverlay">true</item>
+
+        <item name="titleTextColor">@color/white</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">

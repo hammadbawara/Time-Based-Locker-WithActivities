@@ -7,7 +7,7 @@
     tools:context=".ui.selectfolder.selectfiles.SelectFilesActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarSelectFiles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -18,7 +18,7 @@
         android:id="@+id/select_files_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolbarSelectFiles"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layoutAnimation="@anim/layout_animation"

@@ -36,6 +36,21 @@ public class SelectFolderActivity extends AppCompatActivity {
         binding = ActivitySelectFolderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         mViewModel = new ViewModelProvider(this).get(SelectFolderViewModel.class);
+        setSupportActionBar(binding.toolbarSelectFolder);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.toolbarSelectFolder.setNavigationOnClickListener((arrow) -> onBackPressed());
+
+        String activityTitle = "";
+        switch (FILES_TYPE){
+            case DBHelper.VIDEO_TYPE:
+                activityTitle = "Video Folders";
+                break;
+            case DBHelper.PHOTO_TYPE:
+                activityTitle = "Photo Folders";
+                break;
+        }
+        getSupportActionBar().setTitle(activityTitle);
 
         requestPermission();
 
