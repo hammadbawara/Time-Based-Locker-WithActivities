@@ -1,19 +1,22 @@
 package com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hz_apps.timebasedlocker.Adapters.FilesListAdapter;
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFilesBinding;
+import com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 import com.hz_apps.timebasedlocker.ui.selectfolder.FilesExtensions;
 import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
@@ -34,7 +37,19 @@ public class SelectFilesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySelectFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
+        setOptionMenu();
+        ImageButton nextBtn = binding.nextBtnActivitySelectFiles;
+
+        nextBtn.setOnClickListener(v -> {
+            if (adapter.numberOfItemsSelected == 0) {
+                Toast.makeText(SelectFilesActivity.this, "You have not selected any item", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(SelectFilesActivity.this, LockFilesActivity.class);
+                intent.putExtra("selected_files", adapter.getAllSelectedFiles());
+                startActivity(intent);
+            }
+        });
+
 
         FILES_TYPE = SavedFilesActivity.FILES_TYPE;
 
@@ -66,47 +81,32 @@ public class SelectFilesActivity extends AppCompatActivity {
         binding.progressBarSelectFiles.setVisibility(View.GONE);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        menu.add("Select All");
-        menu.add("Unselect All");
-        return super.onCreateOptionsMenu(menu);
-    }
+    private void setOptionMenu(){
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getTitle() == "Select All") {
-            if (!adapter.isAllItemsSelected()) {
-                adapter.setAllItemsUnSelectedFlag(false);
-                adapter.setAllItemsSelected(true);
-                for (int i = 0; i < adapter.getFilesSelectedState().length; i++) {
-                    if (!adapter.getFilesSelectedState()[i]) {
-                        adapter.notifyItemChanged(i);
+        binding.toolbar.inflateMenu(R.menu.action_mode_saved_file);
+
+        binding.toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()){
+                case R.id.select_all_saved_file:
+                    if (adapter.isAllItemsSelected()){
+                        adapter.setAllItemsUnselected();
+                    }else{
+                        adapter.setAllItemsSelected();
                     }
-                }
+
             }
-        } else {
-            if (!adapter.isAllItemsUnselected()) {
-                adapter.setAllItemsSelected(false);
-                adapter.setAllItemsUnSelectedFlag(true);
-                for (int i = 0; i < adapter.getFilesSelectedState().length; i++) {
-                    if (adapter.getFilesSelectedState()[i]) {
-                        adapter.notifyItemChanged(i);
-                    }
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item);
+            return false;
+        });
     }
 
     private void getFiles() {
         Folder folder = (Folder) getIntent().getSerializableExtra("folder");
         String[] extensions = new String[]{""};
         switch (FILES_TYPE) {
-            case 0:
+            case DBHelper.VIDEO_TYPE:
                 extensions = FilesExtensions.videosExtensions;
                 break;
-            case 1:
+            case DBHelper.PHOTO_TYPE:
                 extensions = FilesExtensions.imagesExtensions;
                 break;
 

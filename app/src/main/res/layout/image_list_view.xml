@@ -14,13 +14,11 @@
 
     <CheckBox
         android:id="@+id/checkbox_images_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignStart="@id/imageView_images_list"
         android:layout_alignTop="@id/imageView_images_list"
-        android:layout_alignEnd="@id/imageView_images_list"
-        android:layout_alignBottom="@id/imageView_images_list"
         android:layout_alignParentEnd="false"
         android:layout_centerVertical="true"
-        android:button="@drawable/custom_check_box" />
+        android:clickable="false" />
 </RelativeLayout>

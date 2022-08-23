@@ -1,7 +1,6 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -17,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hz_apps.timebasedlocker.R;
-import com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,10 +27,8 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
     // if user select any of the item then that particular item will select to true state
     // At the end of this i will make a new array that contain elements on the basis of true and false
     private final boolean[] filesSelectedState;
+    public int numberOfItemsSelected = 0;
     private final ImageButton nextBtn;
-    int numberOfItemsSelected = 0;
-    private boolean allItemsSelectedFlag = false;
-    private boolean allItemsUnselectedFlag = false;
 
     public FilesListAdapter(Context context, ArrayList<File> imagesFilesList, ImageButton nextBtn) {
         this.context = context;
@@ -52,28 +47,30 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
 
-        File file = imagesFilesList.get(position);
+        File file = imagesFilesList.get(holder.getBindingAdapterPosition());
 
         Glide.with(context).load(file)
                 .into(holder.imageView);
 
+        if (filesSelectedState[holder.getBindingAdapterPosition()]){
+            holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.black_opacity_25),
+                    PorterDuff.Mode.SRC_OVER
+            );
+            holder.checkBox.setChecked(true);
+        }else{
+            holder.imageView.clearColorFilter();
+            holder.checkBox.setChecked(false);
+        }
 
-        // nextBtn on ClickListener
-        nextBtn.setOnClickListener(v -> {
-            if (numberOfItemsSelected == 0) {
-                Toast.makeText(context, "You have not selected any item", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(context, LockFilesActivity.class);
-                intent.putExtra("selected_files", getAllSelectedFiles());
-                context.startActivity(intent);
+
+
+        holder.itemView.setOnClickListener(v -> {
+            if (filesSelectedState[holder.getBindingAdapterPosition()]) {
+                unselectItem(holder);
             }
-        });
-
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
+            else{
                 selectItem(holder);
             }
-            if (!isChecked) unselectItem(holder);
 
             /*
              * if selected files are equal to 0 then disable nextBtn
@@ -83,15 +80,6 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
                 nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
             else nextBtn.setBackgroundResource(R.drawable.round_button_enabled);
         });
-
-        // If user selected all items selected then it check if item not selected then select that item
-        if (allItemsSelectedFlag) {
-            holder.checkBox.setChecked(true);
-        }
-        if (allItemsUnselectedFlag) {
-            holder.checkBox.setChecked(false);
-            unselectItem(holder);
-        }
     }
 
     @Override
@@ -99,16 +87,11 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
         return imagesFilesList.size();
     }
 
-    public void setAllItemsUnSelectedFlag(boolean allItemsUnselectedFlag) {
-        nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
-        this.allItemsUnselectedFlag = allItemsUnselectedFlag;
-    }
-
     /*
      * This function return all selected files
      * It check if filesSelectedState array is true then it will add that file to selectedFiles arrayList
      */
-    private ArrayList<File> getAllSelectedFiles() {
+    public ArrayList<File> getAllSelectedFiles() {
         ArrayList<File> filesList = new ArrayList<>();
         for (int i = 0; i < imagesFilesList.size(); i++) {
             if (filesSelectedState[i]) {
@@ -120,6 +103,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     // This function will select item and also set true in filesSelectedState array
     private void selectItem(myViewHolder holder) {
+        holder.checkBox.setChecked(true);
         holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.black_opacity_25),
                 PorterDuff.Mode.SRC_OVER
         );
@@ -129,17 +113,34 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     // This function unselect item and also set false in filesSelectedState array
     private void unselectItem(myViewHolder holder) {
+        holder.checkBox.setChecked(false);
         filesSelectedState[holder.getBindingAdapterPosition()] = false;
         holder.imageView.clearColorFilter();
         numberOfItemsSelected -= 1;
     }
 
-    public boolean isAllItemsSelected() {
-        return numberOfItemsSelected == imagesFilesList.size();
+    public void setAllItemsSelected(){
+        for (int i=0; i<filesSelectedState.length; i++){
+            if (!filesSelectedState[i]){
+                filesSelectedState[i] = true;
+                numberOfItemsSelected += 1;
+                notifyItemChanged(i);
+            }
+        }
     }
 
-    public void setAllItemsSelected(boolean b) {
-        allItemsSelectedFlag = b;
+    public void setAllItemsUnselected(){
+        for (int i=0; i<filesSelectedState.length; i++){
+            if (filesSelectedState[i]){
+                filesSelectedState[i] = false;
+                numberOfItemsSelected -= 1;
+                notifyItemChanged(i);
+            }
+        }
+    }
+
+    public boolean isAllItemsSelected() {
+        return numberOfItemsSelected == imagesFilesList.size();
     }
 
     public boolean isAllItemsUnselected() {
