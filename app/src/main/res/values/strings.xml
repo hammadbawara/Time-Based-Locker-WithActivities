@@ -12,4 +12,5 @@
 
     <string name="set_time">SET TIME</string>
     <string name="set_date">SET DATE</string>
+    <string name="allow_to_extend_date_later">Allow to Extend Date Later</string>
 </resources>

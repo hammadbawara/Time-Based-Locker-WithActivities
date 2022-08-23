@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.hz_apps.timebasedlocker.Adapters.LockFileAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
+import com.hz_apps.timebasedlocker.Dialogs.ConfirmationLockFileDialog;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.ActivityLockFilesBinding;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
@@ -30,7 +31,7 @@ import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LockFilesActivity extends AppCompatActivity {
+public class LockFilesActivity extends AppCompatActivity implements ConfirmationLockFileDialog.ConfirmationLockFileDialogData {
 
     ActivityLockFilesBinding binding;
     LockFileAdapter adapter;
@@ -45,6 +46,8 @@ public class LockFilesActivity extends AppCompatActivity {
     private DBHelper db;
     private String destinationFolder;
     private ExecutorService executor;
+    private boolean allowedExtendDate, allowSeeTile, allowSeeImage;
+    private DateAndTime[] dateAndTimeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +72,14 @@ public class LockFilesActivity extends AppCompatActivity {
 
 
         binding.nextBtnActivityLockFiles.setOnClickListener(v -> {
-            DateAndTime[] dateAndTimeList = adapter.getDateAndTimeList();
+            dateAndTimeList = adapter.getDateAndTimeList();
 
             boolean datesChecked = checkAllDatesAreSet(dateAndTimeList);
 
             if (datesChecked) {
-                moveFilesIntoSafe(dateAndTimeList);
+                ConfirmationLockFileDialog dialogFragment = new ConfirmationLockFileDialog();
+                ConfirmationLockFileDialog.listener = this;
+                dialogFragment.show(getSupportFragmentManager(), "GET");
             } else {
                 Toast.makeText(this, "Please select unlock date for all files", Toast.LENGTH_SHORT).show();
             }
@@ -82,7 +87,7 @@ public class LockFilesActivity extends AppCompatActivity {
 
     }
 
-    private void moveFilesIntoSafe(DateAndTime[] dateAndTimeList) {
+    private void moveFilesIntoSafe() {
 
         executor = Executors.newSingleThreadExecutor();
 
@@ -148,9 +153,9 @@ public class LockFilesActivity extends AppCompatActivity {
                 file.setUnlockDateTime(dateAndTimeList[i]);
                 file.setLockDateTime(lockDateAndTime);
                 file.setFile(true);
-                file.setAllowedToExtendDateTime(true);
-                file.setAllowedToSeePhoto(true);
-                file.setAllowedToSeeTitle(true);
+                file.setAllowedToExtendDateTime(allowedExtendDate);
+                file.setAllowedToSeePhoto(allowSeeImage);
+                file.setAllowedToSeeTitle(allowSeeTile);
                 file.setPath(destinationFolder + last_id);
                 file.setFileType(FILES_TYPES);
 
@@ -283,5 +288,12 @@ public class LockFilesActivity extends AppCompatActivity {
                 db.updateDBRecord(DBHelper.LAST_SAVED_PHOTO_KEY, last_id);
                 break;
         }
+    }
+    public void lockFiles(boolean allowExtendDate, boolean allowSeeTitle, boolean allowSeeImage) {
+        this.allowedExtendDate = allowExtendDate;
+        this.allowSeeTile = allowSeeTitle;
+        this.allowSeeImage = allowSeeImage;
+
+        moveFilesIntoSafe();
     }
 }
