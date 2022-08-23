@@ -9,7 +9,7 @@ import java.time.LocalTime;
 public class DateAndTime implements Serializable {
 
     private LocalDate date;
-    private LocalTime time = LocalTime.MIN;
+    private LocalTime time;
 
     public DateAndTime() {
 
@@ -17,6 +17,14 @@ public class DateAndTime implements Serializable {
 
     public DateAndTime(@NonNull LocalDate date, @NonNull LocalTime time) {
         this.date = date;
+        this.time = time;
+    }
+
+    public DateAndTime(LocalDate date){
+        this.date = date;
+    }
+
+    public DateAndTime(LocalTime time){
         this.time = time;
     }
 
@@ -52,6 +60,12 @@ public class DateAndTime implements Serializable {
     @NonNull
     @Override
     public String toString() {
+        if (date == null){
+            date = LocalDate.of(0, 0, 0);
+        }
+        if (time == null){
+            time = LocalTime.MIN;
+        }
         return date.toString() + " " + time.toString();
     }
 }

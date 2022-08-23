@@ -3,7 +3,6 @@ package com.hz_apps.timebasedlocker.Adapters;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,6 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
     Calendar calendar;
-    private LocalDate DateForAllItems;
     // If this true then it will set button red to show warning that date is not selelcted
     private boolean dateNotSetWarning = false;
     private LocalTime TimeForAllItems;
@@ -74,26 +72,10 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
         showDatePickerDialog(holder);
 
-        // If user not selected date for item then button get red to show warning
-        if (dateNotSetWarning) {
-            holder.set_date.setTextColor(Color.RED);
-        }
+        setDateOnItem(holder);
+        setTimeOnItem(holder);
 
-
-        if (DateForAllItems != null) {
-            dateAndTimeList[position].setDate(DateForAllItems);
-            holder.set_date.setTextColor(defaultTextViewColor);
-            holder.set_date.setText(DateForAllItems.getDayOfMonth() + "-" + getMonthInText(DateForAllItems.getMonthValue()) + "-" + DateForAllItems.getYear());
-        }
-
-        if (TimeForAllItems != null) {
-            dateAndTimeList[position].setTime(TimeForAllItems);
-            holder.set_time.setText(TimeForAllItems.getHour() + " : " + TimeForAllItems.getMinute());
-        }
-
-        holder.set_time.setOnClickListener(v -> {
-            showTimePickerDialog(holder);
-        });
+        holder.set_time.setOnClickListener(v -> showTimePickerDialog(holder));
 
     }
 
@@ -106,12 +88,8 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
         // show date picker dialog on click of set date text view
         holder.set_date.setOnClickListener(v -> {
             datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
-                // storing date in dateAndTimeList
-                dateAndTimeList[holder.getBindingAdapterPosition()].setDate(LocalDate.of(year, month + 1, dayOfMonth));
-                // setting date in textView
-                holder.set_date.setText(dayOfMonth + "-" + getMonthInText(month) + "-" + year);
-                // setting color of textView to default. Because color of textView can be red.
-                holder.set_date.setTextColor(defaultTextViewColor);
+                dateAndTimeList[holder.getBindingAdapterPosition()].setDate(LocalDate.of(year, month+1, dayOfMonth));
+                this.setDateOnItem(holder);
             }, YEAR, MONTH, DAY_OF_MONTH);
             datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
             datePickerDialog.show();
@@ -120,36 +98,50 @@ public class LockFileAdapter extends RecyclerView.Adapter<LockFileAdapter.myView
 
     // Time picker dialog
     private void showTimePickerDialog(myViewHolder holder) {
-        timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                // storing time in dateAndTimeList
-                dateAndTimeList[holder.getBindingAdapterPosition()].setTime(LocalTime.of(hourOfDay, minute));
-                // setting time in textView
-                holder.set_time.setText(hourOfDay + " : " + minute);
-            }
+        timePickerDialog = new TimePickerDialog(context, (view, hourOfDay, minute) -> {
+            // storing time in dateAndTimeList
+            dateAndTimeList[holder.getBindingAdapterPosition()].setTime(LocalTime.of(hourOfDay, minute));
+            // setting time in textView
+            setTimeOnItem(holder);
         }, 12, 0, true);
         timePickerDialog.show();
-    }
-
-    public void setDateForAllItems(LocalDate localDate) {
-        TimeForAllItems = null;
-        dateNotSetWarning = false;
-        DateForAllItems = localDate;
     }
 
     public DateAndTime[] getDateAndTimeList() {
         return dateAndTimeList;
     }
 
-    public void setTimeForAllItems(LocalTime timeForAllItems) {
-        this.DateForAllItems = null;
-        dateNotSetWarning = false;
-        TimeForAllItems = timeForAllItems;
+    private void setDateOnItem(myViewHolder holder){
+        LocalDate date = dateAndTimeList[holder.getBindingAdapterPosition()].getDate();
+        holder.set_date.setTextColor(defaultTextViewColor);
+        if (date == null){
+            holder.set_date.setText(context.getString(R.string.set_date));
+        }else {
+            holder.set_date.setText(date.toString());
+        }
     }
 
-    public void setDateNotSetWarning(boolean b) {
-        this.dateNotSetWarning = b;
+    private void setTimeOnItem(myViewHolder holder){
+        LocalTime time = dateAndTimeList[holder.getBindingAdapterPosition()].getTime();
+        if (time == null){
+            holder.set_time.setText(context.getString(R.string.set_time));
+        }else {
+            holder.set_time.setText(time.toString());
+        }
+    }
+
+    public void setDateOnAllItems(LocalDate date){
+        for (int i=0; i<dateAndTimeList.length; i++) {
+            dateAndTimeList[i].setDate(date);
+            notifyItemChanged(i);
+        }
+    }
+
+    public void setTimeOnAllItems(LocalTime time){
+        for (int i=0; i<dateAndTimeList.length; i++) {
+            dateAndTimeList[i].setTime(time);
+            notifyItemChanged(i);
+        }
     }
 
     private String getMonthInText(int month) {

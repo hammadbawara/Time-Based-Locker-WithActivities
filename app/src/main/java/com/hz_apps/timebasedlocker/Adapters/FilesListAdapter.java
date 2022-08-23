@@ -127,6 +127,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
                 notifyItemChanged(i);
             }
         }
+        nextBtn.setBackgroundResource(R.drawable.round_button_enabled);
     }
 
     public void setAllItemsUnselected(){
@@ -137,6 +138,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
                 notifyItemChanged(i);
             }
         }
+        nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
     }
 
     public boolean isAllItemsSelected() {

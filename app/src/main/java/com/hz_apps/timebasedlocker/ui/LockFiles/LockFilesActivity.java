@@ -214,12 +214,11 @@ public class LockFilesActivity extends AppCompatActivity {
      *
      */
     private boolean checkAllDatesAreSet(DateAndTime[] dateAndTimeList) {
-        adapter.setDateNotSetWarning(true);
         boolean datesChecked = true;
-        for (int i = 0; i < dateAndTimeList.length; i++) {
-            if (dateAndTimeList[i].getDate() == null) {
-                adapter.notifyItemChanged(i);
+        for (DateAndTime dateAndTime : dateAndTimeList) {
+            if (dateAndTime.getDate() == null) {
                 datesChecked = false;
+                break;
             }
         }
         return datesChecked;
@@ -232,8 +231,7 @@ public class LockFilesActivity extends AppCompatActivity {
             datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    adapter.setDateForAllItems(LocalDate.of(year, month, dayOfMonth));
-                    adapter.notifyDataSetChanged();
+                    adapter.setDateOnAllItems(LocalDate.of(year, month+1, dayOfMonth));
                 }
             }, YEAR, MONTH, DAY_OF_MONTH);
             datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
@@ -244,8 +242,7 @@ public class LockFilesActivity extends AppCompatActivity {
         // set Time on all items
         binding.setTimeLockActivity.setOnClickListener(v -> {
             timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) -> {
-                adapter.setTimeForAllItems(LocalTime.of(hourOfDay, minute));
-                adapter.notifyDataSetChanged();
+                adapter.setTimeOnAllItems(LocalTime.of(hourOfDay, minute));
 
             }, 0, 0, true);
             timePickerDialog.show();

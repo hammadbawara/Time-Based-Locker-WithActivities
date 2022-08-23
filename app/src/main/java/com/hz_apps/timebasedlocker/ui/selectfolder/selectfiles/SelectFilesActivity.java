@@ -73,6 +73,7 @@ public class SelectFilesActivity extends AppCompatActivity {
         RecyclerView recyclerView = binding.selectFilesRecyclerView;
         adapter = new FilesListAdapter(this, mViewModel.getFilesList(), binding.nextBtnActivitySelectFiles);
         recyclerView.setAdapter(adapter);
+        // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int numberOfImagesInOneRow = (int) (displayMetrics.widthPixels / displayMetrics.density) / 120;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfImagesInOneRow));
