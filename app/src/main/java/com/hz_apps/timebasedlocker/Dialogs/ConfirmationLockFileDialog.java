@@ -21,6 +21,7 @@ public class ConfirmationLockFileDialog extends DialogFragment {
     DialogConfirmationLockFileBinding binding;
     public static ConfirmationLockFileDialogData listener;
     boolean isShowAdvancedOptionShowing = false;
+    int FILES_TYPE;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -29,7 +30,9 @@ public class ConfirmationLockFileDialog extends DialogFragment {
         TextView showAdvancedOptions = binding.showAdvancedOptionsDiloagLockFile;
         ConstraintLayout advancedOptionsLayout = binding.advancedOptionsLayoutDialogLockFile;
 
-        if (SavedFilesActivity.FILES_TYPE == DBHelper.VIDEO_TYPE){
+        FILES_TYPE = SavedFilesActivity.FILES_TYPE;
+
+        if (FILES_TYPE == DBHelper.VIDEO_TYPE){
             binding.allowSeeImageChB.setVisibility(View.VISIBLE);
         }
 

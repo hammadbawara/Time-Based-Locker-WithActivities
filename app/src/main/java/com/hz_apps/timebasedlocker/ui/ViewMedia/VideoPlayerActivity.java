@@ -1,4 +1,4 @@
-package com.hz_apps.timebasedlocker.ui.videos;
+package com.hz_apps.timebasedlocker.ui.ViewMedia;
 
 import android.os.Bundle;
 import android.widget.MediaController;

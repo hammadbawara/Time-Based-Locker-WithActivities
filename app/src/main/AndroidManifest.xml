@@ -27,7 +27,7 @@
             android:name=".ui.ShowSavedFiles.SavedFilesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.videos.VideoPlayerActivity"
+            android:name=".ui.ViewMedia.VideoPlayerActivity"
             android:exported="false" />
         <activity
             android:name=".ui.LockFiles.LockFilesActivity"

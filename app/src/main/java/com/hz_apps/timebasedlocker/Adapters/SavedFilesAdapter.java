@@ -28,7 +28,7 @@ import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
-import com.hz_apps.timebasedlocker.ui.videos.VideoPlayerActivity;
+import com.hz_apps.timebasedlocker.ui.ViewMedia.VideoPlayerActivity;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -113,10 +113,27 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
         SavedFile file = savedFileList.get(position);
 
-        Glide.with(context).load(file.getPath())
-                .centerCrop()
-                .placeholder(R.drawable.ic_image)
-                .into(holder.imageView);
+        switch (file.getFileType()){
+            case DBHelper.PHOTO_TYPE:
+                Glide.with(context)
+                        .load(context.getDrawable(R.drawable.ic_image))
+                        .into(holder.imageView);
+                break;
+            case DBHelper.VIDEO_TYPE:
+                if (file.isAllowedToSeePhoto()){
+                    Glide.with(context)
+                            .load(file.getPath())
+                            .centerCrop()
+                            .into(holder.imageView);
+                }else{
+                    Glide.with(context)
+                            .load(context.getDrawable(R.drawable.ic_video))
+                            .into(holder.imageView);
+                    break;
+                }
+
+        }
+
 
         holder.time_remaining.setText(getRemainingTime(file.getLockDateTime(), file.getUnlockDateTime()));
 
