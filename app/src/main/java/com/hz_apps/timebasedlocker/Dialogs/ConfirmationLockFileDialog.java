@@ -5,21 +5,45 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 
+import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.DialogConfirmationLockFileBinding;
+import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 
 public class ConfirmationLockFileDialog extends DialogFragment {
     DialogConfirmationLockFileBinding binding;
     public static ConfirmationLockFileDialogData listener;
+    boolean isShowAdvancedOptionShowing = false;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         binding = DialogConfirmationLockFileBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        TextView showAdvancedOptions = binding.showAdvancedOptionsDiloagLockFile;
+        ConstraintLayout advancedOptionsLayout = binding.advancedOptionsLayoutDialogLockFile;
+
+        if (SavedFilesActivity.FILES_TYPE == DBHelper.VIDEO_TYPE){
+            binding.allowSeeImageChB.setVisibility(View.VISIBLE);
+        }
+
+        showAdvancedOptions.setOnClickListener(v -> {
+            if (isShowAdvancedOptionShowing){
+                advancedOptionsLayout.setVisibility(View.GONE);
+                showAdvancedOptions.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_expand_less), null, null, null);
+                isShowAdvancedOptionShowing = false;
+            }else{
+                advancedOptionsLayout.setVisibility(View.VISIBLE);
+                showAdvancedOptions.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_expand_more), null, null, null);
+                isShowAdvancedOptionShowing = true;
+            }
+        });
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
 

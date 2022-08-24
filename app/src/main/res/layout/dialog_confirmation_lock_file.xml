@@ -9,62 +9,83 @@
     android:paddingEnd="16dp"
     tools:context=".Dialogs.ConfirmationLockFileDialog">
 
-    <CheckBox
-        android:id="@+id/allowExtendDateChB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Extend Date Later"
-        android:checked="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <CheckBox
-        android:id="@+id/allowSeeImageChB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="Video Thumbnail"
-        app:layout_constraintStart_toStartOf="@+id/allowSeeTitleChB"
-        app:layout_constraintTop_toBottomOf="@+id/allowSeeTitleChB" />
-
-    <CheckBox
-        android:id="@+id/allowSeeTitleChB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="See File Title"
-        app:layout_constraintStart_toStartOf="@+id/allowExtendDateChB"
-        app:layout_constraintTop_toBottomOf="@+id/allowExtendDateChB" />
-
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="0dp"
+        android:id="@+id/show_advanced_options_diloag_lock_file"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="If you want to to use below options on file after locking. Then you can configure those options."
-        android:textSize="18sp"
-        android:textColor="?attr/colorTertiary"
+        android:drawableLeft="@drawable/ic_expand_less"
+        android:text="Show Advanced Options"
+        android:textColor="#2136F3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/advanced_options_layout_dialog_lock_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_advanced_options_diloag_lock_file">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="If you want to to use below options on file after locking. Then you can configure those options."
+            android:textColor="?attr/colorTertiary"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/allowSeeTitleChB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="See File Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/allowExtendDateChB" />
+
+        <CheckBox
+            android:id="@+id/allowExtendDateChB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Extend Date Later"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <CheckBox
+            android:id="@+id/allowSeeImageChB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Video Thumbnail"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/allowSeeTitleChB" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="0dp"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:text="If you lock these files then you will not able to unlock them before unlock date."
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allowSeeImageChB" />
+        app:layout_constraintTop_toBottomOf="@+id/advanced_options_layout_dialog_lock_file" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="Are you sure you want to lock these files?"
-        app:layout_constraintStart_toStartOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -56,13 +55,29 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
             holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.black_opacity_25),
                     PorterDuff.Mode.SRC_OVER
             );
-            holder.checkBox.setChecked(true);
+            holder.checkBox.setVisibility(View.VISIBLE);
         }else{
             holder.imageView.clearColorFilter();
-            holder.checkBox.setChecked(false);
+            holder.checkBox.setVisibility(View.GONE);
         }
 
+        holder.itemView.setOnLongClickListener(v -> {
+            if (filesSelectedState[holder.getBindingAdapterPosition()]) {
+                unselectItem(holder);
+            }
+            else{
+                selectItem(holder);
+            }
 
+            /*
+             * if selected files are equal to 0 then disable nextBtn
+             * if it is not 0 then enable nextBtn
+             */
+            if (numberOfItemsSelected == 0)
+                nextBtn.setBackgroundResource(R.drawable.round_button_disabled);
+            else nextBtn.setBackgroundResource(R.drawable.round_button_enabled);
+            return true;
+        });
 
         holder.itemView.setOnClickListener(v -> {
             if (filesSelectedState[holder.getBindingAdapterPosition()]) {
@@ -103,7 +118,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     // This function will select item and also set true in filesSelectedState array
     private void selectItem(myViewHolder holder) {
-        holder.checkBox.setChecked(true);
+        holder.checkBox.setVisibility(View.VISIBLE);
         holder.imageView.setColorFilter(ContextCompat.getColor(context, R.color.black_opacity_25),
                 PorterDuff.Mode.SRC_OVER
         );
@@ -113,7 +128,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     // This function unselect item and also set false in filesSelectedState array
     private void unselectItem(myViewHolder holder) {
-        holder.checkBox.setChecked(false);
+        holder.checkBox.setVisibility(View.GONE);
         filesSelectedState[holder.getBindingAdapterPosition()] = false;
         holder.imageView.clearColorFilter();
         numberOfItemsSelected -= 1;
@@ -155,13 +170,13 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
 
     public class myViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
-        private final CheckBox checkBox;
+        private final ImageView checkBox;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageView_images_list);
-            checkBox = itemView.findViewById(R.id.checkbox_images_list);
+            checkBox = itemView.findViewById(R.id.check_box_images_list);
         }
     }
 }

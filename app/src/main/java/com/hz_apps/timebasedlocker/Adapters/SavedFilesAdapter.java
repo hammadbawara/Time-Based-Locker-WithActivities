@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
@@ -42,9 +43,11 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
     private boolean[] selectedFilesList;
     private int numberOfSelectedFiles = 0;
     private boolean isAllItemsSelected = false;
+    private FloatingActionButton addSavedFiles;
     private final ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            addSavedFiles.setVisibility(View.INVISIBLE);
             mode.getMenuInflater().inflate(R.menu.action_mode_saved_file, menu);
             return true;
         }
@@ -79,14 +82,16 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             unselectAllItems();
+            addSavedFiles.setVisibility(View.VISIBLE);
             mActionMode = null;
         }
     };
 
-    public SavedFilesAdapter(Context context, List<SavedFile> savedFileList, MaterialToolbar toolbar) {
+    public SavedFilesAdapter(Context context, List<SavedFile> savedFileList, MaterialToolbar toolbar, FloatingActionButton addSavedFiles) {
         this.context = context;
         this.savedFileList = savedFileList;
         this.toolbar = toolbar;
+        this.addSavedFiles = addSavedFiles;
         selectedFilesList = new boolean[savedFileList.size()];
     }
 

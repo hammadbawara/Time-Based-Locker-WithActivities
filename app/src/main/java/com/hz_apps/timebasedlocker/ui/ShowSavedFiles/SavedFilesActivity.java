@@ -3,7 +3,6 @@ package com.hz_apps.timebasedlocker.ui.ShowSavedFiles;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,7 +71,7 @@ public class SavedFilesActivity extends AppCompatActivity {
         DBHelper db = DBHelper.getINSTANCE();
         List<SavedFile> savedFileList = db.getSavedFiles(savedFolder.getFilesTable());
         viewModel.setSavedFilesList(savedFileList);
-        adapter = new SavedFilesAdapter(this, viewModel.getSavedFilesList(), binding.toolbarSavedFiles);
+        adapter = new SavedFilesAdapter(this, viewModel.getSavedFilesList(), binding.toolbarSavedFiles, binding.addFilesSavedFiles);
     }
 
     private void setFilesInRecyclerView() {
