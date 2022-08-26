@@ -137,4 +137,10 @@ public class SelectFolderActivity extends AppCompatActivity {
                     }
                 }).check();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }

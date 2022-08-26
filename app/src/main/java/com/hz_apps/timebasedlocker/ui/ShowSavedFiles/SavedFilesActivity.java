@@ -93,4 +93,10 @@ public class SavedFilesActivity extends AppCompatActivity {
         }
         super.onResume();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }

@@ -32,4 +32,10 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         mediaController.setAnchorView(videoView);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 }
