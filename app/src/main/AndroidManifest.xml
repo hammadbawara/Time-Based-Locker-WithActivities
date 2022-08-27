@@ -24,13 +24,10 @@
         android:theme="@style/Theme.TimeBasedLocker"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ViewMedia.ImageViewerActivity"
+            android:name=".ui.ViewMedia.MediaViewerActivity"
             android:exported="false" />
         <activity
             android:name=".ui.ShowSavedFiles.SavedFilesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.ViewMedia.VideoPlayerActivity"
             android:exported="false" />
         <activity
             android:name=".ui.LockFiles.LockFilesActivity"

@@ -28,8 +28,7 @@ import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
-import com.hz_apps.timebasedlocker.ui.ViewMedia.ImageViewerActivity;
-import com.hz_apps.timebasedlocker.ui.ViewMedia.VideoPlayerActivity;
+import com.hz_apps.timebasedlocker.ui.ViewMedia.MediaViewerActivity;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -149,20 +148,9 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                     numberOfSelectedFiles += 1;
                 }
             } else {
-                Intent intent;
-                switch (file.getFileType()){
-                    case DBHelper.VIDEO_TYPE:
-                        intent = new Intent(context, VideoPlayerActivity.class);
-                        intent.putExtra("video_path", file.getPath());
-                        context.startActivity(intent);
-                        break;
-                    case DBHelper.PHOTO_TYPE:
-                        intent = new Intent(context, ImageViewerActivity.class);
-                        intent.putExtra("image_path", file.getPath());
-                        context.startActivity(intent);
-                        break;
-                }
-
+                Intent intent = new Intent(context, MediaViewerActivity.class);
+                intent.putExtra("saved_file", file);
+                context.startActivity(intent);
             }
         });
 
