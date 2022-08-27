@@ -150,6 +150,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             } else {
                 Intent intent = new Intent(context, MediaViewerActivity.class);
                 intent.putExtra("saved_file", file);
+                intent.putExtra("file_index", holder.getBindingAdapterPosition());
                 context.startActivity(intent);
             }
         });

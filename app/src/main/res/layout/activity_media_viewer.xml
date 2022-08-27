@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/share_file_media_viewer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -48,11 +48,11 @@
             app:drawableTint="@color/white"
             app:drawableTopCompat="@drawable/ic_share"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView12"
+            app:layout_constraintEnd_toStartOf="@+id/unlock_file_media_viewer"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/unlock_file_media_viewer"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="5dp"
@@ -61,14 +61,14 @@
             android:textColor="@color/white"
             app:drawableTint="@color/white"
             app:drawableTopCompat="@drawable/ic_simple_share"
-            app:layout_constraintBottom_toBottomOf="@+id/textView10"
-            app:layout_constraintEnd_toStartOf="@+id/textView9"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toTopOf="@+id/textView10" />
+            app:layout_constraintBottom_toBottomOf="@+id/share_file_media_viewer"
+            app:layout_constraintEnd_toStartOf="@+id/file_info_media_viewer"
+            app:layout_constraintStart_toEndOf="@+id/share_file_media_viewer"
+            app:layout_constraintTop_toTopOf="@+id/share_file_media_viewer" />
 
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/file_info_media_viewer"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="5dp"
@@ -77,13 +77,13 @@
             android:textColor="@color/white"
             app:drawableTint="@color/white"
             app:drawableTopCompat="@drawable/ic_info"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
-            app:layout_constraintEnd_toStartOf="@+id/textView11"
-            app:layout_constraintStart_toEndOf="@+id/textView12"
-            app:layout_constraintTop_toTopOf="@+id/textView12" />
+            app:layout_constraintBottom_toBottomOf="@+id/unlock_file_media_viewer"
+            app:layout_constraintEnd_toStartOf="@+id/delete_file_media_viewer"
+            app:layout_constraintStart_toEndOf="@+id/unlock_file_media_viewer"
+            app:layout_constraintTop_toTopOf="@+id/unlock_file_media_viewer" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/delete_file_media_viewer"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="5dp"
@@ -92,10 +92,10 @@
             android:textColor="@color/white"
             app:drawableTint="@color/white"
             app:drawableTopCompat="@drawable/ic_delete"
-            app:layout_constraintBottom_toBottomOf="@+id/textView9"
+            app:layout_constraintBottom_toBottomOf="@+id/file_info_media_viewer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView9"
-            app:layout_constraintTop_toTopOf="@+id/textView9" />
+            app:layout_constraintStart_toEndOf="@+id/file_info_media_viewer"
+            app:layout_constraintTop_toTopOf="@+id/file_info_media_viewer" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

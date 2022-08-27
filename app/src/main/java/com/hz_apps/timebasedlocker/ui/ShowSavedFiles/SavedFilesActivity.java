@@ -27,6 +27,8 @@ public class SavedFilesActivity extends AppCompatActivity {
     SavedFilesViewModel viewModel;
     SavedFolder savedFolder;
     SavedFilesAdapter adapter;
+    // if user delete item in MediaViewerActivity then that deleted file will be removed from recyclerview by using index
+    public static int deletedFileIndex = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,11 @@ public class SavedFilesActivity extends AppCompatActivity {
         if (DBHelper.isAnyChangeInFiles) {
             main();
             DBHelper.isAnyChangeInFiles = false;
+        }
+        if (deletedFileIndex != -1){
+            viewModel.getSavedFilesList().remove(deletedFileIndex);
+            adapter.notifyItemRemoved(deletedFileIndex);
+            deletedFileIndex = -1;
         }
         super.onResume();
     }
