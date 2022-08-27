@@ -62,6 +62,7 @@ dependencies {
 
     // Dexter Library -- For getting permission
     implementation 'com.karumi:dexter:6.2.3'
+
     // loti animation
     def lottieVersion = "5.2.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
@@ -71,5 +72,8 @@ dependencies {
 
     // for drawable tint on lower api level
     implementation "androidx.appcompat:appcompat:1.5.0"
+
+    // PhotoView
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
 }

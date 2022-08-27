@@ -40,7 +40,6 @@ public class SelectFolderActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbarSelectFolder.setNavigationOnClickListener((arrow) -> onBackPressed());
-
         String activityTitle = "";
         switch (FILES_TYPE){
             case DBHelper.VIDEO_TYPE:
