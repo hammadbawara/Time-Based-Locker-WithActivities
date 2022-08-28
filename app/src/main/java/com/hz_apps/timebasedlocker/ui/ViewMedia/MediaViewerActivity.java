@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -12,13 +13,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.databinding.ActivityMediaViewerBinding;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
-import com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles.SelectFilesActivity;
 
 import java.io.File;
 
@@ -48,14 +47,15 @@ public class MediaViewerActivity extends AppCompatActivity {
 
         }
 
-        binding.deleteFileMediaViewer.setOnClickListener(v -> {
-            showDeleteDialog();
-        });
+        binding.deleteFileMediaViewer.setOnClickListener(v -> showDeleteDialog());
     }
 
     View.OnClickListener mediaClickListener = v -> {
       if (isOptionLayoutVisible){
           binding.optionsLayoutMediaViewer.setVisibility(View.INVISIBLE);
+          // Setting in full screen
+          getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                  WindowManager.LayoutParams.FLAG_FULLSCREEN);
           isOptionLayoutVisible = false;
       }else{
           binding.optionsLayoutMediaViewer.setVisibility(View.VISIBLE);
