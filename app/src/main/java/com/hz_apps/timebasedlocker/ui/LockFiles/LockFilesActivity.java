@@ -157,7 +157,6 @@ public class LockFilesActivity extends AppCompatActivity implements Confirmation
                 file.setName(source.getName());
                 file.setUnlockDateTime(dateAndTimeList[i]);
                 file.setLockDateTime(lockDateAndTime);
-                file.setFile(true);
                 file.setAllowedToExtendDateTime(allowedExtendDate);
                 file.setAllowedToSeePhoto(allowSeeImage);
                 file.setAllowedToSeeTitle(allowSeeTile);

@@ -14,18 +14,16 @@ public class SavedFile implements Serializable {
     private DateAndTime unlockDateTime;
     private DateAndTime lockDateTime;
     private int fileType;
-    private boolean isFile;
     private boolean isAllowedToExtendDateTime;
     private boolean isAllowedToSeePhoto;
     private boolean isAllowedToSeeTitle;
 
-    public SavedFile(String originalPath, String name, DateAndTime unlockDateTime, DateAndTime lockDateTime, int fileType, boolean isFile, boolean isAllowedToExtendDateTime, boolean isAllowedToSeePhoto, boolean isAllowedToSeeTitle) {
+    public SavedFile(String originalPath, String name, DateAndTime unlockDateTime, DateAndTime lockDateTime, int fileType, boolean isAllowedToExtendDateTime, boolean isAllowedToSeePhoto, boolean isAllowedToSeeTitle) {
         this.originalPath = originalPath;
         this.name = name;
         this.unlockDateTime = unlockDateTime;
         this.lockDateTime = lockDateTime;
         this.fileType = fileType;
-        this.isFile = isFile;
         this.isAllowedToExtendDateTime = isAllowedToExtendDateTime;
         this.isAllowedToSeePhoto = isAllowedToSeePhoto;
         this.isAllowedToSeeTitle = isAllowedToSeeTitle;
@@ -77,14 +75,6 @@ public class SavedFile implements Serializable {
 
     public void setLockDateTime(@NonNull DateAndTime lockDateTime) {
         this.lockDateTime = lockDateTime;
-    }
-
-    public boolean isFile() {
-        return isFile;
-    }
-
-    public void setFile(boolean file) {
-        isFile = file;
     }
 
     public boolean isAllowedToExtendDateTime() {

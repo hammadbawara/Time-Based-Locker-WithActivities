@@ -50,11 +50,10 @@ public class DBHelper extends SQLiteOpenHelper {
             NAME + " TEXT, " + // 3
             UNLOCK_DATE_TIME + " TEXT, " + // 4
             LOCK_DATE_TIME + " TEXT, " + // 5
-            IS_FILE + " INTEGER, " + // 6
-            FILE_TYPE + " INTEGER, " + //7
-            IS_ALLOWED_TO_EXTEND_TIME + " INTEGER, " + // 8
-            IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 9
-            IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 10
+            FILE_TYPE + " INTEGER, " + //6
+            IS_ALLOWED_TO_EXTEND_TIME + " INTEGER, " + // 7
+            IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 8
+            IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 9
     private SQLiteDatabase db;
     private DBChangeListener dbChangeListener;
 
@@ -116,7 +115,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(NAME, savedFile.getName());
         values.put(UNLOCK_DATE_TIME, savedFile.getUnlockDateTime().toString());
         values.put(LOCK_DATE_TIME, savedFile.getLockDateTime().toString());
-        values.put(IS_FILE, savedFile.isFile());
         values.put(FILE_TYPE, savedFile.getFileType());
         values.put(IS_ALLOWED_TO_EXTEND_TIME, savedFile.isAllowedToExtendDateTime());
         values.put(IS_ALLOWED_TO_SEE_TITLE, savedFile.isAllowedToSeeTitle());
@@ -192,11 +190,10 @@ public class DBHelper extends SQLiteOpenHelper {
             savedFile.setName(cursor.getString(3));
             savedFile.setUnlockDateTime(DateAndTime.parse(cursor.getString(4)));
             savedFile.setLockDateTime(DateAndTime.parse(cursor.getString(5)));
-            savedFile.setFile(IntToBoolean(cursor.getInt(6)));
-            savedFile.setFileType(cursor.getInt(7));
-            savedFile.setAllowedToExtendDateTime(IntToBoolean(cursor.getInt(8)));
-            savedFile.setAllowedToSeePhoto(IntToBoolean(cursor.getInt(9)));
-            savedFile.setAllowedToSeeTitle(IntToBoolean(cursor.getInt(10)));
+            savedFile.setFileType(cursor.getInt(6));
+            savedFile.setAllowedToExtendDateTime(IntToBoolean(cursor.getInt(7)));
+            savedFile.setAllowedToSeePhoto(IntToBoolean(cursor.getInt(8)));
+            savedFile.setAllowedToSeeTitle(IntToBoolean(cursor.getInt(9)));
             savedFilesList.add(savedFile);
         }
         cursor.close();
