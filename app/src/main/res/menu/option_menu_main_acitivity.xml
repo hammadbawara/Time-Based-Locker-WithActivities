@@ -2,15 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:icon="@drawable/ic_add_folder"
-        android:title="Add Folder"
-        app:showAsAction="always" />
     <item android:title="Rate App" />
-    <item
-        android:icon="@drawable/ic_update_time"
-        android:title="Update Time"
-        app:showAsAction="always" />
     <item
         android:icon="@drawable/ic_settings"
         android:title="Settings"
