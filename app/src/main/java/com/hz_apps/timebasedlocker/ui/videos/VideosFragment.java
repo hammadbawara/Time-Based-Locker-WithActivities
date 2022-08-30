@@ -32,8 +32,6 @@ public class VideosFragment extends Fragment implements DBHelper.DBChangeListene
         binding = FragmentVideosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // creating database instance for all over application
-        DBHelper.createInstanceForOverApplication(requireActivity().getApplication());
         DBHelper.getINSTANCE().setDBChangeListener(this);
 
         if (viewModel.getSavedFolderList().size() == 0) {

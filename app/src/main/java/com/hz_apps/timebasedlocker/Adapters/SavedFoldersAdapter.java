@@ -3,16 +3,19 @@ package com.hz_apps.timebasedlocker.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
+import com.hz_apps.timebasedlocker.Dialogs.BSDialogFragment;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 
@@ -49,6 +52,17 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
             intent.putExtra("saved_folder", folder);
             intent.putExtra("FILES_TYPE", FILES_TYPE);
             context.startActivity(intent);
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("folder", folder);
+                bundle.putSerializable("FILES_TYPE", FILES_TYPE);
+                Navigation.findNavController(v).navigate(R.id.BSDialog, bundle);
+                return true;
+            }
         });
     }
 

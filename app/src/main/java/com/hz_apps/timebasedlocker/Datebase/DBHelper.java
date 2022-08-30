@@ -10,7 +10,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
+import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,7 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db = getWritableDatabase();
 
         String tableName = getFolderTableName(FileType);
-        String folderFilesTableName = getFolderFilesTableName(tableName);
+        String folderFilesTableName = generateFolderFilesTableName(tableName);
 
         ContentValues values = new ContentValues(1);
         values.put(NAME, folderName);
@@ -242,6 +244,35 @@ public class DBHelper extends SQLiteOpenHelper {
         db.delete(table, "id=" + id, null);
     }
 
+    public void deleteFolder(SavedFolder folder, int FILES_TYPE){
+        db = getWritableDatabase();
+        String folderTable = getFolderTableName(FILES_TYPE);
+
+        ArrayList<String> filesPathsList = new ArrayList<>();
+        ArrayList<Integer> idsList = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT " + "id, " + PATH + " FROM " + folder.getFilesTable(), null);
+
+        while (cursor.moveToNext()){
+            idsList.add(cursor.getInt(0));
+            filesPathsList.add(cursor.getString(1));
+        }
+        cursor.close();
+
+        for (int i=0; i<filesPathsList.size(); i++){
+            // Deleting file from database
+            int id = idsList.get(i);
+            File file = new File(filesPathsList.get(i));
+            this.deleteFileFromDB(folder.getFilesTable(), id);
+            // Deleting file from storage
+            file.delete();
+        }
+
+        db.execSQL("DROP TABLE " + folder.getFilesTable());
+
+        db.delete(folderTable,"id="+folder.getId(), null);
+        dbChangeListener.onFolderChange();
+    }
+
     private String getFolderTableName(int FileType) {
         String tableName = "";
         switch (FileType) {
@@ -265,7 +296,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param tableName : name of the table where folders are stored
      * @return table name where files will be stored.
      */
-    private String getFolderFilesTableName(String tableName) {
+    private String generateFolderFilesTableName(String tableName) {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select MAX(id) from " + tableName, null);
         cursor.moveToNext();
