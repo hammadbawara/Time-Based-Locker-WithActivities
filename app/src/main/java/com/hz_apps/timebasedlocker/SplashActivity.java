@@ -1,10 +1,10 @@
 package com.hz_apps.timebasedlocker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.ActivitySplashBinding;

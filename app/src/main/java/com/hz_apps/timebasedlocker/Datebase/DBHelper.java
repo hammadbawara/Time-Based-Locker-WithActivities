@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
-import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
 
 import java.io.File;
 import java.util.ArrayList;

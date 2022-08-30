@@ -1,7 +1,6 @@
 package com.hz_apps.timebasedlocker.Dialogs;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +11,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
-import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
 import com.hz_apps.timebasedlocker.databinding.FragmentBSDialogBinding;
-
-import java.io.File;
 
 public class BSDialogFragment extends BottomSheetDialogFragment {
     FragmentBSDialogBinding binding;
