@@ -1,7 +1,6 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.selectfolder.Folder;
-import com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles.SelectFilesActivity;
 
 import java.util.ArrayList;
 
@@ -22,10 +20,12 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
 
     private final Context context;
     private final ArrayList<Folder> foldersList;
+    private FoldersListListener listeners;
 
-    public FolderListAdapter(Context context, ArrayList<Folder> foldersList) {
+    public FolderListAdapter(Context context, ArrayList<Folder> foldersList, FoldersListListener listeners) {
         this.context = context;
         this.foldersList = foldersList;
+        this.listeners = listeners;
     }
 
 
@@ -42,12 +42,6 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
         Glide.with(context).load(folder.getFirstImage())
                 .into(holder.imageView);
         holder.folder_name.setText(folder.getName());
-
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, SelectFilesActivity.class);
-            intent.putExtra("folder", folder);
-            context.startActivity(intent);
-        });
     }
 
     @Override
@@ -55,7 +49,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
         return foldersList.size();
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder {
+    public class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private ShapeableImageView imageView;
         private TextView folder_name;
 
@@ -63,6 +57,24 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
             super(itemView);
             imageView = itemView.findViewById(R.id.folder_image_view);
             folder_name = itemView.findViewById(R.id.folder_name_text_view);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            listeners.onClick(getBindingAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            listeners.onLongClick(getBindingAdapterPosition());
+            return true;
+        }
+    }
+
+    public interface FoldersListListener {
+        void onClick(int position);
+        void onLongClick(int position);
     }
 }

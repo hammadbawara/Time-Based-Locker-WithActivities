@@ -25,6 +25,8 @@ public class OthersFragment extends Fragment {
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
+
+
         othersViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }

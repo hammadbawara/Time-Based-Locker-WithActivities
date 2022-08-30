@@ -1,6 +1,7 @@
 package com.hz_apps.timebasedlocker.ui.selectfolder;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.hz_apps.timebasedlocker.Adapters.FolderListAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFolderBinding;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
+import com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles.SelectFilesActivity;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -24,7 +26,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SelectFolderActivity extends AppCompatActivity {
+public class SelectFolderActivity extends AppCompatActivity implements FolderListAdapter.FoldersListListener {
 
     ActivitySelectFolderBinding binding;
     private SelectFolderViewModel mViewModel;
@@ -97,7 +99,7 @@ public class SelectFolderActivity extends AppCompatActivity {
             return;
         }
         // Setting items in recyclerView
-        FolderListAdapter adapter = new FolderListAdapter(this, mViewModel.getFoldersList());
+        FolderListAdapter adapter = new FolderListAdapter(this, mViewModel.getFoldersList(), this);
         binding.selectFolderRecyclerView.setAdapter(adapter);
         // Items show in one row
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -141,5 +143,18 @@ public class SelectFolderActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    @Override
+    public void onClick(int position) {
+        System.out.println("On Clicked");
+        Intent intent = new Intent(this, SelectFilesActivity.class);
+        intent.putExtra("folder", mViewModel.getFoldersList().get(position));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLongClick(int position) {
+
     }
 }
