@@ -20,7 +20,7 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
 
     private final Context context;
     private final ArrayList<Folder> foldersList;
-    private FoldersListListener listeners;
+    private final FoldersListListener listeners;
 
     public FolderListAdapter(Context context, ArrayList<Folder> foldersList, FoldersListListener listeners) {
         this.context = context;
@@ -50,8 +50,8 @@ public class FolderListAdapter extends RecyclerView.Adapter<FolderListAdapter.my
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        private ShapeableImageView imageView;
-        private TextView folder_name;
+        private final ShapeableImageView imageView;
+        private final TextView folder_name;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -1,5 +1,6 @@
 package com.hz_apps.timebasedlocker.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
         return new MyViewHolder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         SavedFolder folder = savedFolderList.get(position);
@@ -56,8 +58,8 @@ public class SavedFoldersAdapter extends RecyclerView.Adapter<SavedFoldersAdapte
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        private ShapeableImageView imageView;
-        private TextView folder_name;
+        private final ShapeableImageView imageView;
+        private final TextView folder_name;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

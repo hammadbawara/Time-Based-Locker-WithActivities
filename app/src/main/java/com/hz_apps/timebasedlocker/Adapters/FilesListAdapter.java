@@ -160,15 +160,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.myVi
         return numberOfItemsSelected == imagesFilesList.size();
     }
 
-    public boolean isAllItemsUnselected() {
-        return numberOfItemsSelected == 0;
-    }
-
-    public boolean[] getFilesSelectedState() {
-        return filesSelectedState;
-    }
-
-    public class myViewHolder extends RecyclerView.ViewHolder {
+    public static class myViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
         private final ImageView checkBox;
 

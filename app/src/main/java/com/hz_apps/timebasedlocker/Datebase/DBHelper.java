@@ -105,9 +105,8 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param savedFile   : savedFile that would be saved into database
      * @param nameOfTable : table name where files would store
-     * @return: it returns List<SavedFiles>
      */
-    public boolean insert_file(SavedFile savedFile, String nameOfTable) {
+    public void insert_file(SavedFile savedFile, String nameOfTable) {
 
         db = getWritableDatabase();
 
@@ -125,15 +124,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         long result = db.insert(nameOfTable, null, values);
         isAnyChangeInFiles = true;
-        return result != -1;
     }
 
     /**
      * @param folderName : Folder name
      * @param FileType   : Types of files will be in the folder. e.g TYPE_VIDEOS, TYPE_PHOTOS and TYPE_OTHERS
-     * @return if the folder created then true else return false
      */
-    public boolean create_folder(String folderName, int FileType) {
+    public void create_folder(String folderName, int FileType) {
         db = getWritableDatabase();
 
         String tableName = getFolderTableName(FileType);
@@ -151,7 +148,6 @@ public class DBHelper extends SQLiteOpenHelper {
         if (dbChangeListener != null) {
             dbChangeListener.onFolderChange();
         }
-        return false;
     }
 
     public List<SavedFolder> getSavedFolders(int FILE_TYPE) {

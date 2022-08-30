@@ -43,7 +43,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
     private boolean[] selectedFilesList;
     private int numberOfSelectedFiles = 0;
     private boolean isAllItemsSelected = false;
-    private FloatingActionButton addSavedFiles;
+    private final FloatingActionButton addSavedFiles;
     private final ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -102,6 +102,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         return new myViewHolder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         // Select file if it is selected if it is not selected then unselect
@@ -288,7 +289,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         dialog.create().show();
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder {
+    public static class myViewHolder extends RecyclerView.ViewHolder {
         private final TextView time_remaining;
         private final ImageView imageView;
         private final ImageView checkbox;
