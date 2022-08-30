@@ -16,6 +16,9 @@ import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    /*
+    These are key for DBRecord Table. In DBRecord LAST_SAVED_VIDEO_KEY mean key to get last saved video from db.
+     */
     public static final int LAST_SAVED_VIDEO_KEY = 1;
     public static final int LAST_SAVED_PHOTO_KEY = 2;
     public static final int VIDEO_TYPE = 0;
@@ -26,9 +29,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SAVED_PHOTO_TABLE = "saved_photos";
     public static final String VIDEO_FOLDERS_TABLE = "video_folders_list";
     public static final String PHOTO_FOLDERS_TABLE = "photo_folders_list";
-    private static final String FOLDER_FILES_TABLE_NAME = "folder_files_table_name";
-    private static final String DB_RECORD_TABLE = "DBRecord";
-    private static final String OTHER_FOLDERS_TABLE = "others_files_folders_list";
+    private final String FOLDER_FILES_TABLE_NAME = "folder_files_table_name";
+    private final String DB_RECORD_TABLE = "DBRecord";
+    private final String OTHER_FOLDERS_TABLE = "others_files_folders_list";
+    private final String SAVED_TIME_TABLE = "saved_time_table";
     // Tracking database
     public static boolean isAnyChangeInFiles = false;
     public static boolean isAnyChangeInFolders = false;
@@ -39,11 +43,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String NAME = "name";
     private final String UNLOCK_DATE_TIME = "unlock_date_time";
     private final String LOCK_DATE_TIME = "lock_date_time";
-    private final String IS_FILE = "is_file";
     private final String FILE_TYPE = "file_type";
     private final String IS_ALLOWED_TO_EXTEND_TIME = "is_allowed_to_extend_date_time";
     private final String IS_ALLOWED_TO_SEE_PHOTO = "is_allowed_to_see_photo";
     private final String IS_ALLOWED_TO_SEE_TITLE = "is_allowed_to_see_title";
+    private final String IS_FILE_UNLOCKED = "is_unlocked";
     private final String CREATE_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
             ORIGINAL_PATH + " TEXT, " + // 1
             PATH + " TEXT," + // 2
@@ -53,7 +57,8 @@ public class DBHelper extends SQLiteOpenHelper {
             FILE_TYPE + " INTEGER, " + //6
             IS_ALLOWED_TO_EXTEND_TIME + " INTEGER, " + // 7
             IS_ALLOWED_TO_SEE_PHOTO + " INTEGER, " + // 8
-            IS_ALLOWED_TO_SEE_TITLE + " INTEGER)"; // 9
+            IS_ALLOWED_TO_SEE_TITLE + " INTEGER," +  // 9
+            IS_FILE_UNLOCKED + " INTEGER)"; // 10
     private SQLiteDatabase db;
     private DBChangeListener dbChangeListener;
 
@@ -77,6 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + SAVED_PHOTO_TABLE + CREATE_TABLE_QUERY);
 
         db.execSQL("CREATE TABLE " + DB_RECORD_TABLE + "(_key INTEGER PRIMARY KEY, value INTEGER)");
+        db.execSQL("CREATE TABLE " + SAVED_TIME_TABLE + "(Time TEXT)");
 
         final String CREATE_FOLDERS_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 NAME + " TEXT," +
@@ -89,6 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + DB_RECORD_TABLE + "(_key, value) VALUES(1, 1)");
         db.execSQL("INSERT INTO " + DB_RECORD_TABLE + "(_key, value) VALUES(2, 1)");
+        db.execSQL("INSERT INTO " + SAVED_TIME_TABLE + "(Time) VALUES(0)");
         createFolderFirstTime(db, VIDEO_TYPE, "Videos");
         createFolderFirstTime(db, OTHER_TYPE, "Other Files");
         createFolderFirstTime(db, PHOTO_TYPE, "Photos");
@@ -119,7 +126,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(IS_ALLOWED_TO_EXTEND_TIME, savedFile.isAllowedToExtendDateTime());
         values.put(IS_ALLOWED_TO_SEE_TITLE, savedFile.isAllowedToSeeTitle());
         values.put(IS_ALLOWED_TO_SEE_PHOTO, savedFile.isAllowedToSeePhoto());
-
+        values.put(IS_FILE_UNLOCKED, 0);
         long result = db.insert(nameOfTable, null, values);
         isAnyChangeInFiles = true;
     }
@@ -194,6 +201,7 @@ public class DBHelper extends SQLiteOpenHelper {
             savedFile.setAllowedToExtendDateTime(IntToBoolean(cursor.getInt(7)));
             savedFile.setAllowedToSeePhoto(IntToBoolean(cursor.getInt(8)));
             savedFile.setAllowedToSeeTitle(IntToBoolean(cursor.getInt(9)));
+            savedFile.setIsUnlocked(IntToBoolean(cursor.getInt(10)));
             savedFilesList.add(savedFile);
         }
         cursor.close();
@@ -224,6 +232,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("UPDATE " + table + " SET " + UNLOCK_DATE_TIME + " = `" + newDateAndTime + "` WHERE id=" + id);
     }
 
+    public void updateFileUnlocked(int id, String table){
+        db = getWritableDatabase();
+        db.execSQL("UPDATE " + table + " SET " + IS_FILE_UNLOCKED + "=1 WHERE id=" + id);
+    }
+
     public void deleteFileFromDB(String table, int id) {
         db = getWritableDatabase();
         db.delete(table, "id=" + id, null);
@@ -244,6 +257,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return tableName;
     }
 
+    /**
+     * This function find the table name in which folder files are stored
+     * There are three tables in which folders are stored. In Video Folder Table Videos Folders are stored.
+     * This function find the Max(id). If previously there were 3 folders then max id will be 3 and then increment it to 4
+     * For video table name would be like this v4. For Photos it would be p4 etc.
+     * @param tableName : name of the table where folders are stored
+     * @return table name where files will be stored.
+     */
     private String getFolderFilesTableName(String tableName) {
         db = getReadableDatabase();
         Cursor cursor = db.rawQuery("select MAX(id) from " + tableName, null);
@@ -253,6 +274,39 @@ public class DBHelper extends SQLiteOpenHelper {
         return tableName.charAt(0) + "_" + maxId;
 
     }
+
+    /**
+     * This function get the last saved time in database.
+     * @return last saved time.
+     */
+    private boolean isTimeChanged = false;
+    private DateAndTime dateAndTime = null;
+
+    public DateAndTime getSavedTime(){
+
+        if (isTimeChanged || dateAndTime==null){
+            db = getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + SAVED_TIME_TABLE, null);
+            while (cursor.moveToNext()) {
+                String saved_time = cursor.getString(0);
+                if (!saved_time.equals("0")) {
+                    dateAndTime = DateAndTime.parse(saved_time);
+                }
+            }
+            isTimeChanged = false;
+        }else{
+            return dateAndTime;
+        }
+
+        return dateAndTime;
+    }
+
+    public void updateSavedTime(DateAndTime dateAndTime){
+        db = getWritableDatabase();
+        db.execSQL("UPDATE " + SAVED_TIME_TABLE + " SET " + "Time" + " = `" + dateAndTime.toString() + "`");
+        isTimeChanged = true;
+    }
+
 
 
     // Database change listener

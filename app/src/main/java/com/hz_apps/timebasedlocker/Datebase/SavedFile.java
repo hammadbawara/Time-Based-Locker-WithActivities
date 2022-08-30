@@ -17,6 +17,7 @@ public class SavedFile implements Serializable {
     private boolean isAllowedToExtendDateTime;
     private boolean isAllowedToSeePhoto;
     private boolean isAllowedToSeeTitle;
+    private boolean isUnlocked;
 
     public SavedFile(String originalPath, String name, DateAndTime unlockDateTime, DateAndTime lockDateTime, int fileType, boolean isAllowedToExtendDateTime, boolean isAllowedToSeePhoto, boolean isAllowedToSeeTitle) {
         this.originalPath = originalPath;
@@ -115,5 +116,13 @@ public class SavedFile implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public boolean isUnlocked(){
+        return isUnlocked;
+    }
+
+    public void setIsUnlocked(boolean locked){
+        this.isUnlocked = locked;
     }
 }

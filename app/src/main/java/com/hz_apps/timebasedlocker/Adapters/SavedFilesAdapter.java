@@ -34,6 +34,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.myViewHolder> {
     private final Context context;
@@ -132,12 +133,16 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                             .into(holder.imageView);
                     break;
                 }
-
         }
-
-
-        holder.time_remaining.setText(getRemainingTime(file.getLockDateTime(), file.getUnlockDateTime()));
-
+        if (!file.isUnlocked()){
+            String unlockDT = getRemainingTime(file.getUnlockDateTime());
+            if (unlockDT.equals("")){
+                file.setIsUnlocked(true);
+                setFileUnlocked(file);
+            }else{
+                holder.time_remaining.setText(unlockDT);
+            }
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (mActionMode != null) {
@@ -149,10 +154,14 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                     numberOfSelectedFiles += 1;
                 }
             } else {
-                Intent intent = new Intent(context, MediaViewerActivity.class);
-                intent.putExtra("saved_file", file);
-                intent.putExtra("file_index", holder.getBindingAdapterPosition());
-                context.startActivity(intent);
+                if (file.isUnlocked()) {
+                    Intent intent = new Intent(context, MediaViewerActivity.class);
+                    intent.putExtra("saved_file", file);
+                    intent.putExtra("file_index", holder.getBindingAdapterPosition());
+                    context.startActivity(intent);
+                }else{
+                    showFileIsLocked();
+                }
             }
         });
 
@@ -169,37 +178,48 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
     }
 
+    /**
+     * This dialog will be shown if file is locked
+     */
+    private void showFileIsLocked() {
+
+    }
+
     @Override
     public int getItemCount() {
         return savedFileList.size();
     }
 
-    private String getRemainingTime(DateAndTime lockDT, DateAndTime unlockDT) {
-        LocalDate lDate = lockDT.getDate();
-        LocalTime lTime = lockDT.getTime();
+    private String getRemainingTime(DateAndTime unlockDT) {
+        DateAndTime currentDate = DBHelper.getINSTANCE().getSavedTime();
+        if (currentDate == null){
+            return "unknown";
+        }
+        LocalDate cDate = currentDate.getDate();
+        LocalTime cTime = currentDate.getTime();
         LocalDate unlDate = unlockDT.getDate();
         LocalTime unTime = unlockDT.getTime();
 
-        if ((unlDate.getYear() - lDate.getYear()) > 0) {
-            return ((unlDate.getYear() - lDate.getYear() + " years"));
+        if ((unlDate.getYear() - cDate.getYear()) > 0) {
+            return ((unlDate.getYear() - cDate.getYear() + " years"));
         }
-        if ((unlDate.getMonthValue() - lDate.getMonthValue()) > 0) {
-            return ((unlDate.getMonthValue() - lDate.getMonthValue() + " mon"));
+        if ((unlDate.getMonthValue() - cDate.getMonthValue()) > 0) {
+            return ((unlDate.getMonthValue() - cDate.getMonthValue() + " mon"));
         }
-        if ((unlDate.getDayOfMonth() - lDate.getDayOfMonth()) > 0) {
-            return (unlDate.getDayOfMonth() - lDate.getDayOfMonth()) + " days";
+        if ((unlDate.getDayOfMonth() - cDate.getDayOfMonth()) > 0) {
+            return (unlDate.getDayOfMonth() - cDate.getDayOfMonth()) + " days";
         }
-        if ((unTime.getHour() - lTime.getHour()) > 0) {
-            return (unTime.getHour() - lTime.getHour()) + " hours";
+        if ((unTime.getHour() - cTime.getHour()) > 0) {
+            return (unTime.getHour() - cTime.getHour()) + " hours";
         }
-        if ((unTime.getMinute() - lTime.getMinute()) > 0) {
-            return (unTime.getMinute() - lTime.getMinute()) + " min";
+        if ((unTime.getMinute() - cTime.getMinute()) > 0) {
+            return (unTime.getMinute() - cTime.getMinute()) + " min";
         }
-        if ((unTime.getSecond() - lTime.getSecond()) > 0) {
-            return (unTime.getMinute() - lTime.getMinute()) + " sec";
+        if ((unTime.getSecond() - cTime.getSecond()) > 0) {
+            return (unTime.getMinute() - cTime.getMinute()) + " sec";
         }
 
-        return "unlocked";
+        return "";
 
     }
 
@@ -300,5 +320,9 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
             time_remaining = itemView.findViewById(R.id.time_remaing_textView);
             checkbox = itemView.findViewById(R.id.check_box_saved_file);
         }
+    }
+
+    private void setFileUnlocked(SavedFile file){
+        Executors.newSingleThreadExecutor().execute(() -> DBHelper.getINSTANCE().updateFileUnlocked(file.getId(), SavedFilesActivity.FILES_TABLE_NAME));
     }
 }
