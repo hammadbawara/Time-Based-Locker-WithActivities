@@ -3,9 +3,9 @@
     <PreferenceCategory app:title="Display">
         <ListPreference
             app:defaultValue="default"
-            app:entries="@array/reply_entries"
+            app:entries="@array/theme_entries"
             app:entryValues="@array/themes_values"
-            app:key="reply"
+            app:key="application_theme"
             app:title="@string/theme_settings_title"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>

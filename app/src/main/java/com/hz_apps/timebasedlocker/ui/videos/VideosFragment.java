@@ -11,9 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Dialogs.GetInputDialogFragment;
+import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.FragmentVideosBinding;
 
 import java.util.concurrent.Executors;
@@ -31,6 +33,8 @@ public class VideosFragment extends Fragment implements DBHelper.DBChangeListene
 
         binding = FragmentVideosBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_nav_main_activity);
+        if (bottomNav != null) bottomNav.setVisibility(View.VISIBLE);
 
         DBHelper.getINSTANCE().setDBChangeListener(this);
 
