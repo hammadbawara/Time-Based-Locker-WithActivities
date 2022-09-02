@@ -47,4 +47,8 @@
         android:name="com.hz_apps.timebasedlocker.Dialogs.GetInputDialogFragment"
         android:label="GetInputDialogFragment"
         tools:layout="@layout/dialog_get_input" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.hz_apps.timebasedlocker.ui.Settings.SettingsFragment"
+        android:label="Settings" />
 </navigation>
