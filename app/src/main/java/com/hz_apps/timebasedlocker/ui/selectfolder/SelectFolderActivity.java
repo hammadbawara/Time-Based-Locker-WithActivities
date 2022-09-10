@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hz_apps.timebasedlocker.Adapters.FolderListAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFolderBinding;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 import com.hz_apps.timebasedlocker.ui.selectfolder.selectfiles.SelectFilesActivity;

@@ -101,7 +101,7 @@ public class DateTimeManager {
      */
     private static void getDTFromSharedPref(Context context){
         SharedPreferences preferences = context.getApplicationContext()
-                .getSharedPreferences(context.getString(R.string.saved_time_preference), Context.MODE_PRIVATE);
+                .getSharedPreferences(context.getString(R.string.application_shared_preference), Context.MODE_PRIVATE);
         String sDateAndTime =  preferences.getString(context.getString(R.string.saved_time_preference), "");
         if (!sDateAndTime.equals("")){
             dateAndTime = DateAndTime.parse(sDateAndTime);

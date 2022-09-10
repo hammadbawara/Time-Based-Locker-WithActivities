@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.DialogGetInputBinding;
 
 public class GetInputDialogFragment extends DialogFragment {

@@ -13,8 +13,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
-import com.hz_apps.timebasedlocker.Datebase.SavedFile;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
+import com.hz_apps.timebasedlocker.Database.SavedFile;
 import com.hz_apps.timebasedlocker.databinding.ActivityMediaViewerBinding;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;

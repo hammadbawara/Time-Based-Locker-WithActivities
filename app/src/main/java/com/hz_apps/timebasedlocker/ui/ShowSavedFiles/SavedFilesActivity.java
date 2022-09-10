@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
-import com.hz_apps.timebasedlocker.Datebase.SavedFile;
-import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
+import com.hz_apps.timebasedlocker.Database.SavedFile;
+import com.hz_apps.timebasedlocker.Database.SavedFolder;
 import com.hz_apps.timebasedlocker.TimeUpdate.DateTimeManager;
 import com.hz_apps.timebasedlocker.databinding.ActivitySavedFilesBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;

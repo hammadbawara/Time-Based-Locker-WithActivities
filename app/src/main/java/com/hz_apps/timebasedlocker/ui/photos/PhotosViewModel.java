@@ -2,7 +2,7 @@ package com.hz_apps.timebasedlocker.ui.photos;
 
 import androidx.lifecycle.ViewModel;
 
-import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
+import com.hz_apps.timebasedlocker.Database.SavedFolder;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hz_apps.timebasedlocker.Adapters.SavedFoldersAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.FragmentPhotosBinding;
 

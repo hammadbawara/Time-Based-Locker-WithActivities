@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
-import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
+import com.hz_apps.timebasedlocker.Database.SavedFolder;
 import com.hz_apps.timebasedlocker.databinding.FragmentBSDialogBinding;
 
 public class BSDialogFragment extends BottomSheetDialogFragment {

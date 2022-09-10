@@ -14,7 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
-import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
+import com.hz_apps.timebasedlocker.Database.SavedFolder;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 

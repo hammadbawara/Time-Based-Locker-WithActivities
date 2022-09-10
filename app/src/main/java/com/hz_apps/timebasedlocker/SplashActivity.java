@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
 import com.hz_apps.timebasedlocker.databinding.ActivitySplashBinding;
 
 import java.util.concurrent.Executors;

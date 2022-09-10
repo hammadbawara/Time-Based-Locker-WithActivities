@@ -1,4 +1,4 @@
-package com.hz_apps.timebasedlocker.Datebase;
+package com.hz_apps.timebasedlocker.Database;
 
 import androidx.annotation.NonNull;
 

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hz_apps.timebasedlocker.Adapters.FilesListAdapter;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.ActivitySelectFilesBinding;
 import com.hz_apps.timebasedlocker.ui.LockFiles.LockFilesActivity;

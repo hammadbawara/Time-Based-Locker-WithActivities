@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.databinding.DialogConfirmationLockFileBinding;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;

@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.hz_apps.timebasedlocker.Datebase.DBHelper;
-import com.hz_apps.timebasedlocker.Datebase.SavedFile;
+import com.hz_apps.timebasedlocker.Database.DBHelper;
+import com.hz_apps.timebasedlocker.Database.SavedFile;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.TimeUpdate.DateTimeManager;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
@@ -136,7 +136,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
         // Set remaining time in text view
         if (!file.isUnlocked()){
-            System.out.println("Date And Time" + DateTimeManager.getDateAndTime(context));
+            System.out.println("Date And Time  " + DateTimeManager.getDateAndTime(context));
             String remainingTime = file.getTimeLeftToUnlock(DateTimeManager.getDateAndTime(context));
             if (remainingTime.equals("")){
                 // settings file unlocked in database
@@ -288,7 +288,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.saved_photo_image_view);
-            time_remaining = itemView.findViewById(R.id.time_remaing_textView);
+            time_remaining = itemView.findViewById(R.id.time_remaining_textView);
             checkbox = itemView.findViewById(R.id.check_box_saved_file);
         }
     }

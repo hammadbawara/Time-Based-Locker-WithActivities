@@ -9,36 +9,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hz_apps.timebasedlocker.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-    private ListPreference listPreference;
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
-
-
-
     }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_nav_main_activity);
+        MaterialToolbar toolbar = requireActivity().findViewById(R.id.toolbar_main_activity);
         if (bottomNav != null) bottomNav.setVisibility(View.INVISIBLE);
-        listPreference = (ListPreference) getPreferenceManager().findPreference("application_theme");
-        listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                changeTheme(newValue);
-                return true;
-            }
+        if (toolbar != null) toolbar.getMenu().clear();
+
+        ListPreference listPreference = getPreferenceManager().findPreference("application_theme");
+        assert listPreference != null;
+        listPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            changeTheme(newValue);
+            return true;
         });
         return super.onCreateView(inflater, container, savedInstanceState);
     }

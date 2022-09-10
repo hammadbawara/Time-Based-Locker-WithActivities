@@ -2,7 +2,7 @@ package com.hz_apps.timebasedlocker.ui.ShowSavedFiles;
 
 import androidx.lifecycle.ViewModel;
 
-import com.hz_apps.timebasedlocker.Datebase.SavedFile;
+import com.hz_apps.timebasedlocker.Database.SavedFile;
 
 import java.util.ArrayList;
 import java.util.List;
