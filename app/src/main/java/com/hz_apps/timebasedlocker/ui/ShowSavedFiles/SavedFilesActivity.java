@@ -14,7 +14,7 @@ import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
-import com.hz_apps.timebasedlocker.TimeUpdate.TimeUpdater;
+import com.hz_apps.timebasedlocker.TimeUpdate.DateTimeManager;
 import com.hz_apps.timebasedlocker.databinding.ActivitySavedFilesBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
@@ -51,7 +51,7 @@ public class SavedFilesActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(savedFolder.getName());
 
-        TimeUpdater.update(this);
+        DateTimeManager.update(this);
 
         main();
 

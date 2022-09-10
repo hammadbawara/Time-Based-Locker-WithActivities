@@ -15,7 +15,7 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.concurrent.Executors;
 
-public class TimeUpdater {
+public class DateTimeManager {
 
     /*
     {"abbreviation":"GMT",
