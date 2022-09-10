@@ -27,13 +27,10 @@ import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.TimeUpdate.DateTimeManager;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
-import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 import com.hz_apps.timebasedlocker.ui.ViewMedia.MediaViewerActivity;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -116,6 +113,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
         SavedFile file = savedFileList.get(position);
 
+        // loading drawable on locked file on the basis of file type
         switch (file.getFileType()){
             case DBHelper.PHOTO_TYPE:
                 Glide.with(context)
@@ -135,12 +133,17 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                     break;
                 }
         }
+
+        // Set remaining time in text view
         if (!file.isUnlocked()){
-            String remainingTime = getRemainingTime(file.getUnlockDateTime());
+            System.out.println("Date And Time" + DateTimeManager.getDateAndTime(context));
+            String remainingTime = file.getTimeLeftToUnlock(DateTimeManager.getDateAndTime(context));
             if (remainingTime.equals("")){
+                // settings file unlocked in database
                 file.setIsUnlocked(true);
                 setFileUnlocked(file);
             }else{
+                holder.time_remaining.setVisibility(View.VISIBLE);
                 holder.time_remaining.setText(remainingTime);
             }
         }
@@ -183,45 +186,12 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
      * This dialog will be shown if file is locked
      */
     private void showFileIsLocked() {
-
+        // TODO: Implement file is locked here.
     }
 
     @Override
     public int getItemCount() {
         return savedFileList.size();
-    }
-
-    private String getRemainingTime(DateAndTime unlockDT) {
-        DateAndTime currentDate = DateTimeManager.getDateAndTime(context);
-        if (currentDate == null){
-            return "unknown";
-        }
-        LocalDate cDate = currentDate.getDate();
-        LocalTime cTime = currentDate.getTime();
-        LocalDate unlDate = unlockDT.getDate();
-        LocalTime unTime = unlockDT.getTime();
-
-        if ((unlDate.getYear() - cDate.getYear()) > 0) {
-            return ((unlDate.getYear() - cDate.getYear() + " years"));
-        }
-        if ((unlDate.getMonthValue() - cDate.getMonthValue()) > 0) {
-            return ((unlDate.getMonthValue() - cDate.getMonthValue() + " mon"));
-        }
-        if ((unlDate.getDayOfMonth() - cDate.getDayOfMonth()) > 0) {
-            return (unlDate.getDayOfMonth() - cDate.getDayOfMonth()) + " days";
-        }
-        if ((unTime.getHour() - cTime.getHour()) > 0) {
-            return (unTime.getHour() - cTime.getHour()) + " hours";
-        }
-        if ((unTime.getMinute() - cTime.getMinute()) > 0) {
-            return (unTime.getMinute() - cTime.getMinute()) + " min";
-        }
-        if ((unTime.getSecond() - cTime.getSecond()) > 0) {
-            return (unTime.getMinute() - cTime.getMinute()) + " sec";
-        }
-
-        return "";
-
     }
 
     private void selectItem(myViewHolder holder) {

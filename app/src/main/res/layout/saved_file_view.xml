@@ -30,8 +30,9 @@
         android:layout_marginTop="5dp"
         android:background="#E40000"
         android:padding="2dp"
-        android:text="12 hours"
-        android:textColor="#FFFFFF" />
+        android:text="default"
+        android:textColor="#FFFFFF"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/check_box_saved_file"

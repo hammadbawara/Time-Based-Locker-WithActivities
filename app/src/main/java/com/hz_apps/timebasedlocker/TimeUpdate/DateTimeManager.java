@@ -90,7 +90,7 @@ public class DateTimeManager {
                 SharedPreferences preferences = context.getApplicationContext().
                         getSharedPreferences(context.getString(R.string.application_shared_preference), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("DateAndTime", mDateAndTime.toString());
+                editor.putString(context.getString(R.string.saved_time_preference), mDateAndTime.toString());
                 editor.apply();
             }
         });

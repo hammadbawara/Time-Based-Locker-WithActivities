@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class SavedFile implements Serializable {
     private int id;
@@ -124,5 +126,59 @@ public class SavedFile implements Serializable {
 
     public void setIsUnlocked(boolean locked){
         this.isUnlocked = locked;
+    }
+
+    /**
+     *
+     * @param currentDateTime : Current Date And Time
+     * @return Highest possible time value.
+     *         If remaining time is '10 days 5 hours 2 minute'
+     *         then it will return 10 days.
+     *         Similarly if time is '5 hours 2 minutes' then it will
+     *         return 5 hours.
+     */
+    public String getTimeLeftToUnlock(DateAndTime currentDateTime){
+
+        if (currentDateTime == null){
+            return "update time";
+        }
+
+        LocalDate cDate = currentDateTime.getDate();
+        LocalTime cTime = currentDateTime.getTime();
+        LocalDate unlDate = unlockDateTime.getDate();
+        LocalTime unTime = unlockDateTime.getTime();
+
+
+        if ((unlDate.getYear() - cDate.getYear()) > 0) {
+            int YEARS = unlDate.getYear() - cDate.getYear();
+            if (YEARS == 1) return ("1 year");
+            else return (YEARS + " years");
+        }
+        if ((unlDate.getMonthValue() - cDate.getMonthValue()) > 0) {
+            int MONTHS = unlDate.getMonthValue() - cDate.getMonthValue();
+            if (MONTHS == 1) return ("1 month");
+            else return (MONTHS + " months");
+        }
+        if ((unlDate.getDayOfMonth() - cDate.getDayOfMonth()) > 0) {
+            int DAYS = unlDate.getDayOfMonth() - cDate.getDayOfMonth();
+            if (DAYS == 1) return ("1 day");
+            else return (DAYS + " days");
+        }
+        if ((unTime.getHour() - cTime.getHour()) > 0) {
+            int HOURS = unTime.getHour() - cTime.getHour();
+            if (HOURS == 1) return ("1 hour");
+            else return (HOURS + " hours");
+        }
+        if ((unTime.getMinute() - cTime.getMinute()) > 0) {
+            int MINUTES = unTime.getMinute() - cTime.getMinute();
+            if (MINUTES == 1) return ("1 minute");
+            else return (MINUTES + " minutes");
+        }
+        if ((unTime.getSecond() - cTime.getSecond()) > 0) {
+            int SECONDS = unTime.getSecond()-cTime.getSecond();
+            if (SECONDS == 1) return "1 second";
+            else return (SECONDS + " seconds");
+        }
+        return "";
     }
 }
