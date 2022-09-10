@@ -1,17 +1,14 @@
 package com.hz_apps.timebasedlocker;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.hz_apps.timebasedlocker.databinding.ActivityMainBinding;
@@ -28,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        applySettings();
         toolbar = binding.toolbarMainActivity;
         optionMenu();
 
@@ -59,18 +55,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
-    }
-
-    private void applySettings(){
-        SharedPreferences settingsPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Theme settings
-        String saved_theme_value = settingsPreferences.getString("application_theme", "default");
-        String[] theme_values = getResources().getStringArray(R.array.themes_values);
-        int theme = -1;
-        if (saved_theme_value.equals(theme_values[1]))theme = AppCompatDelegate.MODE_NIGHT_YES;
-        else if (saved_theme_value.equals(theme_values[2]))  theme = AppCompatDelegate.MODE_NIGHT_NO;
-        AppCompatDelegate.setDefaultNightMode(theme);   //Set theme
-
     }
 }

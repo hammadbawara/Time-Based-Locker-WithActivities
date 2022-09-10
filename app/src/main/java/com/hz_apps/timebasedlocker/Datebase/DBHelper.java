@@ -33,7 +33,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String FOLDER_FILES_TABLE_NAME = "folder_files_table_name";
     private final String DB_RECORD_TABLE = "DBRecord";
     private final String OTHER_FOLDERS_TABLE = "others_files_folders_list";
-    private final String SAVED_TIME_TABLE = "saved_time_table";
     // Tracking database
     public static boolean isAnyChangeInFiles = false;
     public static boolean isAnyChangeInFolders = false;
@@ -83,7 +82,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + SAVED_PHOTO_TABLE + CREATE_TABLE_QUERY);
 
         db.execSQL("CREATE TABLE " + DB_RECORD_TABLE + "(_key INTEGER PRIMARY KEY, value INTEGER)");
-        db.execSQL("CREATE TABLE " + SAVED_TIME_TABLE + "(Time TEXT)");
 
         final String CREATE_FOLDERS_TABLE_QUERY = "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 NAME + " TEXT," +
@@ -96,7 +94,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("INSERT INTO " + DB_RECORD_TABLE + "(_key, value) VALUES(1, 1)");
         db.execSQL("INSERT INTO " + DB_RECORD_TABLE + "(_key, value) VALUES(2, 1)");
-        db.execSQL("INSERT INTO " + SAVED_TIME_TABLE + "(Time) VALUES(0)");
         createFolderFirstTime(db, VIDEO_TYPE, "Videos");
         createFolderFirstTime(db, OTHER_TYPE, "Other Files");
         createFolderFirstTime(db, PHOTO_TYPE, "Photos");
@@ -128,7 +125,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(IS_ALLOWED_TO_SEE_TITLE, savedFile.isAllowedToSeeTitle());
         values.put(IS_ALLOWED_TO_SEE_PHOTO, savedFile.isAllowedToSeePhoto());
         values.put(IS_FILE_UNLOCKED, 0);
-        long result = db.insert(nameOfTable, null, values);
+        db.insert(nameOfTable, null, values);
         isAnyChangeInFiles = true;
     }
 
@@ -304,39 +301,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return tableName.charAt(0) + "_" + maxId;
 
     }
-
-    /**
-     * This function get the last saved time in database.
-     * @return last saved time.
-     */
-    private boolean isTimeChanged = false;
-    private DateAndTime dateAndTime = null;
-
-    public DateAndTime getSavedTime(){
-
-        if (isTimeChanged || dateAndTime==null){
-            db = getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM " + SAVED_TIME_TABLE, null);
-            while (cursor.moveToNext()) {
-                String saved_time = cursor.getString(0);
-                if (!saved_time.equals("0")) {
-                    dateAndTime = DateAndTime.parse(saved_time);
-                }
-            }
-            isTimeChanged = false;
-        }else{
-            return dateAndTime;
-        }
-
-        return dateAndTime;
-    }
-
-    public void updateSavedTime(DateAndTime dateAndTime){
-        db = getWritableDatabase();
-        db.execSQL("UPDATE " + SAVED_TIME_TABLE + " SET " + "Time" + " = `" + dateAndTime.toString() + "`");
-        isTimeChanged = true;
-    }
-
 
 
     // Database change listener

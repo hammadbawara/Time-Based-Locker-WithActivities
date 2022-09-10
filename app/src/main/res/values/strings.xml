@@ -27,4 +27,7 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="application_shared_preference">application shared preference</string>
+    <string name="saved_time_preference">SavedTime</string>
 </resources>

@@ -14,10 +14,12 @@ import com.hz_apps.timebasedlocker.Adapters.SavedFilesAdapter;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.Datebase.SavedFolder;
+import com.hz_apps.timebasedlocker.TimeUpdate.TimeUpdater;
 import com.hz_apps.timebasedlocker.databinding.ActivitySavedFilesBinding;
 import com.hz_apps.timebasedlocker.ui.selectfolder.SelectFolderActivity;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executors;
 
 public class SavedFilesActivity extends AppCompatActivity {
@@ -36,17 +38,20 @@ public class SavedFilesActivity extends AppCompatActivity {
         binding = ActivitySavedFilesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbarSavedFiles);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbarSavedFiles.setNavigationOnClickListener((arrow) -> onBackPressed());
 
         viewModel = new ViewModelProvider(this).get(SavedFilesViewModel.class);
 
+        // Intent
         savedFolder = (SavedFolder) getIntent().getSerializableExtra("saved_folder");
         FILES_TYPE = getIntent().getIntExtra("FILES_TYPE", -1);
         FILES_TABLE_NAME = savedFolder.getFilesTable();
 
         getSupportActionBar().setTitle(savedFolder.getName());
+
+        TimeUpdater.update(this);
 
         main();
 

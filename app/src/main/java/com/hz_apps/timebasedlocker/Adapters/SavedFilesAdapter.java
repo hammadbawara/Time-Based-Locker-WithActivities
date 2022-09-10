@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hz_apps.timebasedlocker.Datebase.DBHelper;
 import com.hz_apps.timebasedlocker.Datebase.SavedFile;
 import com.hz_apps.timebasedlocker.R;
+import com.hz_apps.timebasedlocker.TimeUpdate.TimeUpdater;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
@@ -135,12 +136,12 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
                 }
         }
         if (!file.isUnlocked()){
-            String unlockDT = getRemainingTime(file.getUnlockDateTime());
-            if (unlockDT.equals("")){
+            String remainingTime = getRemainingTime(file.getUnlockDateTime());
+            if (remainingTime.equals("")){
                 file.setIsUnlocked(true);
                 setFileUnlocked(file);
             }else{
-                holder.time_remaining.setText(unlockDT);
+                holder.time_remaining.setText(remainingTime);
             }
         }
 
@@ -191,7 +192,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
     }
 
     private String getRemainingTime(DateAndTime unlockDT) {
-        DateAndTime currentDate = DBHelper.getINSTANCE().getSavedTime();
+        DateAndTime currentDate = TimeUpdater.getDateAndTime(context);
         if (currentDate == null){
             return "unknown";
         }
