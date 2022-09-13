@@ -52,6 +52,30 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_add" />
+
+        <TextView
+            android:id="@+id/time_view_saved_files"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="12:34"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar_saved_files"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/update_time_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/time_view_saved_files"
+            app:layout_constraintEnd_toStartOf="@+id/time_view_saved_files"
+            app:layout_constraintTop_toTopOf="@+id/time_view_saved_files"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_close" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

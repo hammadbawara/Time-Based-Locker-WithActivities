@@ -25,8 +25,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hz_apps.timebasedlocker.Database.DBHelper;
 import com.hz_apps.timebasedlocker.Database.SavedFile;
 import com.hz_apps.timebasedlocker.R;
-import com.hz_apps.timebasedlocker.TimeUpdate.DateTimeManager;
 import com.hz_apps.timebasedlocker.databinding.CustomAlertDialogBinding;
+import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
 import com.hz_apps.timebasedlocker.ui.ShowSavedFiles.SavedFilesActivity;
 import com.hz_apps.timebasedlocker.ui.ViewMedia.MediaViewerActivity;
 
@@ -43,6 +43,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
     private int numberOfSelectedFiles = 0;
     private boolean isAllItemsSelected = false;
     private final FloatingActionButton addSavedFiles;
+    private DateAndTime dateAndTime;
     private final ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -136,8 +137,7 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
         // Set remaining time in text view
         if (!file.isUnlocked()){
-            System.out.println("Date And Time  " + DateTimeManager.getDateAndTime(context));
-            String remainingTime = file.getTimeLeftToUnlock(DateTimeManager.getDateAndTime(context));
+            String remainingTime = file.getTimeLeftToUnlock(dateAndTime);
             if (remainingTime.equals("")){
                 // settings file unlocked in database
                 file.setIsUnlocked(true);
@@ -295,5 +295,9 @@ public class SavedFilesAdapter extends RecyclerView.Adapter<SavedFilesAdapter.my
 
     private void setFileUnlocked(SavedFile file){
         Executors.newSingleThreadExecutor().execute(() -> DBHelper.getINSTANCE().updateFileUnlocked(file.getId(), SavedFilesActivity.FILES_TABLE_NAME));
+    }
+
+    public void setDateAndTime(DateAndTime dateAndTime) {
+        this.dateAndTime = dateAndTime;
     }
 }

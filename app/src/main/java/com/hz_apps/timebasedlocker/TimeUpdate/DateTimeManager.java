@@ -2,6 +2,7 @@ package com.hz_apps.timebasedlocker.TimeUpdate;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 
 import com.hz_apps.timebasedlocker.R;
 import com.hz_apps.timebasedlocker.ui.LockFiles.DateAndTime;
@@ -79,10 +80,15 @@ public class DateTimeManager {
         return dateTime;
     }
 
-    public static void update(Context context){
-
+    public static void update(Context context, UpdateTimeListener listener){
         Executors.newSingleThreadExecutor().execute(() ->{
-            DateAndTime mDateAndTime = getTimeFromInternet();
+
+            DateAndTime mDateAndTime = null;
+
+            if (isNetworkAvailable(context)){
+                mDateAndTime = getTimeFromInternet();
+            }
+
             if (mDateAndTime != null){
                 // updating dateAndTime
                 dateAndTime = mDateAndTime;
@@ -92,6 +98,9 @@ public class DateTimeManager {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(context.getString(R.string.saved_time_preference), mDateAndTime.toString());
                 editor.apply();
+
+                // triggering time updater
+                listener.onUpdateTime(mDateAndTime);
             }
         });
     }
@@ -113,5 +122,14 @@ public class DateTimeManager {
             getDTFromSharedPref(context);
         }
         return dateAndTime;
+    }
+
+    public interface UpdateTimeListener{
+        void onUpdateTime(DateAndTime dateAndTime);
+    }
+
+    private static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }
