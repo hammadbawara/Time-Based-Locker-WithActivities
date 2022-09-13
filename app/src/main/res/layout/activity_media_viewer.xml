@@ -60,7 +60,7 @@
             android:textAlignment="center"
             android:textColor="@color/white"
             app:drawableTint="@color/white"
-            app:drawableTopCompat="@drawable/ic_simple_share"
+            app:drawableTopCompat="@drawable/ic_unlock"
             app:layout_constraintBottom_toBottomOf="@+id/share_file_media_viewer"
             app:layout_constraintEnd_toStartOf="@+id/file_info_media_viewer"
             app:layout_constraintStart_toEndOf="@+id/share_file_media_viewer"

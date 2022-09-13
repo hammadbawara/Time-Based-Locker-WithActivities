@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="?attr/selectableItemBackground">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/folder_image_view"
@@ -13,7 +14,6 @@
         android:layout_height="165dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
-        android:background="?android:attr/selectableItemBackground"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
